@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Support & Contact Center</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-main: #ffffff;
+            --accent-color: #c5a059; 
+            --text-secondary: #95a5a6;
+            --btn-text: #0b0c10;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 90%;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .lang-switcher {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: rgba(197, 160, 89, 0.1);
+        }
+
+        .logo-placeholder {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, #1f2833, var(--accent-color));
+            border-radius: 22px;
+            margin: 20px auto 24px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px 0;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            margin: 0 0 40px 0;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin: 0 0 14px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        p.description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0 0 30px 0;
+        }
+
+        .btn-wrapper {
+            text-align: center;
+        }
+
+        .email-link {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--btn-text);
+            text-decoration: none;
+            padding: 16px 36px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+        }
+
+        .email-link:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        footer {
+            margin-top: 60px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+            <button class="lang-btn" onclick="switchLang('tr')">TR</button>
+        </div>
+
+        <div class="logo-placeholder"></div>
+        
+        <h1 id="main-title">Games Support</h1>
+        <p id="main-subtitle" class="subtitle">Help & Customer Care</p>
+
+        <div class="card">
+            <h2 id="card-title">Contact Support</h2>
+            <p id="card-desc" class="description">
+                Are you experiencing any issues, discovered a bug, or have suggestions to improve your experience in one of our games? Please reach out directly via email. Please include the name of the game in your message so we can assist you better.
+            </p>
+            <div class="btn-wrapper">
+                <a href="mailto:serhatsanli1994@gmail.com" id="email-btn" class="email-link">Contact Us</a>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 Serhat Şanlı. All rights reserved.<br>
+            <span id="footer-notice" style="font-size: 11px; opacity: 0.5;">This page provides user support in compliance with App Store Review Guidelines.</span>
+        </footer>
+    </div>
+
+    <script>
+        const langData = {
+            en: {
+                title: "Games Support",
+                subtitle: "Help & Customer Care",
+                cardTitle: "Contact Support",
+                cardDesc: "Are you experiencing any issues, discovered a bug, or have suggestions to improve your experience in one of our games? Please reach out directly via email. Please include the name of the game in your message so we can assist you better.",
+                btnText: "Contact Us",
+                footer: "This page provides user support in compliance with App Store Review Guidelines."
+            },
+            tr: {
+                title: "Oyun Destek",
+                subtitle: "Yardım & Müşteri İlişkileri",
+                cardTitle: "Bizimle İletişime Geçin",
+                cardDesc: "Oyunlarımızdan herhangi birinde bir sorun mu yaşıyorsunuz, bir hata mı fark ettiniz veya deneyimi geliştirmek için bir öneriniz mi var? Lütfen bize doğrudan e-posta yoluyla ulaşın. Size daha iyi yardımcı olabilmemiz için mesajınızda oyunun adını belirtmeyi unutmayın.",
+                btnText: "Destek Talebi Gönder",
+                footer: "Bu sayfa, App Store Değerlendirme Yönergelerine uygun olarak kullanıcı desteği sağlamak amacıyla hazırlanmıştır."
+            }
+        };
+
+        function switchLang(lang) {
+            document.getElementById('main-title').innerText = langData[lang].title;
+            document.getElementById('main-subtitle').innerText = langData[lang].subtitle;
+            document.getElementById('card-title').innerText = langData[lang].cardTitle;
+            document.getElementById('card-desc').innerText = langData[lang].cardDesc;
+            document.getElementById('email-btn').innerText = langData[lang].btnText;
+            document.getElementById('footer-notice').innerText = langData[lang].footer;
+            document.documentElement.lang = lang;
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(lang === 'en') {
+                buttons[0].classList.add('active');
+            } else {
+                buttons[1].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
