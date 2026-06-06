@@ -8,10 +8,13 @@
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
+            --card-hover-border: #475569;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #38bdf8;
+            --accent-hover: #7dd3fc;
         }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
@@ -21,81 +24,151 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vi;
+            min-height: 100vh; /* vi hatası vh olarak düzeltildi */
         }
+
         header {
             text-align: center;
-            padding: 3rem 1rem 2rem 1rem;
+            padding: 4rem 1rem 2rem 1rem;
         }
+
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             letter-spacing: -0.05em;
+            font-weight: 800;
+            background: linear-gradient(to right, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         header p {
             color: var(--accent);
-            font-size: 1.1rem;
-            margin-top: 0.5rem;
+            font-size: 1.15rem;
+            margin-top: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             padding: 0 1.5rem;
             box-sizing: border-box;
+            flex: 1; /* İçeriğin footer'ı aşağı itmesini sağlar */
         }
+
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
             margin-top: 2rem;
+            margin-bottom: 4rem;
         }
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
+
+        @media (max-width: 650px) {
+            .grid { 
+                grid-template-columns: 1fr; 
+                gap: 1.5rem;
+            }
+            header h1 { font-size: 2.2rem; }
         }
+
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: 16px;
+            padding: 2rem;
             box-sizing: border-box;
             border: 1px solid #334155;
-            transition: transform 0.2s;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
+
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            border-color: var(--card-hover-border);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
         }
+
         .card h2 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.4rem;
+            margin: 0 0 0.75rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
         }
+
         .card p {
             color: var(--text-muted);
             font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1; /* Açıklamalar farklı uzunlukta olsa bile butonları eşitler */
         }
+
         .links {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
         }
+
         .btn {
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: opacity 0.2s;
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-align: center;
+            flex: 1;
         }
-        .btn:hover { opacity: 0.9; }
-        .btn-primary { background-color: var(--accent); color: #0f172a; }
-        .btn-secondary { background-color: #334155; color: var(--text-main); }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary { 
+            background-color: var(--accent); 
+            color: #0f172a; 
+        }
+        
+        .btn-primary:hover { 
+            background-color: var(--accent-hover); 
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-secondary { 
+            background-color: #334155; 
+            color: var(--text-main); 
+            border: 1px solid #475569;
+        }
+        
+        .btn-secondary:hover { 
+            background-color: #475569; 
+        }
+
         footer {
-            margin: auto 0 2rem 0;
-            padding-top: 3rem;
+            width: 100%;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
             color: var(--text-muted);
             font-size: 0.85rem;
             text-align: center;
+            border-top: 1px solid #1e293b;
+            margin-top: auto;
         }
-        footer a { color: var(--accent); text-decoration: none; }
+
+        footer a { 
+            color: var(--accent); 
+            text-decoration: none; 
+            transition: color 0.2s;
+        }
+        
+        footer a:hover { 
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -109,8 +182,10 @@
         <div class="grid">
             <!-- Mind Find -->
             <div class="card">
-                <h2>Mind Find</h2>
-                <p>An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.</p>
+                <div>
+                    <h2>Mind Find</h2>
+                    <p>An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.</p>
+                </div>
                 <div class="links">
                     <a href="https://able-bramble-232.notion.site/Privacy-Policy-BoxBang-355ff62480a4800f90f3c9088d58cf37?pvs=143" class="btn btn-secondary" target="_blank">Privacy Policy</a>
                     <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary">Support</a>
@@ -119,8 +194,10 @@
 
             <!-- Box Bang -->
             <div class="card">
-                <h2>Box Bang</h2>
-                <p>A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.</p>
+                <div>
+                    <h2>Box Bang</h2>
+                    <p>A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.</p>
+                </div>
                 <div class="links">
                     <a href="https://able-bramble-232.notion.site/Privacy-Policy-BoxBang-355ff62480a4800f90f3c9088d58cf37?pvs=143" class="btn btn-secondary" target="_blank">Privacy Policy</a>
                     <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary">Support</a>
@@ -128,7 +205,10 @@
             </div>
         </div>
     </div>
-         <p>&copy; 2026 Serhat ŞANLI. All rights reserved. | <a href="/app-ads.txt">app-ads.txt</a></p>
+
+    <footer>
+        <p>&copy; 2026 Serhat ŞANLI. All rights reserved. | <a href="/app-ads.txt">app-ads.txt</a></p>
+    </footer>
 
 </body>
 </html>
