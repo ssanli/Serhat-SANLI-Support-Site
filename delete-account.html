@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Account</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .lang-switch {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin-left: 5px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    h1 {
+      color: #d32f2f;
+    }
+
+    .box {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .warning {
+      background: #fff3cd;
+      padding: 10px;
+      border-left: 4px solid #ff9800;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Language buttons -->
+  <div class="lang-switch">
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('tr')">TR</button>
+  </div>
+
+  <!-- ENGLISH -->
+  <div id="en" class="box active">
+    <h1>Delete Account</h1>
+
+    <p>
+      You can delete your account directly from the BoxBang app.
+    </p>
+
+    <h3>How to delete your account</h3>
+    <ul>
+      <li>Open the app</li>
+      <li>Go to Settings</li>
+      <li>Tap Account</li>
+      <li>Select Delete Account</li>
+      <li>Confirm deletion</li>
+    </ul>
+
+    <h3>What happens after deletion?</h3>
+    <ul>
+      <li>All your account data is permanently removed</li>
+      <li>Game progress is deleted</li>
+      <li>User profile is erased</li>
+    </ul>
+
+    <div class="warning">
+      After deletion, all data is removed from our servers.
+      If you create a new account later, your previous data will not be restored.
+    </div>
+  </div>
+
+  <!-- TURKISH -->
+  <div id="tr" class="box">
+    <h1>Hesap Silme</h1>
+
+    <p>
+      Hesabınızı doğrudan BoxBang uygulaması içinden silebilirsiniz.
+    </p>
+
+    <h3>Hesap nasıl silinir?</h3>
+    <ul>
+      <li>Uygulamayı açın</li>
+      <li>Ayarlar bölümüne gidin</li>
+      <li>Hesap sekmesine girin</li>
+      <li>Hesabı Sil seçeneğine dokunun</li>
+      <li>Onaylayın</li>
+    </ul>
+
+    <h3>Silme sonrası ne olur?</h3>
+    <ul>
+      <li>Tüm hesap verileriniz kalıcı olarak silinir</li>
+      <li>Oyun ilerlemeniz kaldırılır</li>
+      <li>Profil bilgileriniz silinir</li>
+    </ul>
+
+    <div class="warning">
+      Hesap silindikten sonra tüm veriler sunucularımızdan kalıcı olarak kaldırılır.
+      Yeni hesap açsanız bile eski veriler geri getirilemez.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function setLang(lang) {
+    document.getElementById("en").classList.remove("active");
+    document.getElementById("tr").classList.remove("active");
+
+    document.getElementById(lang).classList.add("active");
+  }
+</script>
+
+</body>
+</html>
