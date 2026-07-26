@@ -93,7 +93,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             width: 100%;
             padding: 0 1.5rem;
             box-sizing: border-box;
@@ -102,10 +102,10 @@
 
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
             margin-top: 1rem;
-            margin-bottom: 5rem;
+            margin-bottom: 3.5rem;
         }
 
         @media (max-width: 700px) {
@@ -121,7 +121,7 @@
         .card {
             background-color: var(--card-bg);
             border-radius: 24px;
-            padding: 2.5rem;
+            padding: 2rem;
             box-sizing: border-box;
             border: 1px solid var(--card-border);
             backdrop-filter: blur(12px);
@@ -152,7 +152,7 @@
         }
 
         .card h2 {
-            margin: 0 0 1rem 0;
+            margin: 0 0 0.75rem 0;
             font-size: 1.75rem;
             font-weight: 700;
             color: #ffffff;
@@ -161,22 +161,58 @@
 
         .card p {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.65;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
             flex-grow: 1;
+        }
+
+        .downloads {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-store {
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex: 1;
+        }
+
+        .btn-store svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .btn-store:hover {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent);
+            color: #ffffff;
         }
 
         .links {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .btn {
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1rem;
             border-radius: 12px;
             transition: var(--transition);
             text-align: center;
@@ -204,6 +240,54 @@
         .btn-secondary:hover { 
             background-color: rgba(71, 85, 105, 0.8);
             transform: translateY(-2px);
+        }
+
+        /* Developer Profiles Section */
+        .dev-section {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .dev-section h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.3rem;
+            color: #ffffff;
+        }
+
+        .dev-section p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .dev-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-dev {
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-dev:hover {
+            background: var(--accent);
+            color: #0b0f19;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         }
 
         footer {
@@ -252,15 +336,51 @@
 
     <div class="container">
         <div class="grid">
+            <!-- Stable Miner -->
+            <div class="card">
+                <div>
+                    <h2>Stable Miner</h2>
+                    <p id="desc-stableminer">A physics-based mining puzzle game where precision meets balance. Launch heavy gems, steady your cart, and claim the gold!</p>
+                </div>
+                <div>
+                    <div class="downloads">
+                        <a href="https://play.google.com/store/apps/developer?id=SSanli" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                            Google Play
+                        </a>
+                        <a href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                            App Store
+                        </a>
+                    </div>
+                    <div class="links">
+                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-1">Privacy Policy</a>
+                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-1">Support</a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Mind Find -->
             <div class="card">
                 <div>
                     <h2>Mind Find</h2>
                     <p id="desc-mindfind">An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.</p>
                 </div>
-                <div class="links">
-                    <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-1">Privacy Policy</a>
-                    <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-1">Support</a>
+                <div>
+                    <div class="downloads">
+                        <a href="https://play.google.com/store/apps/details?id=com.mindfind.game" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                            Google Play
+                        </a>
+                        <a href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                            App Store
+                        </a>
+                    </div>
+                    <div class="links">
+                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-2">Privacy Policy</a>
+                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-2">Support</a>
+                    </div>
                 </div>
             </div>
 
@@ -270,10 +390,32 @@
                     <h2>Box Bang</h2>
                     <p id="desc-boxbang">A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.</p>
                 </div>
-                <div class="links">
-                    <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-2">Privacy Policy</a>
-                    <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-2">Support</a>
+                <div>
+                    <div class="downloads">
+                        <a href="https://play.google.com/store/apps/details?id=com.boxbang.game" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                            Google Play
+                        </a>
+                        <a href="https://apps.apple.com/tr/app/box-bang/id6762087022" class="btn-store" target="_blank">
+                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                            App Store
+                        </a>
+                    </div>
+                    <div class="links">
+                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-3">Privacy Policy</a>
+                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-3">Support</a>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Developer Profiles Section -->
+        <div class="dev-section">
+            <h3 id="dev-header">Explore All Games</h3>
+            <p id="dev-sub">Check out my developer pages on app stores to discover all my releases.</p>
+            <div class="dev-links">
+                <a href="https://play.google.com/store/apps/developer?id=SSanli" class="btn-dev" target="_blank">Google Play Developer Page</a>
+                <a href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" class="btn-dev" target="_blank">App Store Developer Page</a>
             </div>
         </div>
     </div>
@@ -287,16 +429,22 @@
         const translations = {
             en: {
                 title: "Independent Mobile Game Developer",
+                stableminer: "A physics-based mining puzzle game where precision meets balance. Launch heavy gems, steady your cart, and claim the gold!",
                 mindfind: "An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.",
                 boxbang: "A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.",
+                devHeader: "Explore All Games",
+                devSub: "Check out my developer pages on app stores to discover all my releases.",
                 privacy: "Privacy Policy",
                 support: "Support",
                 copy: "© 2026 Serhat ŞANLI. All rights reserved."
             },
             tr: {
                 title: "Bağımsız Mobil Oyun Geliştiricisi",
+                stableminer: "Hassasiyetin dengeyle buluştuğu fizik tabanlı bir madencilik bulmaca oyunu. Ağır cevherleri fırlatın, vagonunuzu dengede tutun ve altınları kapın!",
                 mindfind: "Çoklu dil desteği, Frekans Kelime, Izgara ve Sıcaklık modlarıyla zihninizi zorlayan sürükleyici bir kelime tahmin oyunu.",
                 boxbang: "Reflekslerinizi ve stratejik düşünme becerilerinizi test etmek için tasarlanmış, hızlı tempolu ve renkli bir bulmaca oyunu.",
+                devHeader: "Tüm Oyunları Keşfet",
+                devSub: "Yayınlanan tüm oyunlarımı görmek için mağaza geliştirici sayfalarımı ziyaret edin.",
                 privacy: "Gizlilik Politikası",
                 support: "Destek",
                 copy: "© 2026 Serhat ŞANLI. Tüm hakları saklıdır."
@@ -306,12 +454,17 @@
         function setLanguage(lang) {
             // Update texts
             document.getElementById('dev-title').innerText = translations[lang].title;
+            document.getElementById('desc-stableminer').innerText = translations[lang].stableminer;
             document.getElementById('desc-mindfind').innerText = translations[lang].mindfind;
             document.getElementById('desc-boxbang').innerText = translations[lang].boxbang;
+            document.getElementById('dev-header').innerText = translations[lang].devHeader;
+            document.getElementById('dev-sub').innerText = translations[lang].devSub;
             document.getElementById('btn-privacy-1').innerText = translations[lang].privacy;
             document.getElementById('btn-privacy-2').innerText = translations[lang].privacy;
+            document.getElementById('btn-privacy-3').innerText = translations[lang].privacy;
             document.getElementById('btn-support-1').innerText = translations[lang].support;
             document.getElementById('btn-support-2').innerText = translations[lang].support;
+            document.getElementById('btn-support-3').innerText = translations[lang].support;
             document.getElementById('footer-copy').innerText = translations[lang].copy;
 
             // Toggle button states
