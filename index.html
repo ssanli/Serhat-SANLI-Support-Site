@@ -170,15 +170,14 @@
         .downloads {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 1rem;
         }
 
         .btn-store {
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            padding: 0.5rem 0.8rem;
-            border-radius: 8px;
+            padding: 0.65rem 0.8rem;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             color: #e2e8f0;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -191,8 +190,8 @@
         }
 
         .btn-store svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
             flex-shrink: 0;
         }
@@ -201,45 +200,6 @@
             background: rgba(56, 189, 248, 0.15);
             border-color: var(--accent);
             color: #ffffff;
-        }
-
-        .links {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .btn {
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            transition: var(--transition);
-            text-align: center;
-            flex: 1;
-        }
-
-        .btn-primary { 
-            background-color: var(--accent); 
-            color: #0b0f19; 
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
-        }
-        
-        .btn-primary:hover { 
-            background-color: var(--accent-hover); 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn-secondary { 
-            background-color: rgba(51, 65, 85, 0.5); 
-            color: var(--text-main); 
-            border: 1px solid rgba(71, 85, 105, 0.5);
-        }
-        
-        .btn-secondary:hover { 
-            background-color: rgba(71, 85, 105, 0.8);
-            transform: translateY(-2px);
         }
 
         /* Developer Profiles Section */
@@ -303,6 +263,14 @@
             backdrop-filter: blur(4px);
         }
 
+        footer .footer-links {
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
         footer a { 
             color: var(--accent); 
             text-decoration: none; 
@@ -348,14 +316,10 @@
                             <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
                             Google Play
                         </a>
-                        <a href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" class="btn-store" target="_blank">
+                        <a href="https://apps.apple.com/tr/app/stable-miner/id6801269073" class="btn-store" target="_blank">
                             <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
                             App Store
                         </a>
-                    </div>
-                    <div class="links">
-                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-1">Privacy Policy</a>
-                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-1">Support</a>
                     </div>
                 </div>
             </div>
@@ -377,10 +341,6 @@
                             App Store
                         </a>
                     </div>
-                    <div class="links">
-                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-2">Privacy Policy</a>
-                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-2">Support</a>
-                    </div>
                 </div>
             </div>
 
@@ -401,10 +361,6 @@
                             App Store
                         </a>
                     </div>
-                    <div class="links">
-                        <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" class="btn btn-secondary" target="_blank" id="btn-privacy-3">Privacy Policy</a>
-                        <a href="mailto:serhatsanli1994@gmail.com" class="btn btn-primary" id="btn-support-3">Support</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -421,6 +377,11 @@
     </div>
 
     <footer>
+        <div class="footer-links">
+            <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" target="_blank" id="footer-privacy">Privacy Policy</a>
+            <span>•</span>
+            <a href="mailto:serhatsanli1994@gmail.com" id="footer-support">Support</a>
+        </div>
         <p><span id="footer-copy">&copy; 2026 Serhat ŞANLI. All rights reserved.</span> | <a href="https://ssanli.github.io/app-ads.txt">app-ads.txt</a></p>
     </footer>
 
@@ -459,12 +420,8 @@
             document.getElementById('desc-boxbang').innerText = translations[lang].boxbang;
             document.getElementById('dev-header').innerText = translations[lang].devHeader;
             document.getElementById('dev-sub').innerText = translations[lang].devSub;
-            document.getElementById('btn-privacy-1').innerText = translations[lang].privacy;
-            document.getElementById('btn-privacy-2').innerText = translations[lang].privacy;
-            document.getElementById('btn-privacy-3').innerText = translations[lang].privacy;
-            document.getElementById('btn-support-1').innerText = translations[lang].support;
-            document.getElementById('btn-support-2').innerText = translations[lang].support;
-            document.getElementById('btn-support-3').innerText = translations[lang].support;
+            document.getElementById('footer-privacy').innerText = translations[lang].privacy;
+            document.getElementById('footer-support').innerText = translations[lang].support;
             document.getElementById('footer-copy').innerText = translations[lang].copy;
 
             // Toggle button states
