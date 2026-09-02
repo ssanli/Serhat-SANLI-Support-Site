@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="ad.size" content="width=320,height=480" />
+  <meta name="ad.orientation" content="portrait" />
+  <title>Mind Find — Playable</title>
+  <script type="text/javascript" src="https://tpc.googlesyndication.com/pagead/gadgets/html5/api/exitapi.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --primary: #545A92;
+      --primary-container: #E0E0FF;
+      --on-primary-container: #0F154B;
+      --secondary: #5C5D72;
+      --surface: #FBF8FF;
+      --scaffold: #F4F6FA;
+      --on-surface: #1B1B21;
+      --surface-high: #EAE7EF;
+      --success: #2E7D32;
+      --success-border: #1B5E20;
+      --backspace: #F9A825;
+      --backspace-text: #3E2723;
+      --radius: 14px;
+      --key-h: clamp(32px, 8.5vw, 40px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --chart-h: clamp(148px, 24vh, 180px);
+    }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--scaffold); color: var(--on-surface);
+      touch-action: manipulation; user-select: none;
+    }
+    #app {
+      width: 100%; max-width: 430px; height: 100%; max-height: 932px;
+      margin: 0 auto; display: flex; flex-direction: column;
+      background: var(--scaffold); position: relative; overflow: hidden;
+    }
+    .header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px 4px; flex-shrink: 0;
+    }
+    .logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, #5661CF, var(--primary));
+      display: grid; place-items: center;
+      box-shadow: 0 2px 8px rgba(84,90,146,.22);
+    }
+    .logo svg { width: 20px; height: 20px; }
+    .brand-text h1 { font-size: 16px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+    .brand-text p { font-size: 10px; font-weight: 600; color: var(--secondary); opacity: .85; }
+    .stats-row { display: flex; gap: 8px; padding: 0 16px 4px; flex-shrink: 0; }
+    .stat-chip {
+      flex: 1; height: 38px; border-radius: 12px;
+      background: var(--surface); border: 1px solid rgba(119,118,128,.1);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .stat-chip .val { font-size: 13px; font-weight: 800; line-height: 1; }
+    .stat-chip .lbl { font-size: 8px; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: .35px; margin-top: 2px; }
+    .chart-wrap { margin: 0 16px 2px; flex-shrink: 0; position: relative; }
+    .chart-card {
+      border-radius: 16px; overflow: hidden; position: relative;
+      background: linear-gradient(135deg, rgba(228,225,233,.55), rgba(251,248,255,.25));
+      border: 1px solid rgba(119,118,128,.08);
+      box-shadow: 0 2px 12px rgba(84,90,146,.08);
+    }
+    .chart-card canvas { display: block; width: 100%; height: var(--chart-h); }
+    .chart-caption {
+      text-align: center; font-size: 10px; font-weight: 600; color: var(--secondary);
+      padding: 5px 8px 6px; min-height: 24px;
+    }
+    .feedback-toast {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(.92);
+      background: rgba(15,21,75,.92); color: #fff; padding: 10px 14px;
+      border-radius: 12px; font-size: 12px; font-weight: 700; text-align: center;
+      pointer-events: none; opacity: 0; transition: opacity .25s, transform .25s;
+      z-index: 5; max-width: 88%; line-height: 1.35;
+    }
+    .feedback-toast.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    .game-area {
+      flex: 1; display: flex; flex-direction: column; min-height: 0;
+      padding-bottom: calc(2px + var(--safe-b));
+    }
+    .lives-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2px 16px 4px;
+    }
+    .lives { display: flex; gap: 6px; }
+    .life-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(84,90,146,.85); }
+    .life-dot.lost { background: transparent; border: 2px solid rgba(186,26,26,.88); transform: scale(.85); }
+    .phase-badge {
+      font-size: 9px; font-weight: 800; padding: 4px 10px; border-radius: 20px;
+      background: var(--primary-container); color: var(--on-primary-container);
+    }
+    .slots-row {
+      display: flex; gap: clamp(4px, 1.2vw, 7px); justify-content: center;
+      padding: 0 16px 6px;
+    }
+    .slot {
+      flex: 1; max-width: 52px; aspect-ratio: 1; min-height: 40px;
+      border-radius: var(--radius); display: grid; place-items: center;
+      font-size: clamp(17px, 4.8vw, 21px); font-weight: 700;
+      background: rgba(228,225,233,.55); border: 1px solid rgba(119,118,128,.18);
+    }
+    .slot.focused {
+      background: rgba(224,224,255,.28); border: 1.8px solid rgba(84,90,146,.75);
+      box-shadow: 0 0 0 3px rgba(84,90,146,.1);
+    }
+    .slot.filled { background: rgba(224,224,255,.45); border-color: rgba(84,90,146,.35); }
+    .slot.demo-fill { animation: slotPop .35s ease-out; }
+    @keyframes slotPop { 0% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .history-row {
+      min-height: 32px; padding: 0 16px 4px;
+      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+    }
+    .history-row::-webkit-scrollbar { display: none; }
+    .history-pill {
+      flex-shrink: 0; padding: 5px 10px; border-radius: 10px;
+      background: var(--surface); border: 1px solid rgba(119,118,128,.1);
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    }
+    .history-pill span { font-size: 9px; font-weight: 600; color: var(--secondary); margin-left: 5px; }
+    .keyboard { margin-top: auto; padding: 2px 3px calc(4px + var(--safe-b)); flex-shrink: 0; }
+    .kb-row { display: flex; gap: 3px; justify-content: center; margin-bottom: 3px; }
+    .key {
+      height: var(--key-h); border-radius: 9px; border: 1px solid rgba(119,118,128,.18);
+      background: var(--surface-high); font-size: clamp(11px, 3vw, 13px); font-weight: 800;
+      display: grid; place-items: center; flex: 1; min-width: 0; max-width: 34px;
+    }
+    .key:active { transform: scale(.94); }
+    .key.wide { flex: 1.5; max-width: 58px; font-size: 10px; }
+    .key.enter { background: var(--success); color: #fff; border-color: var(--success-border); }
+    .key.back { background: var(--backspace); color: var(--backspace-text); border-color: #F57F17; font-size: 15px; }
+    .key.disabled { opacity: .35; pointer-events: none; }
+    .key.hint-pulse { animation: keyPulseOnce 2s ease-in-out 1 forwards; }
+    @keyframes keyPulseOnce {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(84,90,146,.4); }
+      50% { box-shadow: 0 0 0 6px rgba(84,90,146,0); }
+    }
+    .overlay {
+      position: absolute; inset: 0; z-index: 25;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 28px 24px calc(24px + var(--safe-b)); text-align: center;
+      opacity: 0; pointer-events: none; transition: opacity .45s ease;
+    }
+    .overlay.active { opacity: 1; pointer-events: auto; }
+    .splash {
+      background: linear-gradient(165deg, #F4F6FA 0%, #E8EAF6 45%, #DDE1FF 100%);
+    }
+    .splash .big-logo {
+      width: 76px; height: 76px; border-radius: 20px; margin-bottom: 20px;
+      background: linear-gradient(135deg, #5661CF, var(--primary));
+      display: grid; place-items: center;
+      box-shadow: 0 10px 32px rgba(84,90,146,.28);
+      animation: logoIn .7s ease-out both;
+    }
+    @keyframes logoIn { from { opacity: 0; transform: scale(.85) translateY(12px); } to { opacity: 1; transform: none; } }
+    .splash h1 {
+      font-size: clamp(22px, 6vw, 28px); font-weight: 900; line-height: 1.15;
+      color: var(--on-primary-container); margin-bottom: 10px;
+      animation: fadeUp .6s .15s ease-out both;
+    }
+    .splash h1 em { font-style: normal; color: #5661CF; }
+    .splash .lead {
+      font-size: 14px; font-weight: 600; color: var(--secondary); line-height: 1.45;
+      max-width: 300px; margin-bottom: 22px;
+      animation: fadeUp .6s .25s ease-out both;
+    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .modes-static {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+      max-width: 320px; margin-bottom: 28px;
+      animation: fadeUp .6s .35s ease-out both;
+    }
+    .mode-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 7px 12px; border-radius: 999px; font-size: 11px; font-weight: 800;
+      border: 1px solid rgba(84,90,146,.12); background: rgba(255,255,255,.72);
+      box-shadow: 0 2px 8px rgba(84,90,146,.06);
+    }
+    .mode-chip.leader { color: #5D4037; background: linear-gradient(135deg, #FFF8E1, #FFECB3); }
+    .mode-chip.grid { color: #BF360C; background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+    .mode-chip.joker { color: #4A148C; background: linear-gradient(135deg, #F3E5F5, #E1BEE7); }
+    .mode-chip.warm { color: #0F154B; background: linear-gradient(135deg, #E8EAF6, #C5CAE9); }
+    .splash-progress {
+      width: min(220px, 70%); height: 4px; border-radius: 99px;
+      background: rgba(84,90,146,.15); overflow: hidden;
+      animation: fadeUp .6s .45s ease-out both;
+    }
+    .splash-progress-bar {
+      height: 100%; width: 0; border-radius: 99px;
+      background: linear-gradient(90deg, #5661CF, var(--primary));
+      animation: splashLoad 3.2s linear forwards;
+    }
+    @keyframes splashLoad { to { width: 100%; } }
+    .splash-hint {
+      margin-top: 12px; font-size: 11px; font-weight: 600; color: var(--secondary); opacity: .7;
+      animation: fadeUp .6s .5s ease-out both;
+    }
+    .demo-banner {
+      position: absolute; top: 68px; left: 50%; transform: translateX(-50%);
+      z-index: 12; background: var(--primary-container); color: var(--on-primary-container);
+      padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 800;
+      opacity: 0; transition: opacity .3s; white-space: nowrap;
+    }
+    .demo-banner.show { opacity: 1; }
+    .score-pop {
+      position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%);
+      z-index: 14; font-size: 28px; font-weight: 900; color: var(--success);
+      pointer-events: none; opacity: 0;
+    }
+    .score-pop.show { animation: scorePop .8s ease-out forwards; }
+    @keyframes scorePop {
+      0% { opacity: 0; transform: translate(-50%,-50%) scale(.5); }
+      40% { opacity: 1; transform: translate(-50%,-65%) scale(1.08); }
+      100% { opacity: 0; transform: translate(-50%,-90%) scale(1); }
+    }
+    .tap-hint {
+      position: absolute; bottom: 26%; left: 50%; transform: translateX(-50%);
+      z-index: 15; pointer-events: none; opacity: 0; transition: opacity .3s;
+      font-size: 11px; font-weight: 700; color: var(--primary);
+      background: var(--primary-container); padding: 6px 14px; border-radius: 20px;
+    }
+    .tap-hint.show { opacity: 1; }
+    .endcard {
+      background: linear-gradient(160deg, #5661CF 0%, var(--primary) 50%, #3d4578 100%);
+      color: #fff; justify-content: flex-start; padding-top: 48px; overflow-y: auto;
+    }
+    .endcard .score-final { font-size: 44px; font-weight: 900; margin: 4px 0; }
+    .endcard .score-label { font-size: 13px; opacity: .9; margin-bottom: 16px; }
+    .endcard .modes-static { margin-bottom: 18px; }
+    .endcard .mode-chip { border-color: rgba(255,255,255,.25); box-shadow: none; }
+    .endcard h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .endcard .tagline-cta { font-size: 13px; opacity: .9; margin-bottom: 16px; max-width: 280px; line-height: 1.45; }
+    .btn-primary {
+      background: #fff; color: var(--primary); border: none; border-radius: 14px;
+      padding: 15px 36px; font-size: 16px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,.18); width: min(100%, 280px);
+    }
+    .btn-primary:active { transform: scale(.97); }
+    .endcard .stores { font-size: 11px; opacity: .75; margin-top: 12px; }
+    .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 18; overflow: hidden; }
+    .confetti i {
+      position: absolute; width: 7px; height: 7px; border-radius: 2px;
+      animation: confFall 1.6s ease-out forwards;
+    }
+    @keyframes confFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(80vh) rotate(540deg); }
+    }
+    @media (max-height: 680px) {
+      :root { --chart-h: clamp(130px, 22vh, 155px); --key-h: 30px; }
+      .header { padding-top: 6px; }
+      .stat-chip { height: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5.5 5 10c0 3 1.5 5.5 3.5 7.2V20a1 1 0 001 1h5a1 1 0 001-1v-2.8C17.5 15.5 19 13 19 10c0-4.5-3-8-7-8z" fill="white"/><text x="12" y="13.5" text-anchor="middle" fill="#5661CF" font-size="9" font-weight="900">?</text></svg>
+      </div>
+      <div class="brand-text">
+        <h1>Mind Find</h1>
+        <p>Frekans çizgisiyle kelime avı</p>
+      </div>
+    </header>
+
+    <div class="stats-row">
+      <div class="stat-chip"><span class="val" id="statGuesses">3</span><span class="lbl">Tahmin</span></div>
+      <div class="stat-chip"><span class="val" id="statScore">0</span><span class="lbl">Puan</span></div>
+      <div class="stat-chip"><span class="val" id="statBest">—</span><span class="lbl">Seri</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-card">
+        <canvas id="chart"></canvas>
+        <div class="feedback-toast" id="feedback"></div>
+      </div>
+      <div class="chart-caption" id="chartCaption">Gizli kelimenin frekans çizgisi</div>
+    </div>
+
+    <div class="demo-banner" id="demoBanner">▶ Otomatik demo</div>
+    <div class="score-pop" id="scorePop"></div>
+
+    <div class="game-area">
+      <div class="lives-row">
+        <div class="lives" id="lives"></div>
+        <span class="phase-badge" id="phaseBadge"></span>
+      </div>
+      <div class="slots-row" id="slots"></div>
+      <div class="history-row" id="history"></div>
+      <div class="keyboard" id="keyboard"></div>
+    </div>
+
+    <div class="tap-hint" id="tapHint">İlk harfi yaz</div>
+
+    <!-- Splash — auto geçiş -->
+    <div class="overlay splash active" id="splashOverlay">
+      <div class="big-logo" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5.5 5 10c0 3 1.5 5.5 3.5 7.2V20a1 1 0 001 1h5a1 1 0 001-1v-2.8C17.5 15.5 19 13 19 10c0-4.5-3-8-7-8z" fill="white"/><text x="12" y="13.5" text-anchor="middle" fill="#5661CF" font-size="9" font-weight="900">?</text></svg>
+      </div>
+      <h1>Frekans vurgulu<br/><em>kelime tahmin oyunu</em></h1>
+      <p class="lead">Gizli kelimenin frekans çizgisine bak. Doğru kelimeyi bulunca çizgiler çakışır.</p>
+      <div class="modes-static">
+        <span class="mode-chip leader">🏆 Sıralama</span>
+        <span class="mode-chip grid">📊 Izgara</span>
+        <span class="mode-chip joker">✨ Bilgeç Joker</span>
+        <span class="mode-chip warm">🔥 Sıcaklık</span>
+      </div>
+      <div class="splash-progress"><div class="splash-progress-bar"></div></div>
+      <p class="splash-hint">Dokunarak atla</p>
+    </div>
+
+    <!-- End card -->
+    <div class="overlay endcard" id="endOverlay">
+      <div class="score-final" id="finalScore">90</div>
+      <div class="score-label">Seri skorun — sen kaç puan yapabilirsin?</div>
+      <div class="modes-static">
+        <span class="mode-chip leader">🏆 Sıralama</span>
+        <span class="mode-chip grid">📊 Izgara</span>
+        <span class="mode-chip joker">✨ Bilgeç</span>
+        <span class="mode-chip warm">🔥 Sıcaklık</span>
+      </div>
+      <h2>Mind Find'i İndir</h2>
+      <p class="tagline-cta">Sınırsız seri, günlük modlar ve skor tablosu seni bekliyor.</p>
+      <button type="button" class="btn-primary" id="btnInstall" onclick="ExitApi.exit()">Ücretsiz İndir</button>
+      <div class="stores">Google Play · App Store</div>
+    </div>
+
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var STORE_ANDROID = 'https://play.google.com/store/apps/details?id=com.mindfind.game';
+    var STORE_IOS = 'https://apps.apple.com/app/id0000000000';
+
+    var FREQ = { a:1,b:2,c:3,'ç':4,d:5,e:6,f:7,g:8,'ğ':9,h:10,'ı':11,i:12,j:13,k:14,l:15,m:16,n:17,o:18,'ö':19,p:20,q:21,r:21,s:22,'ş':23,t:24,u:25,'ü':26,v:27,w:27,y:28,z:29 };
+    var SCALE_MAX = 29, MAX_GUESSES = 3, MAX_GUIDE_LINES = 4, GUIDE_SCORE_STEP = 500;
+    var KB = [
+      ['Q','W','E','R','T','Y','U','I','O','P','Ğ','Ü'],
+      ['A','S','D','F','G','H','J','K','L','Ş','İ'],
+      ['ENTER','Z','C','V','B','N','M','Ö','Ç','⌫']
+    ];
+
+    var mraid = window.mraid || {
+      getState: function () { return 'default'; },
+      open: function (url) { window.open(url, '_blank'); }
+    };
+    window.mraid = mraid;
+
+    function exitToStore() {
+      if (window.ExitApi && typeof ExitApi.exit === 'function') {
+        ExitApi.exit();
+        return;
+      }
+      var url = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? STORE_IOS : STORE_ANDROID;
+      try { mraid.open(url); } catch (e) { window.open(url, '_blank'); }
+    }
+
+    var canvas = document.getElementById('chart');
+    var ctx = canvas.getContext('2d');
+    var chartW = 320, chartH = 168, chartDpr = 1;
+
+    function chartPad() { return { top: 12, right: 10, bottom: 12, left: 26 }; }
+
+    var slotsEl = document.getElementById('slots');
+    var historyEl = document.getElementById('history');
+    var keyboardEl = document.getElementById('keyboard');
+    var livesEl = document.getElementById('lives');
+    var feedbackEl = document.getElementById('feedback');
+    var scorePopEl = document.getElementById('scorePop');
+    var demoBanner = document.getElementById('demoBanner');
+    var phaseBadge = document.getElementById('phaseBadge');
+    var tapHint = document.getElementById('tapHint');
+    var statGuesses = document.getElementById('statGuesses');
+    var statScore = document.getElementById('statScore');
+    var statBest = document.getElementById('statBest');
+    var finalScore = document.getElementById('finalScore');
+    var confettiEl = document.getElementById('confetti');
+    var splashOverlay = document.getElementById('splashOverlay');
+
+    var phase = 'splash';
+    var targetWord = '', cells = [], focusIdx = 0, guessesLeft = MAX_GUESSES;
+    var score = 0, history = [], userCurve = null, targetCurve = null;
+    var morphFrom = null, morphTo = null, morphT = 1, morphStart = 0;
+    var interactive = false, userWrongCount = 0, firstInteraction = false;
+    var splashDone = false;
+
+    function norm(ch) {
+      var m = { I:'i', İ:'i', 'ı':'i' };
+      return m[ch] ? m[ch] : ch.toLowerCase();
+    }
+    function mapWord(w) {
+      return w.toLowerCase().split('').filter(function (c) { return FREQ[norm(c)]; })
+        .map(function (c) { return FREQ[norm(c)]; });
+    }
+    function proximity(guess, target) {
+      var gc = mapWord(guess), tc = mapWord(target), n = Math.min(gc.length, tc.length);
+      if (!n) return 0;
+      var t = 0;
+      for (var i = 0; i < n; i++) t += 1 - Math.abs(gc[i] - tc[i]) / SCALE_MAX;
+      return Math.round(t / n * 100);
+    }
+    function headline(guess, target, pct) {
+      var g = guess.toLowerCase(), t = target.toLowerCase(), pref = 0;
+      while (pref < g.length && pref < t.length && g[pref] === t[pref]) pref++;
+      if (pct >= 88) return 'Çok yakınsın!';
+      if (pref >= 3) return 'İlk ' + pref + ' harf eşleşti';
+      if (pct >= 65) return 'Çizgi %' + pct + ' eşleşti';
+      if (pref >= 1) return 'Başlangıç bölgesi yakın';
+      return 'Frekans çizgisi hâlâ uzak';
+    }
+    function wordScore(len, wrong) { return Math.max(1, len * 10 - wrong * 5); }
+    function delay(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+    function catmullRom(p0, p1, p2, p3, t) {
+      var t2 = t * t, t3 = t2 * t;
+      return 0.5 * ((2*p1) + (-p0+p2)*t + (2*p0-5*p1+4*p2-p3)*t2 + (-p0+3*p1-3*p2+p3)*t3);
+    }
+    function curvePoints(values, w, h, pad) {
+      var pts = [], innerW = w - pad.left - pad.right, innerH = h - pad.top - pad.bottom;
+      for (var i = 0; i < values.length; i++) {
+        var x = pad.left + (values.length === 1 ? innerW / 2 : (i / (values.length - 1)) * innerW);
+        var y = pad.top + innerH - ((values[i] - 1) / (SCALE_MAX - 1)) * innerH;
+        pts.push({ x: x, y: y });
+      }
+      return pts;
+    }
+    function drawSmoothLine(values, color, lineW, glow) {
+      if (!values || !values.length) return;
+      var pad = chartPad(), pts = curvePoints(values, chartW, chartH, pad);
+      if (pts.length === 1) {
+        ctx.beginPath(); ctx.arc(pts[0].x, pts[0].y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = color; ctx.fill(); return;
+      }
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p0 = pts[Math.max(i-1,0)], p1 = pts[i], p2 = pts[i+1], p3 = pts[Math.min(i+2, pts.length-1)];
+        for (var t = 0; t <= 1; t += 0.1) {
+          ctx.lineTo(catmullRom(p0.x,p1.x,p2.x,p3.x,t), catmullRom(p0.y,p1.y,p2.y,p3.y,t));
+        }
+      }
+      if (glow) {
+        ctx.strokeStyle = color; ctx.lineWidth = lineW + 3; ctx.globalAlpha = 0.14;
+        ctx.stroke(); ctx.globalAlpha = 1;
+      }
+      ctx.strokeStyle = color; ctx.lineWidth = lineW; ctx.lineCap = 'round'; ctx.stroke();
+      pts.forEach(function (p) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, 2.8, 0, Math.PI * 2);
+        ctx.fillStyle = color; ctx.fill();
+      });
+    }
+    function lerpCurve(a, b, t) {
+      if (!a) return b ? b.slice() : [];
+      if (!b) return a.slice();
+      var n = Math.max(a.length, b.length), out = [];
+      for (var i = 0; i < n; i++) {
+        var va = a[Math.min(i, a.length-1)], vb = b[Math.min(i, b.length-1)];
+        out.push(va + (vb - va) * t);
+      }
+      return out;
+    }
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function guideFractionsFromBottom(seriesScore) {
+      var removed = Math.floor(seriesScore / GUIDE_SCORE_STEP);
+      var count = Math.max(1, Math.min(MAX_GUIDE_LINES, MAX_GUIDE_LINES - removed));
+      var totalLines = count + 2, fractions = [];
+      for (var line = 2; line <= totalLines - 1; line++) fractions.push((line - 1) / (totalLines - 1));
+      return fractions;
+    }
+    function fractionToY(pad, h, fraction) {
+      return pad.top + (h - pad.top - pad.bottom) * (1 - fraction);
+    }
+    function drawReferenceGuides(pad) {
+      var guides = guideFractionsFromBottom(score), centerOnly = guides.length === 1;
+      guides.forEach(function (fraction) {
+        var y = fractionToY(pad, chartH, fraction);
+        ctx.setLineDash(centerOnly ? [5, 4] : [4, 5]);
+        ctx.strokeStyle = centerOnly ? 'rgba(27,27,33,0.4)' : 'rgba(27,27,33,0.26)';
+        ctx.lineWidth = centerOnly ? 1.5 : 1.1;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(chartW - pad.right, y); ctx.stroke();
+        ctx.setLineDash([]);
+      });
+    }
+
+    function drawChart() {
+      var pad = chartPad();
+      ctx.clearRect(0, 0, chartW, chartH);
+      ctx.strokeStyle = 'rgba(27,27,33,0.12)'; ctx.lineWidth = 1;
+      ctx.strokeRect(pad.left, pad.top, chartW - pad.left - pad.right, chartH - pad.top - pad.bottom);
+      drawReferenceGuides(pad);
+      var gx = 8, gy0 = pad.top, gy1 = chartH - pad.bottom;
+      var grad = ctx.createLinearGradient(gx, gy0, gx, gy1);
+      grad.addColorStop(0, 'rgba(27,27,33,0.4)'); grad.addColorStop(0.5, 'rgba(27,27,33,0.16)'); grad.addColorStop(1, 'rgba(27,27,33,0.4)');
+      ctx.fillStyle = grad; ctx.fillRect(gx, gy0, 3, gy1 - gy0);
+      ctx.fillStyle = 'rgba(27,27,33,0.46)'; ctx.font = '800 9px sans-serif';
+      ctx.fillText('Z', gx, gy0 + 8); ctx.fillText('A', gx, gy1 - 2);
+      if (targetCurve) drawSmoothLine(targetCurve, 'rgba(84,90,146,0.55)', 2.4, true);
+      var displayCurve = userCurve;
+      if (morphFrom && morphTo && morphT < 1) displayCurve = lerpCurve(morphFrom, morphTo, easeOutCubic(morphT));
+      if (displayCurve && displayCurve.length) drawSmoothLine(displayCurve, 'rgba(92,93,114,0.92)', 2.2, false);
+    }
+
+    function resizeChart() {
+      var wrap = canvas.parentElement;
+      if (!wrap) return;
+      var rect = wrap.getBoundingClientRect();
+      chartDpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      chartW = Math.max(260, Math.floor(rect.width));
+      chartH = Math.max(130, Math.min(180, Math.floor(window.innerHeight * 0.22)));
+      canvas.width = Math.round(chartW * chartDpr);
+      canvas.height = Math.round(chartH * chartDpr);
+      canvas.style.width = '100%';
+      canvas.style.height = chartH + 'px';
+      ctx.setTransform(chartDpr, 0, 0, chartDpr, 0, 0);
+      drawChart();
+    }
+
+    function startMorph(from, to) {
+      morphFrom = from ? from.slice() : null; morphTo = to ? to.slice() : null;
+      morphT = 0; morphStart = performance.now();
+      requestAnimationFrame(tickMorph);
+    }
+    function tickMorph(now) {
+      morphT = Math.min(1, (now - morphStart) / 520);
+      drawChart();
+      if (morphT < 1) requestAnimationFrame(tickMorph);
+    }
+
+    function renderLives() {
+      livesEl.innerHTML = '';
+      for (var i = 0; i < MAX_GUESSES; i++) {
+        var d = document.createElement('div');
+        d.className = 'life-dot' + (i >= guessesLeft ? ' lost' : '');
+        livesEl.appendChild(d);
+      }
+      statGuesses.textContent = guessesLeft;
+    }
+    function renderSlots() {
+      slotsEl.innerHTML = '';
+      for (var i = 0; i < cells.length; i++) {
+        (function (idx) {
+          var el = document.createElement('div');
+          el.className = 'slot' + (cells[idx] ? ' filled' : '') + (idx === focusIdx && interactive ? ' focused' : '');
+          el.textContent = cells[idx] ? cells[idx].toUpperCase() : '';
+          slotsEl.appendChild(el);
+        })(i);
+      }
+    }
+    function renderHistory() {
+      historyEl.innerHTML = '';
+      history.forEach(function (h) {
+        var pill = document.createElement('div');
+        pill.className = 'history-pill';
+        pill.innerHTML = h.word.toUpperCase() + '<span>' + h.pct + '%</span>';
+        historyEl.appendChild(pill);
+      });
+    }
+    function renderKeyboard() {
+      keyboardEl.innerHTML = '';
+      KB.forEach(function (row) {
+        var rowEl = document.createElement('div');
+        rowEl.className = 'kb-row';
+        row.forEach(function (key) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          var isEnter = key === 'ENTER', isBack = key === '⌫';
+          btn.className = 'key' + (isEnter ? ' enter wide' : '') + (isBack ? ' back wide' : '') + (!interactive ? ' disabled' : '');
+          btn.textContent = isEnter ? 'GİR' : key;
+          btn.dataset.key = key;
+          if (interactive) btn.addEventListener('click', function () { onKey(key); });
+          rowEl.appendChild(btn);
+        });
+        keyboardEl.appendChild(rowEl);
+      });
+    }
+    function updateStats() {
+      statScore.textContent = score;
+      statBest.textContent = score > 0 ? score : '—';
+    }
+    function showFeedback(msg, ms) {
+      feedbackEl.textContent = msg;
+      feedbackEl.classList.add('show');
+      return delay(ms || 900).then(function () { feedbackEl.classList.remove('show'); });
+    }
+    function showScorePop(pts) {
+      scorePopEl.textContent = '+' + pts;
+      scorePopEl.classList.remove('show');
+      void scorePopEl.offsetWidth;
+      scorePopEl.classList.add('show');
+    }
+    function spawnConfetti() {
+      confettiEl.innerHTML = '';
+      var colors = ['#5661CF','#545A92','#2E7D32','#F9A825','#E0E0FF','#7B1FA2'];
+      for (var i = 0; i < 36; i++) {
+        var p = document.createElement('i');
+        p.style.left = Math.random() * 100 + '%';
+        p.style.background = colors[i % colors.length];
+        p.style.animationDelay = Math.random() * 0.5 + 's';
+        confettiEl.appendChild(p);
+      }
+    }
+    function setPhase(p) {
+      phase = p;
+      phaseBadge.textContent = p === 'demo' ? 'Demo' : p === 'play' ? 'Senin sıran' : '';
+      demoBanner.classList.toggle('show', p === 'demo');
+    }
+    function setupRound(word, guessCount) {
+      targetWord = word;
+      cells = new Array(word.length).fill(null);
+      focusIdx = 0; guessesLeft = guessCount; history = [];
+      userCurve = null; targetCurve = mapWord(word);
+      morphFrom = morphTo = null; morphT = 1;
+      renderLives(); renderSlots(); renderHistory(); drawChart();
+    }
+
+    function onKey(key) {
+      if (!interactive || phase !== 'play') return;
+      if (!firstInteraction) { firstInteraction = true; tapHint.classList.remove('show'); clearKeyPulse(); }
+      if (key === '⌫') {
+        if (cells[focusIdx]) cells[focusIdx] = null;
+        else if (focusIdx > 0) { focusIdx--; cells[focusIdx] = null; }
+      } else if (key === 'ENTER') {
+        if (cells.some(function (c) { return !c; })) return;
+        submitGuess(); return;
+      } else {
+        if (!FREQ[norm(key)]) return;
+        cells[focusIdx] = key;
+        if (focusIdx < cells.length - 1) focusIdx++;
+      }
+      userCurve = buildLiveCurve();
+      renderSlots(); drawChart();
+    }
+    function buildLiveCurve() {
+      var vals = [];
+      for (var i = 0; i < cells.length; i++) {
+        if (cells[i]) vals.push(FREQ[norm(cells[i])]); else break;
+      }
+      if (!vals.length) return null;
+      while (vals.length < cells.length) vals.push(vals[vals.length - 1]);
+      return vals;
+    }
+    function clearKeyPulse() {
+      keyboardEl.querySelectorAll('.hint-pulse').forEach(function (b) { b.classList.remove('hint-pulse'); });
+    }
+    function pulseKeyOnce(letter) {
+      clearKeyPulse();
+      keyboardEl.querySelectorAll('.key').forEach(function (b) {
+        if (b.dataset.key === letter) {
+          b.classList.add('hint-pulse');
+          setTimeout(function () { b.classList.remove('hint-pulse'); }, 2100);
+        }
+      });
+    }
+
+    function submitGuess() {
+      var guess = cells.join(''), pct = proximity(guess, targetWord), gc = mapWord(guess);
+      startMorph(userCurve, gc); userCurve = gc;
+      if (guess.toLowerCase() === targetWord.toLowerCase()) {
+        var pts = wordScore(targetWord.length, MAX_GUESSES - guessesLeft);
+        score += pts; updateStats(); showScorePop(pts); spawnConfetti();
+        interactive = false; renderKeyboard();
+        return delay(600).then(function () { return showFeedback('Doğru! 🎉', 800); }).then(showEndCard);
+      }
+      guessesLeft--; userWrongCount++;
+      history.push({ word: guess.toUpperCase(), pct: pct });
+      renderLives(); renderHistory(); interactive = false; renderKeyboard();
+      var msg = headline(guess, targetWord, pct);
+      if (userWrongCount === 2 && guessesLeft > 0) msg += '\n💡 İpucu: Bir renk';
+      return showFeedback(msg, 1100).then(function () {
+        if (guessesLeft <= 0) return showFeedback('Cevap: ' + targetWord.toUpperCase(), 1200).then(showEndCard);
+        cells = new Array(targetWord.length).fill(null); focusIdx = 0;
+        interactive = true; renderSlots(); renderKeyboard();
+      });
+    }
+
+    async function runDemo() {
+      setPhase('demo'); interactive = false;
+      setupRound('kalp', MAX_GUESSES);
+      document.getElementById('chartCaption').textContent = '4 harfli kelime — frekans çizgisini izle';
+      await delay(700);
+      var demoWrong = ['K','A','R','A'];
+      for (var i = 0; i < demoWrong.length; i++) {
+        cells[i] = demoWrong[i]; focusIdx = Math.min(i + 1, 3);
+        var partial = mapWord(demoWrong.slice(0, i + 1).join(''));
+        while (partial.length < 4) partial.push(partial[partial.length - 1]);
+        userCurve = partial; renderSlots(); drawChart();
+        if (slotsEl.children[i]) slotsEl.children[i].classList.add('demo-fill');
+        await delay(360);
+      }
+      await delay(280);
+      startMorph(userCurve, mapWord('kara')); userCurve = mapWord('kara');
+      await showFeedback(headline('kara', 'kalp', proximity('kara', 'kalp')), 950);
+      history.push({ word: 'KARA', pct: proximity('kara', 'kalp') });
+      renderHistory(); guessesLeft--; renderLives();
+      await delay(350);
+      cells = [null,null,null,null]; focusIdx = 0; userCurve = null; renderSlots(); drawChart();
+      await delay(450);
+      var demoRight = ['K','A','L','P'];
+      for (var j = 0; j < demoRight.length; j++) {
+        cells[j] = demoRight[j]; focusIdx = Math.min(j + 1, 3);
+        var p2 = mapWord(demoRight.slice(0, j + 1).join(''));
+        while (p2.length < 4) p2.push(p2[p2.length - 1]);
+        userCurve = p2; renderSlots(); drawChart();
+        if (slotsEl.children[j]) slotsEl.children[j].classList.add('demo-fill');
+        await delay(360);
+      }
+      await delay(320);
+      startMorph(userCurve, mapWord('kalp')); userCurve = mapWord('kalp');
+      score = wordScore(4, 1); updateStats(); showScorePop(score);
+      await showFeedback('Doğru! Kelime: KALP', 850);
+      await delay(450);
+      await startUserRound();
+    }
+
+    async function startUserRound() {
+      setPhase('play'); setupRound('beyaz', MAX_GUESSES);
+      score = 40; updateStats(); interactive = true;
+      document.getElementById('chartCaption').textContent = '5 harfli kelime — şimdi sen bul!';
+      renderKeyboard(); await delay(350);
+      tapHint.classList.add('show'); pulseKeyOnce('B');
+      setTimeout(function () { tapHint.classList.remove('show'); }, 3200);
+    }
+
+    function showEndCard() {
+      setPhase('end'); interactive = false;
+      finalScore.textContent = score;
+      document.getElementById('endOverlay').classList.add('active');
+    }
+
+    function dismissSplash() {
+      if (splashDone) return;
+      splashDone = true;
+      splashOverlay.classList.remove('active');
+      runDemo();
+    }
+
+    function boot() {
+      renderLives(); renderKeyboard(); resizeChart(); updateStats();
+      window.addEventListener('resize', resizeChart);
+      document.getElementById('btnInstall').addEventListener('click', function (e) {
+        e.stopPropagation(); exitToStore();
+      });
+      splashOverlay.addEventListener('click', dismissSplash);
+      setTimeout(dismissSplash, 3200);
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+  })();
+  </script>
+</body>
+</html>
