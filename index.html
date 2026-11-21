@@ -3,486 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serhat ŞANLI | Mobile Game Developer</title>
+    <title>Puzzle Craft Game Studio | Mobile Puzzle Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --bg-gradient: radial-gradient(circle at 50% 0%, #1e2640 0%, #0b0f19 70%);
-            --card-bg: rgba(30, 41, 59, 0.4);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --card-hover-border: rgba(56, 189, 248, 0.5);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #7dd3fc;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-            --shadow-md: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
-            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #070a12;
+            --bg-elevated: #0d1320;
+            --ink: #f4f7fb;
+            --muted: #9aa8bc;
+            --accent: #5ec8ff;
+            --accent-soft: rgba(94, 200, 255, 0.14);
+            --line: rgba(255, 255, 255, 0.08);
+            --line-strong: rgba(94, 200, 255, 0.35);
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            background-image: var(--bg-gradient);
-            color: var(--text-main);
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
+            font-family: "Source Sans 3", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse 90% 55% at 50% -10%, rgba(56, 130, 190, 0.28), transparent 55%),
+                radial-gradient(ellipse 50% 40% at 100% 20%, rgba(30, 90, 140, 0.18), transparent 50%),
+                radial-gradient(ellipse 40% 35% at 0% 60%, rgba(20, 70, 110, 0.16), transparent 45%),
+                linear-gradient(180deg, #0a101c 0%, var(--bg) 45%, #06080f 100%);
             overflow-x: hidden;
         }
 
-        /* Language Switcher */
-        .lang-switcher {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(ellipse 70% 55% at 50% 20%, black, transparent 75%);
+            opacity: 0.45;
+            z-index: 0;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
+            width: min(1180px, calc(100% - 2.5rem));
+            margin: 0 auto;
+            padding: 1.5rem 0 0;
+        }
+
+        .topbar {
             display: flex;
-            gap: 0.25rem;
-            background: rgba(30, 41, 59, 0.7);
-            padding: 0.35rem;
-            border-radius: 30px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(8px);
-            z-index: 10;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            animation: rise 0.8s var(--ease) both;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.35), 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+
+        .brand-mark span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .social-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            text-decoration: none;
+            color: var(--ink);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.42rem 0.7rem;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+        }
+
+        .social-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-1px);
+            border-color: var(--line-strong);
+            background: var(--accent-soft);
+        }
+
+        .game-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-copy {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .game-logo {
+            width: 88px;
+            height: 88px;
+            border-radius: 18px;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .lang-switcher {
+            display: inline-flex;
+            gap: 0.2rem;
+            padding: 0.28rem;
+            border: 1px solid var(--line);
+            background: rgba(13, 19, 32, 0.72);
+            backdrop-filter: blur(12px);
+            border-radius: 10px;
         }
 
         .lang-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            font-family: inherit;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.4rem 0.8rem;
+            letter-spacing: 0.06em;
+            padding: 0.45rem 0.75rem;
+            border-radius: 7px;
             cursor: pointer;
-            border-radius: 20px;
-            transition: var(--transition);
+            transition: background 0.25s var(--ease), color 0.25s var(--ease);
         }
 
         .lang-btn.active {
-            background-color: var(--accent);
-            color: #0f172a;
-            box-shadow: var(--shadow-sm);
+            background: var(--accent);
+            color: #061018;
         }
 
-        header {
+        .hero {
+            padding: 3.5rem 0 3.25rem;
             text-align: center;
-            padding: 6rem 1rem 3rem 1rem;
-            animation: fadeIn 0.8s ease forwards;
+            animation: rise 0.9s var(--ease) 0.08s both;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 3.2rem;
-            letter-spacing: -0.05em;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+        .hero-logo {
+            width: clamp(128px, 24vw, 180px);
+            height: clamp(128px, 24vw, 180px);
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 1.5rem;
+            box-shadow:
+                0 0 0 1px rgba(212, 175, 55, 0.4),
+                0 18px 48px rgba(0, 0, 0, 0.45),
+                0 0 60px rgba(212, 175, 55, 0.12);
+        }
+
+        .hero h1 {
+            margin: 0 auto;
+            max-width: 14ch;
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(2.5rem, 6vw, 4.3rem);
+            letter-spacing: -0.02em;
+            line-height: 1.08;
+            background: linear-gradient(180deg, #ffffff 20%, #b7c7d8 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        header p {
+        .hero .title {
+            margin: 1.15rem auto 0;
+            max-width: 28rem;
             color: var(--accent);
-            font-size: 1.1rem;
-            margin-top: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
         }
 
-        .container {
-            max-width: 1400px;
-            width: 100%;
-            padding: 0 1.5rem;
-            box-sizing: border-box;
-            flex: 1;
+        .hero .lede {
+            margin: 1rem auto 0;
+            max-width: 34rem;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.65;
+            font-weight: 500;
         }
 
-        /* Dynamic 4-Column Responsive Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 1rem;
-            margin-bottom: 3.5rem;
-        }
-
-        @media (max-width: 1200px) {
-            .grid { 
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.75rem;
-            }
-        }
-
-        @media (max-width: 650px) {
-            .grid { 
-                grid-template-columns: 1fr; 
-                gap: 1.5rem;
-            }
-            header h1 { font-size: 2.5rem; }
-            header { padding-top: 5rem; }
-            .lang-switcher { top: 1rem; right: 1rem; }
-        }
-
-        /* Card Setup & Entrance Animations */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 24px;
-            padding: 2rem;
-            box-sizing: border-box;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(16px);
-            transition: var(--transition);
+        .section-label {
             display: flex;
-            flex-direction: column;
+            align-items: baseline;
             justify-content: space-between;
+            gap: 1rem;
+            margin: 0 0 1.25rem;
+            animation: rise 0.85s var(--ease) 0.18s both;
+        }
+
+        .section-label h2 {
+            margin: 0;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.65rem, 2.8vw, 2.1rem);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+        }
+
+        .section-label p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .games {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .game {
             position: relative;
+            padding: 1.65rem 1.7rem 1.5rem;
+            border-radius: 18px;
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
+                rgba(13, 19, 32, 0.72);
+            backdrop-filter: blur(14px);
+            overflow: hidden;
             opacity: 0;
-            animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: cardIn 0.75s var(--ease) forwards;
+            transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), background 0.35s var(--ease);
         }
 
-        /* Staggered Entrance Delay for Cards */
-        .card:nth-child(1) { animation-delay: 0.15s; }
-        .card:nth-child(2) { animation-delay: 0.30s; }
-        .card:nth-child(3) { animation-delay: 0.45s; }
-        .card:nth-child(4) { animation-delay: 0.60s; }
+        .game:nth-child(1) { animation-delay: 0.22s; }
+        .game:nth-child(2) { animation-delay: 0.32s; }
+        .game:nth-child(3) { animation-delay: 0.42s; }
+        .game:nth-child(4) { animation-delay: 0.52s; }
 
-        .card::before {
-            content: '';
+        .game::after {
+            content: "";
             position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.01));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            inset: auto -20% -40% auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(94, 200, 255, 0.16), transparent 70%);
             pointer-events: none;
+            transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
+            opacity: 0.7;
         }
 
-        .card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--card-hover-border);
-            box-shadow: var(--shadow-md), 0 0 35px rgba(56, 189, 248, 0.2);
-            background-color: rgba(30, 41, 59, 0.65);
+        .game:hover {
+            transform: translateY(-6px);
+            border-color: var(--line-strong);
+            background:
+                linear-gradient(160deg, rgba(94, 200, 255, 0.08), rgba(255, 255, 255, 0.02)),
+                rgba(13, 19, 32, 0.88);
         }
 
-        .card h2 {
-            margin: 0 0 0.75rem 0;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.02em;
+        .game:hover::after {
+            transform: scale(1.25) translate(-10px, -10px);
+            opacity: 1;
         }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
+        .game-index {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: var(--accent);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+        }
+
+        .game h3 {
+            margin: 0 0 0.45rem;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .game-copy p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            font-weight: 500;
         }
 
         .downloads {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.55rem;
+            position: relative;
+            z-index: 1;
         }
 
         .btn-store {
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.65rem 0.6rem;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
+            flex: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.4rem;
-            flex: 1;
+            text-decoration: none;
             white-space: nowrap;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.7rem 0.55rem;
+            border-radius: 10px;
+            color: #e8eef7;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
         }
 
         .btn-store svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             fill: currentColor;
             flex-shrink: 0;
         }
 
         .btn-store:hover {
-            background: rgba(56, 189, 248, 0.18);
+            background: var(--accent-soft);
             border-color: var(--accent);
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
-        }
-
-        /* Developer Profiles Section */
-        .dev-section {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 4rem;
-            backdrop-filter: blur(8px);
-            opacity: 0;
-            animation: fadeIn 0.8s ease forwards;
-            animation-delay: 0.75s;
-        }
-
-        .dev-section h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.3rem;
-            color: #ffffff;
-        }
-
-        .dev-section p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .dev-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-dev {
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            background: rgba(30, 41, 59, 0.8);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            transition: var(--transition);
-        }
-
-        .btn-dev:hover {
-            background: var(--accent);
-            color: #0b0f19;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            color: #fff;
         }
 
         footer {
-            width: 100%;
-            padding: 2.5rem 1rem;
-            box-sizing: border-box;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            border-top: 1px solid var(--line);
+            padding: 2rem 0 2.5rem;
+            color: var(--muted);
+            font-size: 0.82rem;
             text-align: center;
-            border-top: 1px solid rgba(30, 41, 59, 0.5);
-            margin-top: auto;
-            background: rgba(11, 15, 25, 0.8);
-            backdrop-filter: blur(4px);
         }
 
-        footer .footer-links {
-            margin-bottom: 0.8rem;
+        .footer-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            align-items: center;
+            gap: 0.85rem;
             flex-wrap: wrap;
+            margin-bottom: 0.75rem;
         }
 
-        footer a { 
-            color: var(--accent); 
-            text-decoration: none; 
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        
-        footer a:hover { 
-            color: var(--accent-hover);
-            text-decoration: underline;
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        footer a:hover { color: #9adfff; }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(18px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes cardEntrance {
-            from {
-                opacity: 0;
-                transform: translateY(35px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 760px) {
+            .shell { width: min(100% - 1.5rem, 1180px); }
+            .hero { padding: 2.75rem 0 2.5rem; }
+            .brand-mark span { display: none; }
+            .games { grid-template-columns: 1fr; }
+            .game-logo { width: 72px; height: 72px; border-radius: 14px; }
+            .social-btn span { display: none; }
+            .section-label {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
-
-    <div class="lang-switcher">
-        <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" onclick="setLanguage('tr')">TR</button>
-    </div>
-
-    <header>
-        <h1 id="dev-name">Serhat ŞANLI</h1>
-        <p id="dev-title">Independent Mobile Game Developer</p>
-    </header>
-
-    <div class="container">
-        <div class="grid">
-            <div class="card">
-                <div>
-                    <h2>Stable Miner</h2>
-                    <p id="desc-stableminer">A physics-based mining puzzle game where precision meets balance. Launch heavy gems, steady your cart, and claim the gold!</p>
-                </div>
-                <div>
-                    <div class="downloads">
-                        <a href="https://play.google.com/store/apps/details?id=com.stableminer.game" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
-                            Google Play
-                        </a>
-                        <a href="https://apps.apple.com/tr/app/stable-miner/id6801269073" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
-                            App Store
-                        </a>
-                    </div>
+    <div class="shell">
+        <div class="topbar">
+            <div class="topbar-left">
+                <a class="brand-mark" href="index.html" aria-label="Puzzle Craft Game Studio">
+                    <img class="brand-logo" src="images/puzzlecraft.jpeg" alt="" width="38" height="38">
+                    <span>Puzzle Craft Game Studio</span>
+                </a>
+                <div class="social-row">
+                    <a class="social-btn" href="https://www.instagram.com/puzzlecraft.gamestudio" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zm5.25-3.75a1.05 1.05 0 1 1-1.05 1.05 1.05 1.05 0 0 1 1.05-1.05z"/></svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a class="social-btn" href="https://www.facebook.com/profile.php?id=61596442353901" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.3-1.5 1.6-1.5H17V4.5c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.5H8.2V14h2.6v8h2.7z"/></svg>
+                        <span>Facebook</span>
+                    </a>
+                    <a class="social-btn" href="https://play.google.com/store/apps/developer?id=SSanli" target="_blank" rel="noopener" aria-label="Google Play">
+                        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                        <span>Google Play</span>
+                    </a>
+                    <a class="social-btn" href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" target="_blank" rel="noopener" aria-label="App Store">
+                        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                        <span>App Store</span>
+                    </a>
                 </div>
             </div>
-
-            <div class="card">
-                <div>
-                    <h2>Mind Find</h2>
-                    <p id="desc-mindfind">An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.</p>
-                </div>
-                <div>
-                    <div class="downloads">
-                        <a href="https://play.google.com/store/apps/details?id=com.mindfind.game" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
-                            Google Play
-                        </a>
-                        <a href="https://apps.apple.com/tr/app/mind-find/id6774182923" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
-                            App Store
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div>
-                    <h2>Box Bang</h2>
-                    <p id="desc-boxbang">A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.</p>
-                </div>
-                <div>
-                    <div class="downloads">
-                        <a href="https://play.google.com/store/apps/details?id=com.boxbang.game" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
-                            Google Play
-                        </a>
-                        <a href="https://apps.apple.com/tr/app/box-bang/id6762087022" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
-                            App Store
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div>
-                    <h2>Box Bang Journey</h2>
-                    <p id="desc-boxjourney">Embark on a strategic block-clearing adventure through handcrafted puzzle levels designed to test your tactical moves.</p>
-                </div>
-                <div>
-                    <div class="downloads">
-                        <a href="https://play.google.com/store/apps/details?id=com.boxjourney.game" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
-                            Google Play
-                        </a>
-                        <a href="https://apps.apple.com/us/app/box-bang-journey/id6801273781" class="btn-store" target="_blank">
-                            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
-                            App Store
-                        </a>
-                    </div>
-                </div>
+            <div class="lang-switcher">
+                <button class="lang-btn active" type="button" onclick="setLanguage('en')">EN</button>
+                <button class="lang-btn" type="button" onclick="setLanguage('tr')">TR</button>
             </div>
         </div>
 
-        <div class="dev-section">
-            <h3 id="dev-header">Explore All Games</h3>
-            <p id="dev-sub">Check out my developer pages on app stores to discover all my releases.</p>
-            <div class="dev-links">
-                <a href="https://play.google.com/store/apps/developer?id=SSanli" class="btn-dev" target="_blank">Google Play Developer Page</a>
-                <a href="https://apps.apple.com/tr/developer/serhat-sanli/id1892848167" class="btn-dev" target="_blank">App Store Developer Page</a>
-            </div>
+        <header class="hero">
+            <img class="hero-logo" src="images/puzzlecraft.jpeg" alt="Puzzle Craft Game Studio" width="180" height="180">
+            <h1>Puzzle Craft Game Studio</h1>
+            <p class="title" id="dev-title">Independent Mobile Puzzle Studio</p>
+            <p class="lede" id="hero-lede">Crafted puzzle experiences for iOS and Android — precise, playful, and built to last.</p>
+        </header>
+
+        <div class="section-label">
+            <h2 id="games-heading">Selected Games</h2>
+            <p id="games-sub">Four titles across puzzle, physics, and wordplay.</p>
         </div>
+
+        <section class="games" id="games">
+            <article class="game">
+                <div class="game-main">
+                    <div class="game-copy">
+                        <span class="game-index">01</span>
+                        <h3>Box Bang Journey</h3>
+                        <p id="desc-boxjourney">Embark on a strategic block-clearing adventure through handcrafted puzzle levels designed to test your tactical moves.</p>
+                    </div>
+                    <img class="game-logo" src="images/bbjlogo.png" alt="Box Bang Journey" width="88" height="88">
+                </div>
+                <div class="downloads">
+                    <a href="https://play.google.com/store/apps/details?id=com.boxjourney.game" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                        Google Play
+                    </a>
+                    <a href="https://apps.apple.com/us/app/box-bang-journey/id6801273781" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                        App Store
+                    </a>
+                </div>
+            </article>
+
+            <article class="game">
+                <div class="game-main">
+                    <div class="game-copy">
+                        <span class="game-index">02</span>
+                        <h3>Mind Find</h3>
+                        <p id="desc-mindfind">An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.</p>
+                    </div>
+                    <img class="game-logo" src="images/mflogo.png" alt="Mind Find" width="88" height="88">
+                </div>
+                <div class="downloads">
+                    <a href="https://play.google.com/store/apps/details?id=com.mindfind.game" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                        Google Play
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/mind-find/id6774182923" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                        App Store
+                    </a>
+                </div>
+            </article>
+
+            <article class="game">
+                <div class="game-main">
+                    <div class="game-copy">
+                        <span class="game-index">03</span>
+                        <h3>Box Bang</h3>
+                        <p id="desc-boxbang">A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.</p>
+                    </div>
+                    <img class="game-logo" src="images/bblogo.png" alt="Box Bang" width="88" height="88">
+                </div>
+                <div class="downloads">
+                    <a href="https://play.google.com/store/apps/details?id=com.boxbang.game" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                        Google Play
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/box-bang/id6762087022" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                        App Store
+                    </a>
+                </div>
+            </article>
+
+            <article class="game">
+                <div class="game-main">
+                    <div class="game-copy">
+                        <span class="game-index">04</span>
+                        <h3>Stable Miner</h3>
+                        <p id="desc-stableminer">A physics-based mining puzzle game where precision meets balance. Launch heavy gems, steady your cart, and claim the gold!</p>
+                    </div>
+                    <img class="game-logo" src="images/smlogo.png" alt="Stable Miner" width="88" height="88">
+                </div>
+                <div class="downloads">
+                    <a href="https://play.google.com/store/apps/details?id=com.stableminer.game" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.455 1.455 0 0 1-.226-.814V2.628c0-.31.08-.593.225-.814zM15.208 13.415l2.122 2.122-10.7 6.177 8.578-8.299zm0-2.83L6.63 2.286l10.7 6.177-2.122 2.122zm2.828 2.828l3.182 1.838c.636.367.636 1.002 0 1.369l-3.182 1.838-2.122-2.122 2.122-2.123z"/></svg>
+                        Google Play
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/stable-miner/id6801269073" class="btn-store" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.95 5.54c.64-.78 1.08-1.86.96-2.95-1.01.04-2.22.68-2.93 1.47-.57.62-1.09 1.71-.95 2.78 1.13.09 2.27-.58 2.92-1.3z"/></svg>
+                        App Store
+                    </a>
+                </div>
+            </article>
+        </section>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" target="_blank" id="footer-privacy">Privacy Policy</a>
-            <span>•</span>
+            <a href="https://able-bramble-232.notion.site/Privacy-Policy-363ff62480a48030a6a9e48908833981" target="_blank" rel="noopener" id="footer-privacy">Privacy Policy</a>
+            <span aria-hidden="true">·</span>
             <a href="mailto:serhatsanli1994@gmail.com" id="footer-support">Support</a>
+            <span aria-hidden="true">·</span>
+            <a href="delete-account.html" id="footer-delete">Delete Account</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.instagram.com/puzzlecraft.gamestudio" target="_blank" rel="noopener">Instagram</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.facebook.com/profile.php?id=61596442353901" target="_blank" rel="noopener">Facebook</a>
         </div>
-        <p><span id="footer-copy">&copy; 2026 Serhat ŞANLI. All rights reserved.</span> | <a href="https://ssanli.github.io/app-ads.txt">app-ads.txt</a></p>
+        <p><span id="footer-copy">&copy; 2026 Puzzle Craft Game Studio. All rights reserved.</span> · <a href="https://ssanli.github.io/app-ads.txt">app-ads.txt</a></p>
     </footer>
 
     <script>
         const translations = {
             en: {
-                title: "Independent Mobile Game Developer",
+                title: "Independent Mobile Puzzle Studio",
+                lede: "Crafted puzzle experiences for iOS and Android — precise, playful, and built to last.",
+                gamesHeading: "Selected Games",
+                gamesSub: "Four titles across puzzle, physics, and wordplay.",
                 stableminer: "A physics-based mining puzzle game where precision meets balance. Launch heavy gems, steady your cart, and claim the gold!",
                 mindfind: "An engaging word-guessing puzzle game featuring Frequency Word, Grid, and Temperature modes with multi-language support.",
                 boxbang: "A fast-paced, colorful puzzle game designed to challenge your reflexes and strategic thinking skills.",
                 boxjourney: "Embark on a strategic block-clearing adventure through handcrafted puzzle levels designed to test your tactical moves.",
-                devHeader: "Explore All Games",
-                devSub: "Check out my developer pages on app stores to discover all my releases.",
                 privacy: "Privacy Policy",
                 support: "Support",
-                copy: "© 2026 Serhat ŞANLI. All rights reserved."
+                delete: "Delete Account",
+                copy: "© 2026 Puzzle Craft Game Studio. All rights reserved."
             },
             tr: {
-                title: "Bağımsız Mobil Oyun Geliştiricisi",
+                title: "Bağımsız Mobil Bulmaca Stüdyosu",
+                lede: "iOS ve Android için özenle tasarlanmış bulmaca deneyimleri — hassas, eğlenceli ve kalıcı.",
+                gamesHeading: "Seçili Oyunlar",
+                gamesSub: "Bulmaca, fizik ve kelime oyunlarında dört başlık.",
                 stableminer: "Hassasiyetin dengeyle buluştuğu fizik tabanlı bir madencilik bulmaca oyunu. Ağır cevherleri fırlatın, vagonunuzu dengede tutun ve altınları kapın!",
                 mindfind: "Çoklu dil desteği, Frekans Kelime, Izgara ve Sıcaklık modlarıyla zihninizi zorlayan sürükleyici bir kelime tahmin oyunu.",
                 boxbang: "Reflekslerinizi ve stratejik düşünme becerilerinizi test etmek için tasarlanmış, hızlı tempolu ve renkli bir bulmaca oyunu.",
                 boxjourney: "Taktiksel hamlelerinizi test etmek için tasarlanmış özel bulmaca seviyelerinde blok temizleme macerasına atılın.",
-                devHeader: "Tüm Oyunları Keşfet",
-                devSub: "Yayınlanan tüm oyunlarımı görmek için mağaza geliştirici sayfalarımı ziyaret edin.",
                 privacy: "Gizlilik Politikası",
                 support: "Destek",
-                copy: "© 2026 Serhat ŞANLI. Tüm hakları saklıdır."
+                delete: "Hesap Silme",
+                copy: "© 2026 Puzzle Craft Game Studio. Tüm hakları saklıdır."
             }
         };
 
         function setLanguage(lang) {
-            // Update texts
-            document.getElementById('dev-title').innerText = translations[lang].title;
-            document.getElementById('desc-stableminer').innerText = translations[lang].stableminer;
-            document.getElementById('desc-mindfind').innerText = translations[lang].mindfind;
-            document.getElementById('desc-boxbang').innerText = translations[lang].boxbang;
-            document.getElementById('desc-boxjourney').innerText = translations[lang].boxjourney;
-            document.getElementById('dev-header').innerText = translations[lang].devHeader;
-            document.getElementById('dev-sub').innerText = translations[lang].devSub;
-            document.getElementById('footer-privacy').innerText = translations[lang].privacy;
-            document.getElementById('footer-support').innerText = translations[lang].support;
-            document.getElementById('footer-copy').innerText = translations[lang].copy;
+            const t = translations[lang];
+            document.getElementById('dev-title').innerText = t.title;
+            document.getElementById('hero-lede').innerText = t.lede;
+            document.getElementById('games-heading').innerText = t.gamesHeading;
+            document.getElementById('games-sub').innerText = t.gamesSub;
+            document.getElementById('desc-stableminer').innerText = t.stableminer;
+            document.getElementById('desc-mindfind').innerText = t.mindfind;
+            document.getElementById('desc-boxbang').innerText = t.boxbang;
+            document.getElementById('desc-boxjourney').innerText = t.boxjourney;
+            document.getElementById('footer-privacy').innerText = t.privacy;
+            document.getElementById('footer-support').innerText = t.support;
+            document.getElementById('footer-delete').innerText = t.delete;
+            document.getElementById('footer-copy').innerText = t.copy;
 
-            // Toggle button states
-            const buttons = document.querySelectorAll('.lang-btn');
-            buttons.forEach(btn => {
-                if(btn.innerText.toLowerCase() === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
             });
         }
     </script>

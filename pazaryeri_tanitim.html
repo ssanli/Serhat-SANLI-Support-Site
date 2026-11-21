@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pazaryeri Tanıtım Metinleri (ASO) — Box Bang · Journey · Mind Find</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --card: #334155;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --google: #34a853;
+      --apple: #38bdf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --border: #475569;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+    header {
+      padding: 28px 20px 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 1.75rem;
+      letter-spacing: -0.02em;
+    }
+    header p { margin: 0; color: var(--muted); max-width: 760px; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 16px auto 0;
+      padding: 0 20px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    label { color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+    select {
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      min-width: 220px;
+    }
+    .hint-pill {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 8px 20px 48px; }
+    .locale-block { display: none; }
+    .locale-block.active { display: block; }
+    .locale-title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      margin: 8px 0 18px;
+    }
+    .locale-title h2 { margin: 0; font-size: 1.35rem; }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+    }
+    .store-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .store-grid { grid-template-columns: 1fr; }
+    }
+    .store-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+    .store-card h3 {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .store-card.google h3 { background: rgba(52, 168, 83, 0.15); color: #86efac; }
+    .store-card.ios h3 { background: rgba(56, 189, 248, 0.12); color: #7dd3fc; }
+    .store-card.release h3 { background: rgba(245, 158, 11, 0.16); color: #fcd34d; }
+    .release-wrap { margin-bottom: 16px; }
+    .field {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.55);
+    }
+    .field:last-child { border-bottom: none; }
+    .field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .field-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .count {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .count.over { color: #f87171; }
+    .count.warn { color: var(--warn); }
+    .count.ok { color: var(--ok); }
+    .value {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      min-height: 42px;
+    }
+    button.copy {
+      border: none;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      flex-shrink: 0;
+    }
+    button.copy:hover { filter: brightness(1.1); }
+    button.copy.done { background: var(--ok); }
+    .limits {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .limits strong { color: var(--ink); }
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pazaryeri Tanıtım Metinleri (ASO)</h1>
+    <p>
+      <strong>Box Bang</strong>, <strong>Box Bang Journey</strong> ve <strong>Mind Find</strong> için Google Play / App Store metinleri.
+      Üstten oyunu ve dili seçin; alanın yanındaki <strong>Kopyala</strong> ile panoya alın.
+      Karakter sayaçları limitlere göre renklidir.
+    </p>
+  </header>
+
+  <div class="toolbar">
+    <label for="game">Oyun</label>
+    <select id="game">
+      <option value="boxbang">Box Bang</option>
+      <option value="boxjourney">Box Bang Journey</option>
+      <option value="mindfind">Mind Find</option>
+    </select>
+    <label for="locale">Dil</label>
+    <select id="locale"></select>
+    <span class="hint-pill" id="gameHint">Oyun adı: Box Bang</span>
+    <span class="hint-pill">iOS etiket = Keywords (100 karakter)</span>
+    <span class="hint-pill">Güncelleme notu ≤ 500</span>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="limits" style="max-width:1100px;margin:0 auto 24px;padding-left:20px;padding-right:20px;">
+    <strong>Limitler:</strong>
+    Google kısa açıklama ≤ 80 · Google uzun açıklama ≤ 4000 ·
+    iOS alt başlık ≤ 30 · iOS açıklama ≤ 4000 · iOS keywords ≤ 100 ·
+    Güncelleme notu (What's New) ≤ 500.
+    Anahtar kelimeler alt başlık + açıklamanın ilk paragraflarına doğal yerleştirildi.
+    Güncelleme notları teknik jargonsuz, kullanıcıya fayda odaklıdır.
+  </div>
+
+  <footer>
+    Yerel dosya: <code>pazaryeri_tanitim.html</code> — tarayıcıda açın.
+    Box Bang (kutu patlatma) · Box Bang Journey (seviye macerası) · Mind Find (kelime / frekans bulmaca).
+  </footer>
+
+<script>
+const LIMITS = {
+  googleShort: 80,
+  googleLong: 4000,
+  iosSubtitle: 30,
+  iosDesc: 4000,
+  iosKeywords: 100,
+  whatsNew: 500,
+};
+
+const GAMES = {
+  boxbang: {
+    label: "Box Bang",
+    hint: "Oyun adı: Box Bang",
+    listings: {
+  "tr-TR": {
+    label: "Türkçe – tr-TR (varsayılan)",
+    name: "Box Bang",
+    google: {
+      short: "Kutuları patlat, skor yap, sıralamada yüksel. Klasik, PvP ve haftalık puzzle!",
+      description: "Box Bang — renkli kutuları patlatarak skor yaptığın bağımlılık yapan bulmaca oyunu.\n\nAynı renkteki yan yana kutulara dokun, zincirleri patlat, tahtayı temizle. Basit öğrenilir, ustalaşması keyifli.\n\nOYUN MODLARI\n• Klasik: Sınırsız süre, kendi rekorunu kır. Yatay veya dikey tahta.\n• Rekabetçi (PvP): 1’e 1 yarış, puanını yükselt, arenada yüksel.\n• Haftalık etkinlik: Herkes aynı tahtada; sezon sıralamasında yerini kap.\n\nNEDEN BOX BANG?\n• Anlaşılır kontroller, hızlı partiler\n• Küresel ve haftalık sıralamalar\n• Arkadaş ekle, dostluk maçı yap\n• Kutu stilleri ve arka planlarla görünümü kişiselleştir\n• Çevrimiçi skor kaydı ve ilerleme\n\nKutuları seç, zincirleri patlat, liderlik tablosunda adını yazdır. Box Bang’i hemen indir — bir tur daha!\n\nDestek / geri bildirim: uygulama içi ayarlar ve mağaza yorumları.",
+    },
+    ios: {
+      subtitle: "Kutu patlatma puzzle",
+      description: "Box Bang: renkli kutuları patlat, skor yap, sıralamada yüksel.\n\nAynı renkteki gruplara dokun, zincirleri temizle. Klasik sınırsız oyun, zamana karşı 1’e 1 PvP ve herkesin aynı tahtada yarıştığı haftalık sezon — üç mod bir arada.\n\nÖne çıkanlar\n• Hızlı, akıcı casual puzzle\n• Küresel & haftalık liderlik\n• Arkadaşlar ve dostluk maçları\n• Görünüm: kutu stilleri ve arka planlar\n\nKolay başla, zorlu rekorlara koş. Box Bang’i indir ve patlatmaya başla!",
+      keywords: "puzzle,kutu,patlat,bulmaca,blok,samegame,pvp,sıralama,casual,haftalık",
+    },
+  },
+  "en-US": {
+    label: "English (US) – en-US",
+    name: "Box Bang",
+    google: {
+      short: "Pop matching boxes, climb boards. Classic, PvP & weekly puzzle fun!",
+      description: "Box Bang — the addictive color-box puzzle where every tap can spark a chain reaction.\n\nTap groups of the same color, clear the board, and chase high scores. Easy to learn, hard to put down.\n\nGAME MODES\n• Classic: No timer — break your own records on portrait or landscape boards.\n• Competitive (PvP): Head-to-head races. Climb your rating in the arena.\n• Weekly event: Everyone plays the same board — claim your spot on the season leaderboard.\n\nWHY BOX BANG?\n• Smooth, satisfying casual puzzle play\n• Global and weekly leaderboards\n• Add friends and play friendly matches\n• Customize box skins and backgrounds\n• Online score sync and progress\n\nPop boxes. Build combos. Own the leaderboard. Download Box Bang and play one more round!\n\nFeedback welcome via in-app settings and store reviews.",
+    },
+    ios: {
+      subtitle: "Pop boxes puzzle race",
+      description: "Box Bang: pop matching color boxes, score big, climb the ranks.\n\nTap same-color groups and clear the grid. Enjoy classic endless runs, timed 1v1 PvP, and weekly seasons where everyone shares the same board.\n\nHighlights\n• Fast, satisfying casual puzzle\n• Global & weekly leaderboards\n• Friends and friendly matches\n• Skins and backgrounds\n\nSimple to start, deep to master. Download Box Bang and start popping!",
+      keywords: "puzzle,blocks,match,pop,samegame,casual,pvp,leaderboard,weekly,arcade",
+    },
+  },
+  "en-GB": {
+    label: "English (UK) – en-GB",
+    name: "Box Bang",
+    google: {
+      short: "Pop matching boxes, climb the boards. Classic, PvP & weekly puzzle fun!",
+      description: "Box Bang — the addictive colour-box puzzle where every tap can spark a chain reaction.\n\nTap groups of the same colour, clear the board, and chase high scores. Easy to learn, hard to put down.\n\nGAME MODES\n• Classic: No timer — beat your own records on portrait or landscape boards.\n• Competitive (PvP): Head-to-head races. Climb your rating in the arena.\n• Weekly event: Everyone plays the same board — claim your spot on the season leaderboard.\n\nWHY BOX BANG?\n• Smooth, satisfying casual puzzle play\n• Global and weekly leaderboards\n• Add friends and play friendly matches\n• Customise box skins and backgrounds\n• Online score sync and progress\n\nPop boxes. Build combos. Own the leaderboard. Download Box Bang and play one more round!\n\nFeedback welcome via in-app settings and store reviews.",
+    },
+    ios: {
+      subtitle: "Pop boxes puzzle race",
+      description: "Box Bang: pop matching colour boxes, score big, climb the ranks.\n\nTap same-colour groups and clear the grid. Enjoy classic endless runs, timed 1v1 PvP, and weekly seasons where everyone shares the same board.\n\nHighlights\n• Fast, satisfying casual puzzle\n• Global & weekly leaderboards\n• Friends and friendly matches\n• Skins and backgrounds\n\nSimple to start, deep to master. Download Box Bang and start popping!",
+      keywords: "puzzle,blocks,match,pop,samegame,casual,pvp,leaderboard,weekly,arcade",
+    },
+  },
+  "de-DE": {
+    label: "Almanca – de-DE",
+    name: "Box Bang",
+    google: {
+      short: "Boxen sprengen, Punkte jagen. Klassik, PvP & wöchentliches Puzzle!",
+      description: "Box Bang — das süchtig machende Farben-Box-Puzzle mit Kettenreaktionen.\n\nTippe auf Gruppen gleicher Farbe, räume das Spielfeld und jage Highscores. Schnell gelernt, schwer aufzuhören.\n\nSPIELMODI\n• Klassik: Ohne Zeitlimit — eigene Rekorde auf Hoch- oder Querformat.\n• Kompetitiv (PvP): 1-gegen-1-Rennen, Rating steigern, Arena erobern.\n• Wöchentliches Event: Alle spielen dasselbe Brett — Platz in der Saison-Rangliste sichern.\n\nWARUM BOX BANG?\n• Flüssiges Casual-Puzzle\n• Globale und wöchentliche Bestenlisten\n• Freunde hinzufügen und Freundschaftsspiele\n• Box-Skins und Hintergründe anpassen\n• Online-Fortschritt und Scores\n\nBoxen sprengen, Combos bauen, Rangliste knacken. Box Bang jetzt laden!\n\nFeedback gern über In-App-Einstellungen und Store-Bewertungen.",
+    },
+    ios: {
+      subtitle: "Boxen-Puzzle & PvP",
+      description: "Box Bang: gleiche Farben tippen, Boxen sprengen, Rangliste erklimmen.\n\nKlassik ohne Timer, zeitbegrenztes 1v1-PvP und wöchentliche Saisons mit gemeinsamem Brett.\n\nHighlights\n• Schnelles Casual-Puzzle\n• Globale & Wochen-Leaderboards\n• Freunde & Freundschaftsspiele\n• Skins und Hintergründe\n\nEinfach starten, Rekorde jagen. Box Bang laden und loslegen!",
+      keywords: "puzzle,boxen,blöcke,match,samegame,casual,pvp,rangliste,wochen,arcade",
+    },
+  },
+  "ar": {
+    label: "Arapça – ar",
+    name: "Box Bang",
+    google: {
+      short: "فجّر الصناديق المتطابقة وتصدر الترتيب. كلاسيكي وPvP وأسبوعي!",
+      description: "Box Bang — لعبة ألغاز صناديق ملونة تُدمن عليها مع كل ضغطة.\n\nالمس مجموعات من نفس اللون، امسح اللوحة، واطارد أعلى النقاط. سهلة التعلم وصعبة التوقف.\n\nأوضاع اللعب\n• كلاسيكي: بلا مؤقت — حطم أرقامك على لوحة عمودية أو أفقية.\n• تنافسي (PvP): سباق وجهاً لوجه وارفع ترتيبك في الساحة.\n• حدث أسبوعي: الجميع على نفس اللوحة — احجز مكانك في ترتيب الموسم.\n\nلماذا Box Bang؟\n• ألغاز سريعة وممتعة\n• لوحات صدارة عالمية وأسبوعية\n• أضف أصدقاء والعب ودياً\n• خصص أشكال الصناديق والخلفيات\n• حفظ النقاط والتقدم عبر الإنترنت\n\nفجّر الصناديق وابنِ السلاسل وتصدر القائمة. حمّل Box Bang الآن!\n\nنرحب بملاحظاتك عبر الإعدادات وتقييمات المتجر.",
+    },
+    ios: {
+      subtitle: "لغز تفجير الصناديق",
+      description: "Box Bang: فجّر الصناديق المتماثلة اللون واصعد في الترتيب.\n\nوضع كلاسيكي بلا وقت، وPvP وجهاً لوجه، وموسم أسبوعي بنفس اللوحة للجميع.\n\nأبرز المزايا\n• ألغاز سريعة وممتعة\n• صدارة عالمية وأسبوعية\n• أصدقاء ومباريات ودية\n• أشكال وخلفيات قابلة للتخصيص\n\nابدأ بسهولة وتحدَّ الأرقام القياسية. حمّل Box Bang وابدأ!",
+      keywords: "لغز,صناديق,مطابقة,بلوكات,casual,pvp,ترتيب,أسبوعي,لعبة,arcade",
+    },
+  },
+  "id": {
+    label: "Endonezce – id",
+    name: "Box Bang",
+    google: {
+      short: "Ledakkan kotak sewarna, naik papan peringkat. Klasik, PvP & mingguan!",
+      description: "Box Bang — puzzle kotak warna yang bikin ketagihan dengan setiap ketukan.\n\nKetuk kelompok warna sama, bersihkan papan, kejar skor tinggi. Mudah dipelajari, sulit berhenti.\n\nMODE PERMAINAN\n• Klasik: Tanpa timer — pecahkan rekormu di papan potret atau lanskap.\n• Kompetitif (PvP): Balapan 1 lawan 1, naikkan rating di arena.\n• Event mingguan: Semua main papan yang sama — rebut peringkat musim.\n\nKENAPA BOX BANG?\n• Puzzle kasual yang mulus\n• Leaderboard global & mingguan\n• Tambah teman dan main match ramah\n• Kustom skin kotak & latar\n• Skor online tersimpan\n\nLedakkan kotak, rangkai combo, kuasai papan peringkat. Unduh Box Bang sekarang!\n\nMasukan bisa lewat pengaturan in-app dan ulasan toko.",
+    },
+    ios: {
+      subtitle: "Puzzle ledak kotak",
+      description: "Box Bang: ledakkan kotak sewarna, raih skor, naik peringkat.\n\nMode klasik tanpa batas waktu, PvP 1v1 berwaktu, dan musim mingguan dengan papan yang sama untuk semua.\n\nSorotan\n• Puzzle kasual cepat\n• Leaderboard global & mingguan\n• Teman & pertandingan ramah\n• Skin dan latar\n\nMudah mulai, dalam dikuasai. Unduh Box Bang dan mulai meledak!",
+      keywords: "puzzle,kotak,blok,match,samegame,kasual,pvp,peringkat,mingguan,arcade",
+    },
+  },
+  "fr-FR": {
+    label: "Fransızca (Fransa) – fr-FR",
+    name: "Box Bang",
+    google: {
+      short: "Éclatez les cases assorties, grimpez au classement. Classique, PvP & hebdo !",
+      description: "Box Bang — le puzzle de cases colorées addictif où chaque tap déclenche une réaction en chaîne.\n\nTouchez les groupes de même couleur, nettoyez le plateau et visez les records. Facile à apprendre, dur d’arrêter.\n\nMODES DE JEU\n• Classique : sans chrono — battez vos records en portrait ou paysage.\n• Compétitif (PvP) : duel 1 contre 1, grimpez votre rating dans l’arène.\n• Événement hebdo : le même plateau pour tous — place au classement de saison.\n\nPOURQUOI BOX BANG ?\n• Puzzle casual fluide et satisfaisant\n• Classements mondiaux et hebdomadaires\n• Amis et matchs amicaux\n• Skins de cases et arrière-plans\n• Scores et progression en ligne\n\nÉclatez, enchaînez, dominez le classement. Téléchargez Box Bang !\n\nRetours bienvenus via les réglages et les avis du store.",
+    },
+    ios: {
+      subtitle: "Puzzle cases à éclater",
+      description: "Box Bang : éclatez les cases de même couleur et grimpez au classement.\n\nMode classique sans limite, PvP chronométré 1v1 et saisons hebdo sur un plateau partagé.\n\nPoints forts\n• Puzzle casual rapide\n• Classements mondial & hebdo\n• Amis et matchs amicaux\n• Skins et fonds d’écran\n\nSimple à démarrer, riche à maîtriser. Téléchargez Box Bang !",
+      keywords: "puzzle,cases,blocs,match,samegame,casual,pvp,classement,hebdo,arcade",
+    },
+  },
+  "ja-JP": {
+    label: "Japonca – ja-JP",
+    name: "Box Bang",
+    google: {
+      short: "同じ色のマスを消してハイスコア！クラシック・対戦・週間イベント。",
+      description: "Box Bang — タップするたびに連鎖が気持ちいい、カラフルなボックスパズル。\n\n同じ色のまとまりをタッチして消し、盤面をクリアしてハイスコアを狙おう。かんたん操作、奥深いやり込み。\n\nゲームモード\n• クラシック：時間無制限。縦・横ボードで自己ベスト更新。\n• 対戦（PvP）：1対1レースでレーティングアップ。\n• 週間イベント：全員同じ盤面。シーズン順位を狙おう。\n\nBox Bangが選ばれる理由\n• サクサク気持ちいいカジュアルパズル\n• 世界／週間リーダーボード\n• フレンド追加＆フレンドリーマッチ\n• ボックステマと背景のカスタム\n• オンラインでスコア同期\n\n消して、つなげて、ランキングを駆け上がれ。今すぐ Box Bang をダウンロード！\n\nご意見はアプリ設定やストアレビューからどうぞ。",
+    },
+    ios: {
+      subtitle: "ボックス消しパズル",
+      description: "Box Bang：同じ色のボックスを消してスコアを伸ばし、ランキングを目指そう。\n\n無制限クラシック、制限時間付き1v1 PvP、全員同じ盤面の週間シーズン。\n\nハイライト\n• 快適なカジュアルパズル\n• 世界＆週間ランキング\n• フレンド対戦\n• スキンと背景\n\nすぐに遊べて、奥が深い。Box Bangをダウンロード！",
+      keywords: "パズル,ボックス,ブロック,消す,対戦,ランキング,カジュアル,週間,スコア,ゲーム",
+    },
+  },
+  "pt-BR": {
+    label: "Portekizce (Brezilya) – pt-BR",
+    name: "Box Bang",
+    google: {
+      short: "Estoure caixas iguais e suba no ranking. Clássico, PvP e semanal!",
+      description: "Box Bang — o puzzle viciante de caixas coloridas em que cada toque pode virar combo.\n\nToque grupos da mesma cor, limpe o tabuleiro e busque recordes. Fácil de aprender, difícil de parar.\n\nMODOS DE JOGO\n• Clássico: sem cronômetro — quebre seus recordes em retrato ou paisagem.\n• Competitivo (PvP): corrida 1x1 e suba seu rating na arena.\n• Evento semanal: todos no mesmo tabuleiro — garanta lugar no ranking da temporada.\n\nPOR QUE BOX BANG?\n• Puzzle casual fluido\n• Rankings global e semanal\n• Amigos e partidas amistosas\n• Skins de caixas e fundos\n• Progresso e placares online\n\nEstoure, combine e domine o placar. Baixe o Box Bang agora!\n\nFeedback pelas configurações do app e avaliações da loja.",
+    },
+    ios: {
+      subtitle: "Puzzle de estourar",
+      description: "Box Bang: estoure caixas da mesma cor, marque pontos e suba no ranking.\n\nClássico sem tempo, PvP 1x1 cronometrado e temporadas semanais com o mesmo tabuleiro para todos.\n\nDestaques\n• Puzzle casual rápido\n• Rankings global e semanal\n• Amigos e amistosos\n• Skins e fundos\n\nComece fácil, domine de verdade. Baixe o Box Bang!",
+      keywords: "puzzle,caixas,blocos,match,samegame,casual,pvp,ranking,semanal,arcade",
+    },
+  },
+  "ru-RU": {
+    label: "Rusça – ru-RU",
+    name: "Box Bang",
+    google: {
+      short: "Взрывай одинаковые блоки и поднимайся в топ. Классика, PvP и неделя!",
+      description: "Box Bang — затягивающий пазл с цветными блоками, где каждый тап может запустить цепочку.\n\nНажимай группы одного цвета, очищай поле и берись за рекорды. Легко начать — сложно остановиться.\n\nРЕЖИМЫ\n• Классика: без таймера — бей свои рекорды на портретной или альбомной доске.\n• Соревновательный (PvP): дуэль 1 на 1, расти рейтинг на арене.\n• Недельное событие: одна доска для всех — место в сезонном рейтинге.\n\nПОЧЕМУ BOX BANG?\n• Плавный казуальный пазл\n• Мировые и недельные таблицы\n• Друзья и товарищеские матчи\n• Скины блоков и фоны\n• Онлайн-сохранение очков\n\nВзрывай блоки, собирай комбо, владей таблицей. Скачай Box Bang!\n\nОтзывы — в настройках приложения и в магазине.",
+    },
+    ios: {
+      subtitle: "Пазл: взрыв блоков",
+      description: "Box Bang: взрывай одинаковые цветные блоки и поднимайся в рейтинге.\n\nКлассика без лимита времени, timed 1v1 PvP и недельные сезоны на общей доске.\n\nОсобенности\n• Быстрый казуальный пазл\n• Мировой и недельный рейтинг\n• Друзья и матчи\n• Скины и фоны\n\nПростой старт, глубокий геймплей. Скачай Box Bang!",
+      keywords: "пазл,блоки,коробки,match,samegame,казуал,pvp,рейтинг,неделя,аркада",
+    },
+  },
+  "cs-CZ": {
+    label: "Çekçe – cs-CZ",
+    name: "Box Bang",
+    google: {
+      short: "Odstřel stejné boxy a stoupej v žebříčku. Klasika, PvP i týdenní!",
+      description: "Box Bang — návykový puzzle s barevnými boxy, kde každý ťuk může spustit řetězovou reakci.\n\nŤukej na skupiny stejné barvy, vyčisti desku a hon se za skóre. Snadné naučit, těžké odložit.\n\nHERNÍ MÓDY\n• Klasika: bez časovače — překonej rekordy na výšku i na šířku.\n• Soutěžní (PvP): souboj 1 na 1, zvyš rating v aréně.\n• Týdenní event: všichni stejná deska — místo v sezónním žebříčku.\n\nPROČ BOX BANG?\n• Plynulý casual puzzle\n• Globální a týdenní žebříčky\n• Přátelé a přátelské zápasy\n• Skiny boxů a pozadí\n• Online skóre a postup\n\nOdstřel, spoj combo, ovládni žebříček. Stáhni Box Bang!\n\nZpětná vazba v nastavení a v hodnocení obchodu.",
+    },
+    ios: {
+      subtitle: "Puzzle odstřel boxů",
+      description: "Box Bang: odstřeluj stejně barevné boxy a stoupej v žebříčku.\n\nKlasika bez limitu, timed 1v1 PvP a týdenní sezóny se společnou deskou.\n\nHighlighty\n• Rychlý casual puzzle\n• Globální a týdenní žebříčky\n• Přátelé a zápasy\n• Skiny a pozadí\n\nSnadný start, hluboká hra. Stáhni Box Bang!",
+      keywords: "puzzle,boxy,bloky,match,samegame,casual,pvp,zebricek,tyden,arcade",
+    },
+  },
+  "zh-CN": {
+    label: "Çince (Basitleştirilmiş) – zh-CN",
+    name: "Box Bang",
+    google: {
+      short: "点爆同色方块冲榜！经典、对战与每周活动一站玩齐。",
+      description: "Box Bang —— 一点即连、越玩越上瘾的彩色方块消除益智游戏。\n\n点击相同颜色的方块组，清空棋盘，冲击高分。上手简单，停不下来。\n\n游戏模式\n• 经典：无时间限制，竖屏/横屏挑战个人纪录。\n• 竞技（PvP）：1v1竞速，提升段位征战竞技场。\n• 每周活动：全员同一棋盘，争夺赛季排行榜席位。\n\n为什么选择 Box Bang？\n• 流畅爽快的休闲益智\n• 全球与每周排行榜\n• 添加好友，友好对战\n• 自定义方块皮肤与背景\n• 在线同步分数与进度\n\n点爆方块、连出高分、登顶排行榜。立即下载 Box Bang！\n\n欢迎通过应用内设置与商店评价反馈。",
+    },
+    ios: {
+      subtitle: "方块点爆益智赛",
+      description: "Box Bang：点爆同色方块，冲击分数与排行榜。\n\n经典无尽模式、限时1v1对战，以及全员同棋盘的每周赛季。\n\n亮点\n• 爽快休闲益智\n• 全球与周榜\n• 好友对战\n• 皮肤与背景\n\n易上手，够深度。下载 Box Bang，开始点爆！",
+      keywords: "益智,方块,消除,对战,排行榜,休闲,每周,匹配,解谜,街机",
+    },
+  },
+  "es-419": {
+    label: "İspanyolca (Latin Amerika) – es-419",
+    name: "Box Bang",
+    google: {
+      short: "¡Explota cajas iguales y sube en el ranking! Clásico, PvP y semanal.",
+      description: "Box Bang — el puzzle adictivo de cajas de colores donde cada toque puede encadenar combos.\n\nToca grupos del mismo color, limpia el tablero y persigue récords. Fácil de aprender, difícil de soltar.\n\nMODOS DE JUEGO\n• Clásico: sin reloj — rompe tus récords en vertical u horizontal.\n• Competitivo (PvP): carrera 1 vs 1 y sube tu rating en la arena.\n• Evento semanal: todos el mismo tablero — asegúrate un lugar en la temporada.\n\n¿POR QUÉ BOX BANG?\n• Puzzle casual fluido\n• Rankings global y semanal\n• Amigos y partidas amistosas\n• Skins de cajas y fondos\n• Progreso y puntajes online\n\nExplota, encadena y domina la tabla. ¡Descarga Box Bang ahora!\n\nComentarios bienvenidos en ajustes y reseñas de la tienda.",
+    },
+    ios: {
+      subtitle: "Puzzle de explotar",
+      description: "Box Bang: explota cajas del mismo color y sube en el ranking.\n\nClásico sin tiempo, PvP 1v1 cronometrado y temporadas semanales con el mismo tablero para todos.\n\nDestacados\n• Puzzle casual rápido\n• Rankings global y semanal\n• Amigos y amistosos\n• Skins y fondos\n\nEmpieza fácil, domina de verdad. ¡Descarga Box Bang!",
+      keywords: "puzzle,cajas,bloques,match,samegame,casual,pvp,ranking,semanal,arcade",
+    },
+  },
+  "es-ES": {
+    label: "İspanyolca (İspanya) – es-ES",
+    name: "Box Bang",
+    google: {
+      short: "Revienta cajas del mismo color y escala el ranking. ¡Clásico, PvP y semanal!",
+      description: "Box Bang — el puzzle de cajas de colores que engancha con cada toque.\n\nPulsa grupos del mismo color, limpia el tablero y busca las mejores puntuaciones. Fácil de aprender y difícil de aparcar.\n\nMODOS DE JUEGO\n• Clásico: sin temporizador — bate tus récords en vertical o horizontal.\n• Competitivo (PvP): duelos 1 contra 1 y sube tu rating en la arena.\n• Evento semanal: el mismo tablero para todos — lucha por la clasificación de temporada.\n\n¿POR QUÉ BOX BANG?\n• Puzzle casual fluido y satisfactorio\n• Clasificaciones mundiales y semanales\n• Amigos y partidas amistosas\n• Aspectos de cajas y fondos\n• Progreso y puntuaciones online\n\nRevienta, combina y conquista la tabla. ¡Descarga Box Bang!\n\nOpiniones bienvenidas en ajustes y reseñas de la tienda.",
+    },
+    ios: {
+      subtitle: "Puzzle de cajas",
+      description: "Box Bang: revienta cajas del mismo color y escala el ranking.\n\nClásico sin límite de tiempo, PvP 1v1 cronometrado y temporadas semanales con tablero compartido.\n\nDestacados\n• Puzzle casual rápido\n• Rankings mundial y semanal\n• Amigos y amistosos\n• Skins y fondos\n\nEmpieza fácil, domina a fondo. ¡Descarga Box Bang!",
+      keywords: "puzzle,cajas,bloques,match,samegame,casual,pvp,ranking,semanal,arcade",
+    },
+  },
+  "it-IT": {
+    label: "İtalyanca – it-IT",
+    name: "Box Bang",
+    google: {
+      short: "Scoppia le scatole uguali e scala la classifica. Classico, PvP e weekly!",
+      description: "Box Bang — il puzzle di scatole colorate che crea dipendenza a ogni tap.\n\nTocca gruppi dello stesso colore, pulisci la griglia e insegui gli high score. Facile da imparare, difficile da lasciare.\n\nMODALITÀ\n• Classico: senza timer — batte i tuoi record in verticale o orizzontale.\n• Competitivo (PvP): sfida 1 contro 1 e alza il rating nell’arena.\n• Evento settimanale: stessa tavola per tutti — conquista il posto in classifica di stagione.\n\nPERCHÉ BOX BANG?\n• Puzzle casual fluido\n• Classifiche globali e settimanali\n• Amici e amichevoli\n• Skin delle scatole e sfondi\n• Progressi e punteggi online\n\nScoppia, combina, domina la classifica. Scarica Box Bang ora!\n\nFeedback benvenuto dalle impostazioni e dalle recensioni dello store.",
+    },
+    ios: {
+      subtitle: "Puzzle scoppia-scatole",
+      description: "Box Bang: scoppia scatole dello stesso colore e scala la classifica.\n\nClassico senza tempo, PvP 1v1 a tempo e stagioni settimanali con tavola condivisa.\n\nIn evidenza\n• Puzzle casual veloce\n• Classifiche globale e weekly\n• Amici e amichevoli\n• Skin e sfondi\n\nInizio facile, maestria profonda. Scarica Box Bang!",
+      keywords: "puzzle,scatole,blocchi,match,samegame,casual,pvp,classifica,settimana,arcade",
+    },
+  },
+  "ko-KR": {
+    label: "Korece – ko-KR",
+    name: "Box Bang",
+    google: {
+      short: "같은 색 상자를 터뜨리고 랭킹에 도전! 클래식·PvP·주간 이벤트.",
+      description: "Box Bang — 탭할 때마다 연쇄가 짜릿한 컬러 박스 퍼즐.\n\n같은 색 묶음을 터치해 보드를 지우고 하이 스코어에 도전하세요. 배우기 쉽고 끊기 어렵습니다.\n\n게임 모드\n• 클래식: 시간 제한 없음 — 세로/가로 보드에서 내 기록 갱신.\n• 경쟁(PvP): 1대1 레이스로 레이팅을 올리고 아레나를 정복.\n• 주간 이벤트: 모두 같은 보드 — 시즌 랭킹 자리를 차지하라.\n\n왜 Box Bang인가?\n• 쾌적한 캐주얼 퍼즐\n• 글로벌·주간 리더보드\n• 친구 추가와 친선 매치\n• 상자 스킨과 배경 커스터마이즈\n• 온라인 점수 동기화\n\n터뜨리고, 콤보하고, 랭킹을 장악하세요. 지금 Box Bang을 다운로드!\n\n의견은 앱 설정과 스토어 리뷰로 남겨 주세요.",
+    },
+    ios: {
+      subtitle: "상자 터뜨리기 퍼즐",
+      description: "Box Bang: 같은 색 상자를 터뜨리고 점수와 랭킹에 도전하세요.\n\n시간 무제한 클래식, 타임어택 1v1 PvP, 모두 같은 보드의 주간 시즌.\n\n하이라이트\n• 빠른 캐주얼 퍼즐\n• 글로벌·주간 랭킹\n• 친구 대전\n• 스킨과 배경\n\n쉽게 시작, 깊게 마스터. Box Bang을 다운로드하세요!",
+      keywords: "퍼즐,상자,블록,매치,캐주얼,대전,랭킹,주간,아케이드,게임",
+    },
+  },
+  "ro": {
+    label: "Rumence – ro",
+    name: "Box Bang",
+    google: {
+      short: "Sparge cutiile potrivite și urcă în clasament. Clasic, PvP și săptămânal!",
+      description: "Box Bang — puzzle-ul de cutii colorate care creează dependență la fiecare atingere.\n\nAtinge grupuri de aceeași culoare, curăță tabla și urmărește scoruri mari. Ușor de învățat, greu de lăsat.\n\nMODURI DE JOC\n• Clasic: fără cronometru — bate-ți recordurile pe verticală sau orizontală.\n• Competitiv (PvP): cursă 1 la 1 și crește ratingul în arenă.\n• Eveniment săptămânal: aceeași tablă pentru toți — loc în clasamentul de sezon.\n\nDE CE BOX BANG?\n• Puzzle casual fluent\n• Clasamente globale și săptămânale\n• Prieteni și meciuri amicale\n• Skin-uri pentru cutii și fundaluri\n• Progres și scoruri online\n\nSparge, combină, domina clasamentul. Descarcă Box Bang acum!\n\nFeedback binevenit din setări și recenziile magazinului.",
+    },
+    ios: {
+      subtitle: "Puzzle sparge cutii",
+      description: "Box Bang: sparge cutii de aceeași culoare și urcă în clasament.\n\nClasic fără timp, PvP 1v1 cronometrat și sezoane săptămânale cu tablă comună.\n\nRepere\n• Puzzle casual rapid\n• Clasamente global & săptămânal\n• Prieteni și amicale\n• Skin-uri și fundaluri\n\nStart ușor, măiestrie profundă. Descarcă Box Bang!",
+      keywords: "puzzle,cutii,blocuri,match,samegame,casual,pvp,clasament,saptamana,arcade",
+    },
+  },
+  "pl-PL": {
+    label: "Lehçe – pl-PL",
+    name: "Box Bang",
+    google: {
+      short: "Wysadzaj pasujące pudełka i wspinaj się w rankingu. Klasyka, PvP i tydzień!",
+      description: "Box Bang — wciągająca układanka z kolorowymi pudełkami, gdzie każde stuknięcie może odpalić serię.\n\nDotykaj grup tego samego koloru, czyść planszę i goń za highscore’ami. Łatwo się nauczyć, trudno odłożyć.\n\nTRYBY GRY\n• Klasyka: bez limitu czasu — bij własne rekordy w pionie lub poziomie.\n• Rywalizacja (PvP): wyścig 1 na 1 i podnoś rating na arenie.\n• Event tygodniowy: ta sama plansza dla wszystkich — walcz o miejsce w sezonie.\n\nDLACZEGO BOX BANG?\n• Płynna casualowa układanka\n• Rankingi globalne i tygodniowe\n• Znajomi i sparingi\n• Skórki pudełek i tła\n• Online’owy postęp i wyniki\n\nWysadzaj, łącz combo, rządź rankingiem. Pobierz Box Bang teraz!\n\nOpinie mile widziane w ustawieniach i recenzjach sklepu.",
+    },
+    ios: {
+      subtitle: "Puzzle: wybuch pudełek",
+      description: "Box Bang: wysadzaj pudełka tego samego koloru i wspinaj się w rankingu.\n\nKlasyka bez limitu, timed 1v1 PvP i tygodniowe sezony ze wspólną planszą.\n\nWyróżniki\n• Szybki casual puzzle\n• Ranking globalny i tygodniowy\n• Znajomi i sparingi\n• Skórki i tła\n\nŁatwy start, głęboka gra. Pobierz Box Bang!",
+      keywords: "puzzle,pudelka,bloki,match,samegame,casual,pvp,ranking,tydzien,arcade",
+    },
+  },
+  "hi-IN": {
+    label: "Hintçe – hi-IN",
+    name: "Box Bang",
+    google: {
+      short: "मिलते रंग के बॉक्स फोड़ो, रैंकिंग चढ़ो। क्लासिक, PvP और साप्ताहिक!",
+      description: "Box Bang — रंगीन बॉक्स वाला लत लगाने वाला पज़ल, जहाँ हर टैप चेन रिएक्शन बन सकता है।\n\nएक जैसे रंग के समूह पर टैप करें, बोर्ड साफ़ करें और हाई स्कोर का पीछा करें। सीखना आसान, रोकना मुश्किल।\n\nगेम मोड\n• क्लासिक: बिना टाइमर — पोर्ट्रेट या लैंडस्केप पर अपना रिकॉर्ड तोड़ें।\n• प्रतिस्पर्धी (PvP): 1 बनाम 1 रेस, एरिना में रेटिंग बढ़ाएँ।\n• साप्ताहिक इवेंट: सबका एक ही बोर्ड — सीज़न लीडरबोर्ड में जगह बनाएँ।\n\nक्यों Box Bang?\n• स्मूथ कैज़ुअल पज़ल\n• ग्लोबल और साप्ताहिक लीडरबोर्ड\n• दोस्त जोड़ें और फ्रेंडली मैच खेलें\n• बॉक्स स्किन और बैकग्राउंड कस्टमाइज़\n• ऑनलाइन स्कोर सिंक\n\nफोड़ें, कॉम्बो बनाएँ, लीडरबोर्ड जीतें। अभी Box Bang डाउनलोड करें!\n\nफीडबैक ऐप सेटिंग्स और स्टोर रिव्यू से भेजें।",
+    },
+    ios: {
+      subtitle: "बॉक्स पॉप पज़ल",
+      description: "Box Bang: मिलते रंग के बॉक्स फोड़ें, स्कोर बढ़ाएँ और रैंकिंग चढ़ें।\n\nबिना समय सीमा का क्लासिक, टाइम्ड 1v1 PvP, और सबके लिए एक बोर्ड वाला साप्ताहिक सीज़न।\n\nखास बातें\n• तेज़ कैज़ुअल पज़ल\n• ग्लोबल और साप्ताहिक रैंकिंग\n• दोस्त और फ्रेंडली मैच\n• स्किन और बैकग्राउंड\n\nआसान शुरुआत, गहरी महारत। Box Bang डाउनलोड करें!",
+      keywords: "पज़ल,बॉक्स,ब्लॉक,मैच,कैज़ुअल,पीवीपी,रैंकिंग,साप्ताहिक,आर्केड,गेम",
+    },
+  },
+  "fa-IR": {
+    label: "Farsça – fa-IR",
+    name: "Box Bang",
+    google: {
+      short: "جعبه‌های هم‌رنگ را بترکان و در رتبه‌بندی بالا برو. کلاسیک، PvP و هفتگی!",
+      description: "Box Bang — پازل جعبه‌های رنگی اعتیادآور که هر لمس می‌تواند زنجیره‌ای از انفجار بسازد.\n\nگروه‌های هم‌رنگ را لمس کن، صفحه را پاک کن و رکورد بزن. یادگیری آسان است؛ کنار گذاشتن سخت.\n\nحالت‌های بازی\n• کلاسیک: بدون تایمر — رکورد خودت را در صفحه عمودی یا افقی بشکن.\n• رقابتی (PvP): مسابقه رو در رو؛ امتیازت را در آرنا بالا ببر.\n• رویداد هفتگی: همه یک صفحه مشترک — جای خودت را در رتبه‌بندی فصل بگیر.\n\nچرا Box Bang؟\n• پازل کژوال روان و لذت‌بخش\n• رتبه‌بندی جهانی و هفتگی\n• افزودن دوستان و بازی دوستانه\n• پوسته‌های جعبه و پس‌زمینه‌های قابل تنظیم\n• همگام‌سازی امتیاز آنلاین\n\nجعبه‌ها را بترکان، کمبو بساز، جدول را فتح کن. همین حالا Box Bang را دانلود کن!\n\nنظرات از تنظیمات اپ و بررسی‌های فروشگاه خوش‌آمد است.",
+    },
+    ios: {
+      subtitle: "پازل ترکاندن جعبه",
+      description: "Box Bang: جعبه‌های هم‌رنگ را بترکان، امتیاز بگیر و در رتبه‌بندی بالا برو.\n\nکلاسیک بدون محدودیت زمان، PvP یک‌به‌یک زمان‌دار، و فصل‌های هفتگی با صفحه مشترک برای همه.\n\nنکات برجسته\n• پازل کژوال سریع\n• رتبه‌بندی جهانی و هفتگی\n• دوستان و مسابقات دوستانه\n• پوسته‌ها و پس‌زمینه‌ها\n\nشروع آسان، تسلط عمیق. Box Bang را دانلود کن و شروع کن!",
+      keywords: "پازل,جعبه,بلوک,مچ,کژوال,رقابتی,رتبه,هفتگی,آرکید,بازی",
+    },
+  }
+},
+    whatsNew: {
+  "tr-TR": "• Daha akıcı oyun ve daha düzenli ekranlar\n• Ayarlarda kaydırarak dil seçimi\n• Box Bang’i değerlendir & diğer oyunlarımıza göz at\n• Görünümü kişiselleştirme ipucu\n• Sıralama ekranlarında daha az kesinti\nKeyifle oynamaya devam!",
+  "en-US": "• Smoother play and cleaner screens\n• Swipe to pick your language in Settings\n• Rate Box Bang & check out our other games\n• Tip to personalize how the game looks\n• Fewer interruptions on leaderboards\nKeep popping!",
+  "en-GB": "• Smoother play and clearer screens\n• Swipe to choose your language in Settings\n• Rate Box Bang & explore our other games\n• A tip to personalise the look\n• Fewer interruptions on leaderboards\nKeep popping!",
+  "de-DE": "• Flüssigeres Spiel und klarere Screens\n• Sprache per Wischen in den Einstellungen wählen\n• Box Bang bewerten & unsere anderen Spiele entdecken\n• Tipp zum Anpassen des Aussehens\n• Weniger Unterbrechungen auf den Ranglisten\nViel Spaß beim Spielen!",
+  "ar": "• لعب أكثر سلاسة وشاشات أوضح\n• اختيار اللغة بالتمرير من الإعدادات\n• قيّم Box Bang واكتشف ألعابنا الأخرى\n• تلميح لتخصيص المظهر\n• مقاطعات أقل في شاشات الترتيب\nاستمتع باللعب!",
+  "id": "• Permainan lebih mulus dan layar lebih rapi\n• Geser untuk pilih bahasa di Pengaturan\n• Nilai Box Bang & lihat game kami yang lain\n• Tips untuk menyesuaikan tampilan\n• Lebih sedikit gangguan di papan peringkat\nTerus bermain!",
+  "fr-FR": "• Jeu plus fluide et écrans plus clairs\n• Choisissez la langue en glissant dans Réglages\n• Notez Box Bang et découvrez nos autres jeux\n• Astuce pour personnaliser l’apparence\n• Moins d’interruptions sur les classements\nContinuez à jouer !",
+  "ja-JP": "• より快適なプレイと見やすい画面\n• 設定でスワイプして言語を選択\n• Box Bangを評価＆他のゲームもチェック\n• 見た目カスタムのヒント\n• ランキング画面での中断を軽減\n引き続きお楽しみください！",
+  "pt-BR": "• Jogo mais fluido e telas mais claras\n• Escolha o idioma deslizando em Ajustes\n• Avalie o Box Bang e veja nossos outros jogos\n• Dica para personalizar a aparência\n• Menos interrupções nos rankings\nContinue jogando!",
+  "ru-RU": "• Более плавная игра и аккуратные экраны\n• Выбирайте язык свайпом в Настройках\n• Оцените Box Bang и посмотрите наши другие игры\n• Подсказка по смене оформления\n• Меньше прерываний на рейтингах\nПродолжайте играть!",
+  "cs-CZ": "• Plynulejší hra a přehlednější obrazovky\n• Výběr jazyka posouváním v nastavení\n• Ohodnoť Box Bang a podívej se na naše další hry\n• Tip na úpravu vzhledu\n• Méně přerušení na žebříčcích\nUžij si hru!",
+  "zh-CN": "• 游玩更流畅，界面更清晰\n• 在设置中滑动选择语言\n• 为 Box Bang 评分并查看我们的其他游戏\n• 个性化外观小提示\n• 排行榜干扰更少\n继续畅玩吧！",
+  "es-419": "• Juego más fluido y pantallas más claras\n• Elige el idioma deslizando en Ajustes\n• Califica Box Bang y mira nuestros otros juegos\n• Tip para personalizar la apariencia\n• Menos interrupciones en las tablas\n¡Sigue jugando!",
+  "es-ES": "• Juego más fluido y pantallas más claras\n• Elige el idioma deslizando en Ajustes\n• Valora Box Bang y descubre nuestros otros juegos\n• Consejo para personalizar el aspecto\n• Menos interrupciones en las clasificaciones\n¡Sigue jugando!",
+  "it-IT": "• Gioco più fluido e schermate più chiare\n• Scegli la lingua scorrendo nelle Impostazioni\n• Valuta Box Bang e scopri i nostri altri giochi\n• Suggerimento per personalizzare l’aspetto\n• Meno interruzioni nelle classifiche\nContinua a giocare!",
+  "ko-KR": "• 더 부드러운 플레이와 깔끔한 화면\n• 설정에서 스와이프로 언어 선택\n• Box Bang 평가 & 다른 게임 둘러보기\n• 외형 꾸미기 팁\n• 랭킹 화면 방해 감소\n계속 즐겨 주세요!",
+  "ro": "• Joc mai fluent și ecrane mai clare\n• Alege limba glisând în Setări\n• Evaluează Box Bang și vezi celelalte jocuri\n• Sfat pentru personalizarea aspectului\n• Mai puține întreruperi pe clasamente\nJoacă în continuare!",
+  "pl-PL": "• Płynniejsza gra i czytelniejsze ekrany\n• Wybierz język przesuwając w Ustawieniach\n• Oceń Box Bang i zobacz nasze inne gry\n• Wskazówka, jak spersonalizować wygląd\n• Mniej przerw na rankingach\nMiłej zabawy!",
+  "hi-IN": "• और स्मूथ गेमप्ले, साफ़ स्क्रीन\n• सेटिंग्स में स्वाइप करके भाषा चुनें\n• Box Bang को रेट करें और हमारे अन्य गेम देखें\n• लुक बदलने का सुझाव\n• लीडरबोर्ड पर कम रुकावट\nखेलते रहें!",
+  "fa-IR": "• بازی روان‌تر و صفحه‌های مرتب‌تر\n• انتخاب زبان با کشیدن در تنظیمات\n• به Box Bang امتیاز بده و بازی‌های دیگر ما را ببین\n• راهنمای شخصی‌سازی ظاهر\n• وقفه کمتر در صفحه رتبه‌بندی\nبه بازی ادامه بده!"
+},
+  },
+  boxjourney: {
+    "label": "Box Bang Journey",
+    "hint": "Oyun adı: Box Bang Journey",
+    "listings": {
+      "tr-TR": {
+        "label": "Türkçe – tr-TR (varsayılan)",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Seviye seviye kutu patlatma macerası. Hedefleri bitir, haritada ilerle!",
+          "description": "Box Bang Journey — renkli kutuları patlatarak seviyeleri geçtiğin bağımlılık yapan bulmaca macerası.\n\nAynı renkteki yan yana kutulara dokun, zincirleri patlat, skor ve görev hedeflerini tamamla. Haritada ilerle, bölümleri aç, her seviyede yeni bir zorluk.\n\nNASIL OYNANIR?\n• Aynı renkli kutu gruplarına dokun ve patlat\n• Skor, renk ve kombo gibi seviye hedeflerini tamamla\n• Hamle veya süre kısıtlı seviyelerde stratejini kur\n• Jokerlerle tahtayı kurtar (isteğe bağlı ödüllü reklam)\n\nNEDEN BOX BANG JOURNEY?\n• Seviye haritası ve bölümlerle ilerleyen bir yolculuk\n• Net hedefler, tatmin edici zincir patlamaları\n• Kısa partiler — istediğin zaman bir seviye daha\n• Ücretsiz oyna, reklamsız da ilerleyebilirsin\n• Çok dilli arayüz\n\nKutuları seç, hedefleri tamamla, yolculuğunda ilerle. Box Bang Journey’yi indir ve maceraya başla!\n\nDestek: mağaza yorumları ve uygulama içi geri bildirim."
+        },
+        "ios": {
+          "subtitle": "Seviye kutu puzzle",
+          "description": "Box Bang Journey: renkli kutuları patlat, seviye hedeflerini tamamla, haritada ilerle.\n\nAynı renk gruplarına dokunarak zincirleri temizle. Skor, renk ve kombo görevleriyle dolu bir puzzle yolculuğu — bölüm bölüm yeni seviyeler.\n\nÖne çıkanlar\n• Seviye haritası ve bölümler\n• Net hedefler, akıcı kutu patlatma\n• Joker desteği zor anlarda\n• Kısa, keyifli casual puzzle partileri\n\nKolay başla, seviyeleri fethet. Box Bang Journey’yi indir!",
+          "keywords": "puzzle,kutu,patlat,seviye,bulmaca,blok,samegame,macera,casual,harita"
+        }
+      },
+      "en-US": {
+        "label": "English (US) – en-US",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Pop boxes level by level. Beat goals, climb the saga map!",
+          "description": "Box Bang Journey — the addictive color-box puzzle adventure where every level has a goal to beat.\n\nTap matching groups, spark chain reactions, and clear score, color, and combo objectives. Progress across a saga map, unlock chapters, and face fresh challenges on every stage.\n\nHOW TO PLAY\n• Tap groups of the same color to pop them\n• Complete level goals: score, color totals, combos, and more\n• Plan around move or time limits\n• Use boosters when you’re stuck (optional rewarded ads)\n\nWHY BOX BANG JOURNEY?\n• A journey of levels and chapters, not endless grind alone\n• Clear goals and satisfying pops\n• Short sessions — one more level anytime\n• Play free; progress without paying\n• Multi-language interface\n\nPop boxes. Beat goals. Advance your journey. Download Box Bang Journey and start the adventure!\n\nFeedback welcome via store reviews and in-app notes."
+        },
+        "ios": {
+          "subtitle": "Level box puzzle saga",
+          "description": "Box Bang Journey: pop matching boxes, clear level goals, climb the saga map.\n\nTap same-color groups and build chains. Chase score, color, and combo objectives in a level-based puzzle adventure with chapters to unlock.\n\nHighlights\n• Saga map and chapter progress\n• Clear goals, smooth box-popping\n• Boosters for tight spots\n• Quick, satisfying casual levels\n\nEasy to start, fun to master. Download Box Bang Journey!",
+          "keywords": "puzzle,boxes,pop,levels,match,saga,casual,blast,blocks,journey"
+        }
+      },
+      "en-GB": {
+        "label": "English (UK) – en-GB",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Pop boxes level by level. Beat goals, climb the saga map!",
+          "description": "Box Bang Journey — the addictive colour-box puzzle adventure where every level has a goal to beat.\n\nTap matching groups, spark chain reactions, and clear score, colour, and combo objectives. Progress across a saga map, unlock chapters, and face fresh challenges on every stage.\n\nHOW TO PLAY\n• Tap groups of the same colour to pop them\n• Complete level goals: score, colour totals, combos, and more\n• Plan around move or time limits\n• Use boosters when you’re stuck (optional rewarded ads)\n\nWHY BOX BANG JOURNEY?\n• A journey of levels and chapters, not endless grind alone\n• Clear goals and satisfying pops\n• Short sessions — one more level anytime\n• Play free; progress without paying\n• Multi-language interface\n\nPop boxes. Beat goals. Advance your journey. Download Box Bang Journey and start the adventure!\n\nFeedback welcome via store reviews and in-app notes."
+        },
+        "ios": {
+          "subtitle": "Level box puzzle saga",
+          "description": "Box Bang Journey: pop matching boxes, clear level goals, climb the saga map.\n\nTap same-colour groups and build chains. Chase score, colour, and combo objectives in a level-based puzzle adventure with chapters to unlock.\n\nHighlights\n• Saga map and chapter progress\n• Clear goals, smooth box-popping\n• Boosters for tight spots\n• Quick, satisfying casual levels\n\nEasy to start, fun to master. Download Box Bang Journey!",
+          "keywords": "puzzle,boxes,pop,levels,match,saga,casual,blast,blocks,journey"
+        }
+      },
+      "de-DE": {
+        "label": "Deutsch – de-DE",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Kisten knallen Level für Level. Ziele schaffen, Karte erkunden!",
+          "description": "Box Bang Journey — das süchtig machende Farbkisten-Puzzle-Abenteuer mit klaren Levelzielen.\n\nTippe auf gleichfarbige Gruppen, löse Kettenreaktionen aus und erfülle Punkte-, Farb- und Kombo-Ziele. Schreite auf der Saga-Karte voran, schalte Kapitel frei und meistere jede neue Herausforderung.\n\nSO SPIELT MAN\n• Tippe Gruppen derselben Farbe zum Knallen\n• Erfülle Levelziele: Punkte, Farben, Kombos und mehr\n• Plane bei Zug- oder Zeitlimit\n• Nutze Booster, wenn du feststeckst (optionale Rewarded Ads)\n\nWARUM BOX BANG JOURNEY?\n• Level- und Kapitelreise statt endlosem Grind\n• Klare Ziele und befriedigende Explosionen\n• Kurze Sessions — jederzeit ein Level mehr\n• Kostenlos spielen, ohne zu bezahlen vorankommen\n• Mehrsprachige Oberfläche\n\nKisten knallen. Ziele schaffen. Weiterreisen. Lade Box Bang Journey und starte das Abenteuer!\n\nFeedback gerne über Store-Bewertungen und In-App-Hinweise."
+        },
+        "ios": {
+          "subtitle": "Level-Kisten-Puzzle",
+          "description": "Box Bang Journey: knalle passende Kisten, erfülle Levelziele, erklimme die Saga-Karte.\n\nTippe gleichfarbige Gruppen und baue Ketten. Punkte-, Farb- und Kombo-Ziele in einem levelbasierten Puzzle-Abenteuer mit Kapiteln.\n\nHighlights\n• Saga-Karte und Kapitel\n• Klare Ziele, flüssiges Knallen\n• Booster in kniffligen Momenten\n• Kurze, spaßige Casual-Level\n\nLeicht gestartet, schön gemeistert. Lade Box Bang Journey!",
+          "keywords": "puzzle,kisten,knallen,level,match,saga,casual,blöcke,abenteuer,farbe"
+        }
+      },
+      "ar": {
+        "label": "العربية – ar",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "فجّر الصناديق مستوى بعد مستوى. حقّق الأهداف وتقدّم في الخريطة!",
+          "description": "Box Bang Journey — مغامرة ألغاز صناديق ملونة تسبب الإدمان، ولكل مستوى هدف واضح.\n\nالمس مجموعات بنفس اللون، أطلق سلاسل التفجير، وأكمل أهداف النقاط واللون والكومبو. تقدّم على خريطة الملحمة، وافتح الفصول، وواجه تحديًا جديدًا في كل مرحلة.\n\nطريقة اللعب\n• المس مجموعات اللون نفسه لتفجيرها\n• أكمل أهداف المستوى: نقاط، ألوان، كومبو والمزيد\n• خطّط ضمن حد الحركات أو الوقت\n• استخدم المعززات عند التعثر (إعلانات اختيارية)\n\nلماذا Box Bang Journey؟\n• رحلة مستويات وفصول لا مجرد لعب بلا نهاية\n• أهداف واضحة وتفجيرات ممتعة\n• جلسات قصيرة — مستوى إضافي في أي وقت\n• مجاني؛ تقدّم دون دفع\n• واجهة متعددة اللغات\n\nفجّر الصناديق. حقّق الأهداف. واصل الرحلة. حمّل Box Bang Journey وابدأ المغامرة!\n\nنرحب بملاحظاتك عبر تقييمات المتجر وداخل التطبيق."
+        },
+        "ios": {
+          "subtitle": "لغز صناديق بمستويات",
+          "description": "Box Bang Journey: فجّر الصناديق المتطابقة، أكمل أهداف المستوى، وتقدّم في خريطة الملحمة.\n\nالمس مجموعات اللون نفسه وابنِ السلاسل. أهداف نقاط ولون وكومبو في مغامرة ألغاز بمستويات وفصول.\n\nأبرز المميزات\n• خريطة ملحمة وفصول\n• أهداف واضحة وتفجير سلس\n• معززات في اللحظات الصعبة\n• مستويات كاجوال قصيرة وممتعة\n\nسهل البداية، ممتع للإتقان. حمّل Box Bang Journey!",
+          "keywords": "لغز,صناديق,تفجير,مستويات,تطابق,ملحمة,كاجوال,كتل,مغامرة,ألوان"
+        }
+      },
+      "id": {
+        "label": "Bahasa Indonesia – id",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Ledakkan kotak level demi level. Capai target, maju di peta!",
+          "description": "Box Bang Journey — petualangan puzzle kotak warna yang adiktif, setiap level punya target jelas.\n\nKetuk grup warna sama, picu rangkaian ledakan, dan selesaikan target skor, warna, serta combo. Maju di peta saga, buka chapter, dan hadapi tantangan baru tiap stage.\n\nCARA BERMAIN\n• Ketuk grup warna sama untuk meledakkannya\n• Selesaikan target level: skor, warna, combo, dan lainnya\n• Atur strategi saat ada batas langkah atau waktu\n• Pakai booster saat macet (iklan hadiah opsional)\n\nKENAPA BOX BANG JOURNEY?\n• Perjalanan level & chapter, bukan grind tanpa arah\n• Target jelas dan ledakan yang memuaskan\n• Sesi singkat — satu level lagi kapan saja\n• Gratis; maju tanpa harus bayar\n• Antarmuka multi-bahasa\n\nLedakkan kotak. Capai target. Lanjutkan perjalanan. Unduh Box Bang Journey dan mulai petualangan!\n\nMasukan diterima lewat ulasan toko dan dalam aplikasi."
+        },
+        "ios": {
+          "subtitle": "Puzzle kotak bertingkat",
+          "description": "Box Bang Journey: ledakkan kotak cocok, selesaikan target level, naikkan peta saga.\n\nKetuk grup warna sama dan bangun rantai. Target skor, warna, dan combo dalam petualangan puzzle berbasis level dengan chapter.\n\nSorotan\n• Peta saga dan chapter\n• Target jelas, ledakan mulus\n• Booster di momen sulit\n• Level kasual singkat dan seru\n\nMudah mulai, asyik dikuasai. Unduh Box Bang Journey!",
+          "keywords": "puzzle,kotak,ledak,level,cocok,saga,kasual,blok,petualangan,warna"
+        }
+      },
+      "fr-FR": {
+        "label": "Français – fr-FR",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Explosez les boîtes niveau après niveau. Objectifs & carte saga !",
+          "description": "Box Bang Journey — l’aventure puzzle de boîtes colorées addictive où chaque niveau a un objectif.\n\nTouchez les groupes de même couleur, déclenchez des chaînes et validez score, couleur et combos. Progressez sur la carte saga, débloquez des chapitres et relevez un défi inédit à chaque étape.\n\nCOMMENT JOUER\n• Touchez les groupes de même couleur pour les faire exploser\n• Atteignez les objectifs : score, couleurs, combos, etc.\n• Gérez les limites de coups ou de temps\n• Utilisez des boosters si vous bloquez (pubs récompensées optionnelles)\n\nPOURQUOI BOX BANG JOURNEY ?\n• Une aventure par niveaux et chapitres\n• Objectifs clairs et explosions satisfaisantes\n• Parties courtes — encore un niveau à tout moment\n• Gratuit ; progressez sans payer\n• Interface multilingue\n\nExplosez. Validez. Avancez. Téléchargez Box Bang Journey et partez à l’aventure !\n\nVos retours sont les bienvenus via les avis du store et l’app."
+        },
+        "ios": {
+          "subtitle": "Puzzle boîtes & niveaux",
+          "description": "Box Bang Journey : explosez les boîtes assorties, validez les objectifs, grimpez la carte saga.\n\nTouchez les groupes de même couleur et créez des chaînes. Score, couleur et combos dans une aventure puzzle par niveaux et chapitres.\n\nPoints forts\n• Carte saga et chapitres\n• Objectifs clairs, explosions fluides\n• Boosters dans les moments durs\n• Niveaux casual courts et plaisants\n\nFacile à commencer, fun à maîtriser. Téléchargez Box Bang Journey !",
+          "keywords": "puzzle,boites,exploser,niveaux,match,saga,casual,blocs,aventure,couleur"
+        }
+      },
+      "ja-JP": {
+        "label": "日本語 – ja-JP",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "レベルごとに箱をポップ。目標クリアでサーガマップを進もう！",
+          "description": "Box Bang Journey — 色つきボックスをポップしてレベル目標を達成する、中毒性の高いパズルアドベンチャー。\n\n同じ色のグループをタップして連鎖を起こし、スコア・色・コンボなどの目標をクリア。サーガマップを進み、チャプターを解放し、ステージごとに新しい挑戦へ。\n\n遊び方\n• 同じ色のグループをタップして消去\n• スコア・色・コンボなどレベル目標を達成\n• 手数や時間制限のあるステージも戦略的に\n• 行き詰まったらブースター（任意のリワード広告）\n\nBox Bang Journeyの魅力\n• レベル＆チャプターで進む旅型パズル\n• わかりやすい目標と気持ちいいポップ\n• すきま時間にサクッと1ステージ\n• 無料でプレイ、課金なしでも進行可能\n• 多言語対応\n\n箱をポップして目標クリア、旅を進めよう。Box Bang Journeyをダウンロード！\n\nご意見はストアレビューやアプリ内からどうぞ。"
+        },
+        "ios": {
+          "subtitle": "レベル箱パズル",
+          "description": "Box Bang Journey：色合わせで箱をポップし、レベル目標をクリアしてサーガマップを進もう。\n\n同じ色グループをタップして連鎖。スコア・色・コンボ目標のレベル型パズルアドベンチャー。\n\nハイライト\n• サーガマップとチャプター\n• 明確な目標、快適なポップ\n• ピンチのブースター\n• 短く楽しいカジュアルレベル\n\n始めやすく、やり込みがいあり。Box Bang Journeyをダウンロード！",
+          "keywords": "パズル,箱,ポップ,レベル,マッチ,サーガ,カジュアル,ブロック,冒険,色"
+        }
+      },
+      "pt-BR": {
+        "label": "Português (Brasil) – pt-BR",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Estoure caixas nível a nível. Cumpra metas e avance no mapa!",
+          "description": "Box Bang Journey — a viciante aventura de puzzle com caixas coloridas em que cada nível tem uma meta.\n\nToque em grupos da mesma cor, dispare combos e cumpra objetivos de pontuação, cor e combo. Avance no mapa saga, desbloqueie capítulos e enfrente um desafio novo em cada fase.\n\nCOMO JOGAR\n• Toque em grupos da mesma cor para estourá-los\n• Complete metas: pontuação, cores, combos e mais\n• Planeje com limite de movimentos ou tempo\n• Use boosters quando travar (anúncios opcionais)\n\nPOR QUE BOX BANG JOURNEY?\n• Jornada de níveis e capítulos\n• Metas claras e estouros satisfatórios\n• Sessões curtas — mais um nível a qualquer hora\n• Grátis; avance sem pagar\n• Interface em vários idiomas\n\nEstoure caixas. Cumpra metas. Siga a jornada. Baixe Box Bang Journey e comece a aventura!\n\nFeedback bem-vindo nas avaliações da loja e no app."
+        },
+        "ios": {
+          "subtitle": "Puzzle de caixas e níveis",
+          "description": "Box Bang Journey: estoure caixas iguais, cumpra metas de nível e avance no mapa saga.\n\nToque em grupos da mesma cor e faça cadeias. Pontuação, cor e combos numa aventura de puzzle por níveis e capítulos.\n\nDestaques\n• Mapa saga e capítulos\n• Metas claras, estouros fluidos\n• Boosters nos momentos difíceis\n• Níveis casuais curtos e divertidos\n\nFácil de começar, divertido de dominar. Baixe Box Bang Journey!",
+          "keywords": "puzzle,caixas,estourar,niveis,match,saga,casual,blocos,aventura,cor"
+        }
+      },
+      "ru-RU": {
+        "label": "Русский – ru-RU",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Взрывай коробки уровень за уровнем. Цели и карта саги!",
+          "description": "Box Bang Journey — затягивающее приключение-головоломка с цветными коробками: у каждого уровня своя цель.\n\nНажимай на группы одного цвета, запускай цепочки и выполняй цели по очкам, цвету и комбо. Продвигай карту саги, открывай главы и встречай новый вызов на каждом этапе.\n\nКАК ИГРАТЬ\n• Нажимай группы одного цвета, чтобы взорвать их\n• Выполняй цели: очки, цвета, комбо и другое\n• Учитывай лимит ходов или времени\n• Используй бустеры, если застрял (опциональная реклама)\n\nПОЧЕМУ BOX BANG JOURNEY?\n• Путешествие по уровням и главам\n• Понятные цели и приятные взрывы\n• Короткие сессии — ещё один уровень в любой момент\n• Бесплатно; прогресс без оплаты\n• Многоязычный интерфейс\n\nВзрывай коробки. Выполняй цели. Продолжай путь. Скачай Box Bang Journey и начни приключение!\n\nОтзывы приветствуются в магазине и в приложении."
+        },
+        "ios": {
+          "subtitle": "Уровни и коробки",
+          "description": "Box Bang Journey: взрывай одинаковые коробки, выполняй цели уровня, двигайся по карте саги.\n\nНажимай группы одного цвета и строй цепочки. Очки, цвет и комбо в уровневой головоломке с главами.\n\nОсобенности\n• Карта саги и главы\n• Ясные цели, плавные взрывы\n• Бустеры в трудные моменты\n• Короткие casual-уровни\n\nЛегко начать, интересно освоить. Скачай Box Bang Journey!",
+          "keywords": "головоломка,коробки,взрыв,уровни,матч,сага,казуал,блоки,приключение,цвет"
+        }
+      },
+      "cs-CZ": {
+        "label": "Čeština – cs-CZ",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Odpaluj bedny level po levelu. Splň cíle a posuň mapu!",
+          "description": "Box Bang Journey — návykové puzzle dobrodružství s barevnými bednami, kde má každý level jasný cíl.\n\nŤukej na skupiny stejné barvy, spouštěj řetězové reakce a plň cíle skóre, barvy a komb. Postupuj na saga mapě, odemykej kapitoly a čel novým výzvám.\n\nJAK HRÁT\n• Ťukej skupiny stejné barvy a odpaluj je\n• Plň cíle levelu: skóre, barvy, komba a další\n• Počítej s limitem tahů nebo času\n• Použij boostery, když uvízneš (volitelné odměnové reklamy)\n\nPROČ BOX BANG JOURNEY?\n• Cesta levelů a kapitol\n• Jasné cíle a uspokojivé odpaly\n• Krátké sezení — ještě jeden level kdykoli\n• Zdarma; postup bez placení\n• Vícejazyčné rozhraní\n\nOdpaluj bedny. Plň cíle. Pokračuj v cestě. Stáhni Box Bang Journey a vyraz na dobrodružství!\n\nZpětná vazba vítána v recenzích obchodu a v aplikaci."
+        },
+        "ios": {
+          "subtitle": "Level puzzle s bednami",
+          "description": "Box Bang Journey: odpaluj shodné bedny, plň cíle levelu, stoupej na saga mapě.\n\nŤukej skupiny stejné barvy a stav řetězy. Skóre, barva a komba v levelovém puzzle s kapitolami.\n\nHighlights\n• Saga mapa a kapitoly\n• Jasné cíle, plynulé odpaly\n• Boostery ve zlomových chvílích\n• Krátké, zábavné casual levely\n\nSnadný start, zábavné mistrovství. Stáhni Box Bang Journey!",
+          "keywords": "puzzle,bedny,odpal,levely,match,saga,casual,bloky,dobrodruzstvi,barva"
+        }
+      },
+      "zh-CN": {
+        "label": "简体中文 – zh-CN",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "一关一关爆箱子。完成目标，推进冒险地图！",
+          "description": "Box Bang Journey — 令人上瘾的彩色箱子解谜冒险，每一关都有明确目标。\n\n点击同色组合引爆连锁，完成分数、颜色与连击等关卡目标。在冒险地图上前进，解锁章节，迎接每一关新挑战。\n\n怎么玩\n• 点击同色箱子组进行消除\n• 完成关卡目标：分数、颜色、连击等\n• 在步数或时间限制下制定策略\n• 卡住时可用助推道具（可选激励广告）\n\n为什么选择 Box Bang Journey？\n• 关卡与章节构成的旅程，不只是无尽刷关\n• 目标清晰，消除手感畅快\n• 碎片时间也能再打一关\n• 免费游玩，不付费也能推进\n• 多语言界面\n\n爆箱子、完成目标、继续旅程。下载 Box Bang Journey，开启冒险！\n\n欢迎通过商店评价和应用内反馈联系我们。"
+        },
+        "ios": {
+          "subtitle": "关卡箱子解谜",
+          "description": "Box Bang Journey：消除同色箱子，完成关卡目标，攀登冒险地图。\n\n点击同色组合制造连锁。分数、颜色与连击目标，关卡制解谜冒险，含章节解锁。\n\n亮点\n• 冒险地图与章节\n• 目标清晰，消除流畅\n• 关键时刻可用助推\n• 短而有趣的休闲关卡\n\n上手简单，玩法耐刷。下载 Box Bang Journey！",
+          "keywords": "解谜,箱子,消除,关卡,匹配,冒险,休闲,方块,旅程,颜色"
+        }
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica) – es-419",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "¡Revienta cajas nivel a nivel. Cumple metas y avanza en el mapa!",
+          "description": "Box Bang Journey — la adictiva aventura puzzle de cajas de color donde cada nivel tiene una meta.\n\nToca grupos del mismo color, arma cadenas y cumple objetivos de puntaje, color y combo. Avanza en el mapa saga, desbloquea capítulos y enfrenta un reto nuevo en cada etapa.\n\nCÓMO JUGAR\n• Toca grupos del mismo color para reventarlos\n• Completa metas: puntaje, colores, combos y más\n• Planifica con límite de movimientos o tiempo\n• Usa boosters si te trabas (anuncios opcionales)\n\n¿POR QUÉ BOX BANG JOURNEY?\n• Un viaje de niveles y capítulos\n• Metas claras y explosiones satisfactorias\n• Partidas cortas: un nivel más cuando quieras\n• Gratis; avanza sin pagar\n• Interfaz en varios idiomas\n\nRevienta cajas. Cumple metas. Sigue el viaje. ¡Descarga Box Bang Journey y empieza la aventura!\n\nComentarios bienvenidos en reseñas de la tienda y en la app."
+        },
+        "ios": {
+          "subtitle": "Puzzle de cajas y niveles",
+          "description": "Box Bang Journey: revienta cajas iguales, cumple metas de nivel y sube el mapa saga.\n\nToca grupos del mismo color y arma cadenas. Puntaje, color y combos en una aventura puzzle por niveles y capítulos.\n\nDestacados\n• Mapa saga y capítulos\n• Metas claras, explosiones fluidas\n• Boosters en momentos difíciles\n• Niveles casuales cortos y divertidos\n\nFácil de empezar, divertido de dominar. ¡Descarga Box Bang Journey!",
+          "keywords": "puzzle,cajas,reventar,niveles,match,saga,casual,bloques,aventura,color"
+        }
+      },
+      "es-ES": {
+        "label": "Español (España) – es-ES",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "¡Revienta cajas nivel a nivel. Cumple objetivos y avanza el mapa!",
+          "description": "Box Bang Journey — la adictiva aventura puzzle de cajas de colores en la que cada nivel tiene un objetivo.\n\nToca grupos del mismo color, encadena explosiones y cumple metas de puntuación, color y combo. Avanza por el mapa saga, desbloquea capítulos y afronta un reto nuevo en cada fase.\n\nCÓMO JUGAR\n• Toca grupos del mismo color para reventarlos\n• Completa objetivos: puntuación, colores, combos y más\n• Planifica con límite de movimientos o tiempo\n• Usa potenciadores si te atascas (anuncios opcionales)\n\n¿POR QUÉ BOX BANG JOURNEY?\n• Un viaje de niveles y capítulos\n• Objetivos claros y explosiones satisfactorias\n• Partidas cortas: un nivel más cuando quieras\n• Gratis; progresa sin pagar\n• Interfaz multilingüe\n\nRevienta cajas. Cumple objetivos. Sigue el viaje. ¡Descarga Box Bang Journey y empieza la aventura!\n\nValoramos tu opinión en las reseñas de la tienda y en la app."
+        },
+        "ios": {
+          "subtitle": "Puzzle de cajas y niveles",
+          "description": "Box Bang Journey: revienta cajas iguales, cumple objetivos de nivel y sube el mapa saga.\n\nToca grupos del mismo color y crea cadenas. Puntuación, color y combos en una aventura puzzle por niveles y capítulos.\n\nDestacados\n• Mapa saga y capítulos\n• Objetivos claros, explosiones fluidas\n• Potenciadores en momentos difíciles\n• Niveles casuales cortos y divertidos\n\nFácil de empezar, divertido de dominar. ¡Descarga Box Bang Journey!",
+          "keywords": "puzzle,cajas,reventar,niveles,match,saga,casual,bloques,aventura,color"
+        }
+      },
+      "it-IT": {
+        "label": "Italiano – it-IT",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Scoppia scatole livello dopo livello. Obiettivi e mappa saga!",
+          "description": "Box Bang Journey — l’avventura puzzle di scatole colorate che crea dipendenza, con un obiettivo a ogni livello.\n\nTocca gruppi dello stesso colore, attiva reazioni a catena e completa obiettivi di punteggio, colore e combo. Avanza sulla mappa saga, sblocca i capitoli e affronta una nuova sfida a ogni stage.\n\nCOME SI GIOCA\n• Tocca gruppi dello stesso colore per farli scoppiare\n• Completa gli obiettivi: punteggio, colori, combo e altro\n• Pianifica con limite di mosse o tempo\n• Usa i booster se sei bloccato (annunci opzionali)\n\nPERCHÉ BOX BANG JOURNEY?\n• Un viaggio di livelli e capitoli\n• Obiettivi chiari ed esplosioni soddisfacenti\n• Sessioni brevi: ancora un livello quando vuoi\n• Gratis; avanza senza pagare\n• Interfaccia multilingue\n\nScoppia scatole. Completa obiettivi. Continua il viaggio. Scarica Box Bang Journey e inizia l’avventura!\n\nFeedback benvenuti nelle recensioni dello store e in-app."
+        },
+        "ios": {
+          "subtitle": "Puzzle scatole a livelli",
+          "description": "Box Bang Journey: scoppia scatole uguali, completa gli obiettivi di livello, scala la mappa saga.\n\nTocca gruppi dello stesso colore e crea catene. Punteggio, colore e combo in un’avventura puzzle a livelli e capitoli.\n\nIn evidenza\n• Mappa saga e capitoli\n• Obiettivi chiari, scoppi fluidi\n• Booster nei momenti difficili\n• Livelli casual brevi e divertenti\n\nFacile da iniziare, divertente da padroneggiare. Scarica Box Bang Journey!",
+          "keywords": "puzzle,scatole,scoppio,livelli,match,saga,casual,blocchi,avventura,colore"
+        }
+      },
+      "ko-KR": {
+        "label": "한국어 – ko-KR",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "레벨마다 상자를 터뜨리세요. 목표 달성, 사가 맵 진행!",
+          "description": "Box Bang Journey — 색깔 상자를 터뜨리며 레벨 목표를 달성하는 중독성 퍼즐 어드벤처.\n\n같은 색 그룹을 탭해 연쇄를 일으키고 점수·색·콤보 목표를 완료하세요. 사가 맵을 진행하고 챕터를 잠금 해제하며 스테이지마다 새로운 도전을 만나세요.\n\n플레이 방법\n• 같은 색 그룹을 탭해 제거\n• 점수, 색, 콤보 등 레벨 목표 달성\n• 수나 시간 제한이 있는 스테이지는 전략적으로\n• 막히면 부스터 사용(선택 보상형 광고)\n\nBox Bang Journey를 고르는 이유\n• 레벨·챕터로 이어지는 여정형 퍼즐\n• 명확한 목표와 시원한 팝\n• 짧은 세션 — 언제든 한 레벨 더\n• 무료 플레이, 결제 없이도 진행 가능\n• 다국어 인터페이스\n\n상자를 터뜨리고 목표를 깨고 여정을 이어가세요. Box Bang Journey를 다운로드하세요!\n\n스토어 리뷰와 앱 내 피드백을 환영합니다."
+        },
+        "ios": {
+          "subtitle": "레벨 상자 퍼즐",
+          "description": "Box Bang Journey: 같은 색 상자를 터뜨리고 레벨 목표를 클리어하며 사가 맵을 오르세요.\n\n같은 색 그룹을 탭해 연쇄를 만드세요. 점수·색·콤보 목표의 레벨형 퍼즐 어드벤처, 챕터 포함.\n\n하이라이트\n• 사가 맵과 챕터\n• 명확한 목표, 부드러운 팝\n• 위기 때 부스터\n• 짧고 즐거운 캐주얼 레벨\n\n시작은 쉽고, 마스터는 재미있게. Box Bang Journey를 다운로드하세요!",
+          "keywords": "퍼즐,상자,팝,레벨,매치,사가,캐주얼,블록,모험,색"
+        }
+      },
+      "ro": {
+        "label": "Română – ro",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Sparge cutii nivel după nivel. Obiective și hartă saga!",
+          "description": "Box Bang Journey — aventura puzzle cu cutii colorate care creează dependență, fiecare nivel cu un obiectiv clar.\n\nAtinge grupuri de aceeași culoare, declanșează lanțuri și îndeplinește obiective de scor, culoare și combo. Avancează pe harta saga, deblochează capitole și înfruntă o provocare nouă la fiecare etapă.\n\nCUM SE JOACĂ\n• Atinge grupuri de aceeași culoare pentru a le sparge\n• Completează obiective: scor, culori, combo-uri și altele\n• Planifică la limită de mutări sau timp\n• Folosește boostere când te blochezi (reclame opționale)\n\nDE CE BOX BANG JOURNEY?\n• O călătorie pe niveluri și capitole\n• Obiective clare și explozii satisfăcătoare\n• Sesiuni scurte — încă un nivel oricând\n• Gratuit; progresează fără plată\n• Interfață multilingvă\n\nSparge cutii. Îndeplinește obiective. Continuă drumul. Descarcă Box Bang Journey și începe aventura!\n\nFeedback binevenit în recenziile magazinului și în aplicație."
+        },
+        "ios": {
+          "subtitle": "Puzzle cutii pe niveluri",
+          "description": "Box Bang Journey: sparge cutii potrivite, îndeplinește obiectivele de nivel, urcă pe harta saga.\n\nAtinge grupuri de aceeași culoare și construiește lanțuri. Scor, culoare și combo într-o aventură puzzle pe niveluri și capitole.\n\nPuncte forte\n• Hartă saga și capitole\n• Obiective clare, explozii fluide\n• Boostere în momente grele\n• Niveluri casual scurte și distractive\n\nUșor de început, distractiv de stăpânit. Descarcă Box Bang Journey!",
+          "keywords": "puzzle,cutii,sparge,niveluri,match,saga,casual,blocuri,aventura,culoare"
+        }
+      },
+      "pl-PL": {
+        "label": "Polski – pl-PL",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "Wysadzaj skrzynie poziom po poziomie. Cele i mapa sagi!",
+          "description": "Box Bang Journey — wciągająca przygodowa łamigłówka z kolorowymi skrzyniami, w której każdy poziom ma cel.\n\nDotykaj grup tego samego koloru, uruchamiaj łańcuchy i realizuj cele punktów, koloru oraz combo. Posuwaj się po mapie sagi, odblokowuj rozdziały i stawiaj czoła nowym wyzwaniom.\n\nJAK GRAĆ\n• Dotykaj grup tego samego koloru, by je wysadzić\n• Realizuj cele: punkty, kolory, combo i więcej\n• Planuj przy limicie ruchów lub czasu\n• Używaj boosterów, gdy utkniesz (opcjonalne reklamy)\n\nDLACZEGO BOX BANG JOURNEY?\n• Podróż poziomów i rozdziałów\n• Jasne cele i satysfakcjonujące wybuchy\n• Krótkie sesje — jeszcze jeden poziom w każdej chwili\n• Za darmo; postęp bez płatności\n• Wielojęzyczny interfejs\n\nWysadzaj skrzynie. Realizuj cele. Kontynuuj podróż. Pobierz Box Bang Journey i zacznij przygodę!\n\nOpinie mile widziane w recenzjach sklepu i w aplikacji."
+        },
+        "ios": {
+          "subtitle": "Puzzle skrzyń i poziomów",
+          "description": "Box Bang Journey: wysadzaj pasujące skrzynie, realizuj cele poziomu, wspinaj się po mapie sagi.\n\nDotykaj grup tego samego koloru i buduj łańcuchy. Punkty, kolor i combo w przygodzie puzzle opartej na poziomach i rozdziałach.\n\nNajważniejsze\n• Mapa sagi i rozdziały\n• Jasne cele, płynne wybuchy\n• Boostery w trudnych momentach\n• Krótkie, przyjemne poziomy casual\n\nŁatwy start, przyjemne mistrzostwo. Pobierz Box Bang Journey!",
+          "keywords": "puzzle,skrzynie,wybuch,poziomy,match,saga,casual,bloki,przygoda,kolor"
+        }
+      },
+      "hi-IN": {
+        "label": "हिन्दी – hi-IN",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "लेवल दर लेवल बॉक्स पॉप करें। लक्ष्य पूरे करें, मैप आगे बढ़ाएँ!",
+          "description": "Box Bang Journey — रंगीन बॉक्स पहेली का लत लगाने वाला एडवेंचर, जहाँ हर लेवल का एक लक्ष्य होता है।\n\nएक जैसे रंग के समूह टैप करें, चेन रिएक्शन चलाएँ और स्कोर, रंग व कॉम्बो लक्ष्य पूरे करें। सागा मैप पर आगे बढ़ें, चैप्टर अनलॉक करें और हर स्टेज पर नई चुनौती लें।\n\nकैसे खेलें\n• एक रंग के समूह टैप करके पॉप करें\n• लेवल लक्ष्य पूरे करें: स्कोर, रंग, कॉम्बो आदि\n• चाल या समय सीमा में रणनीति बनाएँ\n• अटकने पर बूस्टर इस्तेमाल करें (वैकल्पिक रिवॉर्ड ऐड)\n\nBox Bang Journey क्यों?\n• लेवल और चैप्टर की यात्रा\n• साफ़ लक्ष्य और मज़ेदार पॉप\n• छोटे सेशन — कभी भी एक और लेवल\n• मुफ़्त; बिना भुगतान आगे बढ़ें\n• बहुभाषी इंटरफ़ेस\n\nबॉक्स पॉप करें। लक्ष्य पूरे करें। यात्रा जारी रखें। Box Bang Journey डाउनलोड करें और एडवेंचर शुरू करें!\n\nस्टोर रिव्यू और ऐप में फीडबैक का स्वागत है।"
+        },
+        "ios": {
+          "subtitle": "लेवल बॉक्स पज़ल",
+          "description": "Box Bang Journey: मैचिंग बॉक्स पॉप करें, लेवल लक्ष्य पूरे करें, सागा मैप चढ़ें।\n\nएक रंग के समूह टैप कर चेन बनाएँ। स्कोर, रंग और कॉम्बो लक्ष्यों वाला लेवल-आधारित पज़ल एडवेंचर, चैप्टर सहित।\n\nख़ास बातें\n• सागा मैप और चैप्टर\n• साफ़ लक्ष्य, स्मूथ पॉप\n• मुश्किल क्षणों में बूस्टर\n• छोटे, मज़ेदार कैज़ुअल लेवल\n\nशुरू करना आसान, मास्टर करना मज़ेदार। Box Bang Journey डाउनलोड करें!",
+          "keywords": "पजल,बॉक्स,पॉप,लेवल,मैच,सागा,कैजुअल,ब्लॉक,एडवेंचर,रंग"
+        }
+      },
+      "fa-IR": {
+        "label": "Farsça – fa-IR",
+        "name": "Box Bang Journey",
+        "google": {
+          "short": "سطح‌به‌سطح جعبه‌ها را بترکان. هدف‌ها را بزن و در نقشه پیش برو!",
+          "description": "Box Bang Journey — ماجراجویی پازل جعبه‌های رنگی اعتیادآور که هر سطح هدف خودش را دارد.\n\nگروه‌های هم‌رنگ را لمس کن، زنجیره انفجار بساز و اهداف امتیاز، رنگ و کمبو را کامل کن. روی نقشه حماسی پیش برو، فصل‌ها را باز کن و در هر مرحله چالش تازه‌ای بگیر.\n\nچطور بازی کنیم؟\n• گروه‌های هم‌رنگ را لمس کن و بترکان\n• اهداف سطح را کامل کن: امتیاز، رنگ، کمبو و بیشتر\n• با محدودیت حرکت یا زمان استراتژی بچین\n• اگر گیر کردی از بوستر استفاده کن (تبلیغ پاداش‌دار اختیاری)\n\nچرا Box Bang Journey؟\n• سفری از سطح‌ها و فصل‌ها، نه فقط بازی بی‌پایان\n• اهداف روشن و ترکاندن‌های لذت‌بخش\n• جلسات کوتاه — هر وقت یک سطح دیگر\n• رایگان؛ بدون پرداخت هم پیش می‌روی\n• رابط چندزبانه\n\nجعبه‌ها را بترکان. هدف‌ها را بزن. سفر را ادامه بده. Box Bang Journey را دانلود کن و ماجراجویی را شروع کن!\n\nنظرات از بررسی‌های فروشگاه و داخل اپ خوش‌آمد است."
+        },
+        "ios": {
+          "subtitle": "پازل جعبه و سطح",
+          "description": "Box Bang Journey: جعبه‌های هم‌رنگ را بترکان، اهداف سطح را کامل کن و در نقشه حماسی بالا برو.\n\nگروه‌های هم‌رنگ را لمس کن و زنجیره بساز. امتیاز، رنگ و کمبو در ماجراجویی پازل مبتنی بر سطح با فصل‌ها.\n\nنکات برجسته\n• نقشه حماسی و فصل‌ها\n• اهداف روشن، ترکاندن روان\n• بوستر در لحظه‌های سخت\n• سطح‌های کژوال کوتاه و سرگرم‌کننده\n\nشروع آسان، تسلط لذت‌بخش. Box Bang Journey را دانلود کن!",
+          "keywords": "پازل,جعبه,ترکاندن,سطح,مچ,حماسه,کژوال,بلوک,ماجراجویی,رنگ"
+        }
+      }
+    },
+    "whatsNew": {
+      "tr-TR": "• Daha akıcı seviyeler ve net hedefler\n• Harita ve bölüm ilerleyişinde iyileştirmeler\n• Joker kullanımı daha anlaşılır\n• Dil ve görünüm seçenekleri\n• Performans ve kararlılık dokunuşları\nYolculuğuna devam et — bir seviye daha!",
+      "en-US": "• Smoother levels and clearer goals\n• Better saga map and chapter progress\n• Boosters that are easier to understand\n• Language and look options\n• Performance and stability polish\nKeep going — one more level!",
+      "en-GB": "• Smoother levels and clearer goals\n• Better saga map and chapter progress\n• Boosters that are easier to understand\n• Language and look options\n• Performance and stability polish\nKeep going — one more level!",
+      "de-DE": "• Flüssigere Level und klarere Ziele\n• Bessere Saga-Karte und Kapitel\n• Verständlichere Booster\n• Sprach- und Optikoptionen\n• Mehr Stabilität und Leistung\nWeiter geht’s — noch ein Level!",
+      "ar": "• مستويات أكثر سلاسة وأهداف أوضح\n• تحسين خريطة الملحمة والفصول\n• معززات أسهل للفهم\n• خيارات اللغة والمظهر\n• لمسات أداء واستقرار\nواصل الرحلة — مستوى إضافي!",
+      "id": "• Level lebih mulus, target lebih jelas\n• Peta saga dan chapter lebih baik\n• Booster lebih mudah dipahami\n• Opsi bahasa dan tampilan\n• Performa dan stabilitas\nLanjutkan — satu level lagi!",
+      "fr-FR": "• Niveaux plus fluides, objectifs plus clairs\n• Carte saga et chapitres améliorés\n• Boosters plus faciles à comprendre\n• Options de langue et d’apparence\n• Performance et stabilité\nContinue — encore un niveau !",
+      "ja-JP": "• より快適なレベルとわかりやすい目標\n• サーガマップとチャプターの改善\n• ブースターの分かりやすさ向上\n• 言語・見た目のオプション\n• 動作と安定性の調整\n旅を続けよう — もう1ステージ！",
+      "pt-BR": "• Níveis mais fluidos e metas mais claras\n• Mapa saga e capítulos melhorados\n• Boosters mais fáceis de entender\n• Opções de idioma e aparência\n• Desempenho e estabilidade\nContinue — mais um nível!",
+      "ru-RU": "• Более плавные уровни и ясные цели\n• Улучшены карта саги и главы\n• Бустеры понятнее\n• Язык и оформление\n• Стабильность и производительность\nПродолжай — ещё один уровень!",
+      "cs-CZ": "• Plynulejší levely a jasnější cíle\n• Lepší saga mapa a kapitoly\n• Srozumitelnější boostery\n• Jazyk a vzhled\n• Výkon a stabilita\nPokračuj — ještě jeden level!",
+      "zh-CN": "• 关卡更流畅，目标更清晰\n• 冒险地图与章节体验优化\n• 助推道具更易理解\n• 语言与外观选项\n• 性能与稳定性提升\n继续旅程——再来一关！",
+      "es-419": "• Niveles más fluidos y metas más claras\n• Mejor mapa saga y capítulos\n• Boosters más fáciles de entender\n• Idioma y apariencia\n• Rendimiento y estabilidad\nSigue — ¡un nivel más!",
+      "es-ES": "• Niveles más fluidos y objetivos más claros\n• Mejor mapa saga y capítulos\n• Potenciadores más fáciles de entender\n• Idioma y aspecto\n• Rendimiento y estabilidad\nSigue — ¡un nivel más!",
+      "it-IT": "• Livelli più fluidi e obiettivi più chiari\n• Mappa saga e capitoli migliorati\n• Booster più facili da capire\n• Lingua e aspetto\n• Prestazioni e stabilità\nContinua — ancora un livello!",
+      "ko-KR": "• 더 부드러운 레벨, 더 명확한 목표\n• 사가 맵·챕터 개선\n• 이해하기 쉬운 부스터\n• 언어 및 외형 옵션\n• 성능과 안정성\n계속하세요 — 한 레벨 더!",
+      "ro": "• Niveluri mai fluente, obiective mai clare\n• Hartă saga și capitole îmbunătățite\n• Boostere mai ușor de înțeles\n• Limbă și aspect\n• Performanță și stabilitate\nContinuă — încă un nivel!",
+      "pl-PL": "• Płynniejsze poziomy i jaśniejsze cele\n• Lepsza mapa sagi i rozdziały\n• Czytelniejsze boostery\n• Język i wygląd\n• Wydajność i stabilność\nDalej — jeszcze jeden poziom!",
+      "hi-IN": "• स्मूटर लेवल, साफ़ लक्ष्य\n• बेहतर सागा मैप और चैप्टर\n• समझने में आसान बूस्टर\n• भाषा और लुक विकल्प\n• प्रदर्शन और स्थिरता\nजारी रखें — एक और लेवल!",
+      "fa-IR": "• سطح‌های روان‌تر و اهداف روشن‌تر\n• نقشه حماسی و فصل‌های بهتر\n• بوسترهای قابل‌فهم‌تر\n• گزینه‌های زبان و ظاهر\n• پایداری و عملکرد\nادامه بده — یک سطح دیگر!"
+    }
+  },
+
+  mindfind: {
+    label: "Mind Find",
+    hint: "Oyun adı: Mind Find",
+    listings: {
+  "tr-TR": {
+    label: "Türkçe – tr-TR (varsayılan)",
+    name: "Mind Find",
+    google: {
+      short: "Kelime oyunu: Frekans, Izgara, Sıcaklık. Günlük bulmaca ve liderlik tablosu.",
+      description: "Sinyali takip et. Kelimeyi bul. Liderliğe çık.\n\nMind Find, tahminlerini frekans dalgasında görebileceğin yenilikçi bir kelime oyunu ve zeka bulmacası. Izgara’da strateji kur, Sıcaklık’ta soğuk–sıcak ipuçlarıyla ilerle, Frekans’ta seri skorunu büyüt. Türkçe veya İngilizce oyna; günlük bulmaca ve küresel liderlik tablosuyla rekabet et.\n\n3 MOD · TEK OYUN\n• FREKANS (Ana Mod): Gizli kelimeye her tahminde frekans çizgisiyle yaklaş. Harf Al jokerini akıllı kullan, kombo/seri puanını koru.\n• IZGARA: Yeşil ve turuncu ipuçlarıyla ızgara üzerinde kelime çöz. Canlı Frekans serine bonus puan katabilirsin.\n• SICAKLIK: Harflerin hedefe yakınlığına göre soğuk–ılık–sıcak ilerleme. Mantık bulmacası ve beyin egzersizi bir arada.\n\nGÜNLÜK BULMACA & REKABET\n• Her gün yenilenen günlük kelime bulmacaları\n• Seri / kombo skor sistemi\n• Detaylı istatistikler ve liderlik tablosu\n• Minimalist açık & koyu tema\n\nTÜRKÇE + İNGİLİZCE\nTek uygulamada Türkçe kelime oyunu veya İngilizce kelime pratiği. Dilini Ayarlar’dan değiştir; kelime avı ve zeka oyunları alışkanlığını aynı yerde sürdür.\n\nMind Find’ı indir, bugünün bulmacasını çöz ve serine hemen başla — liderlik tablosu seni bekliyor.",
+    },
+    ios: {
+      subtitle: "Günlük Zeka & Sözcük Avı",
+      description: "Sinyali takip et. Kelimeyi bul. Liderliğe çık.\n\nMind Find: frekans dalgası, ızgara ve sıcaklık ipuçlarıyla oynanan taze bir kelime bulmaca oyunu. Günlük bulmaca, seri skor ve liderlik tablosuyla rekabet et. Türkçe veya İngilizce oyna.\n\nÖne çıkanlar\n• Frekans, Izgara ve Sıcaklık — üç farklı kelime oyunu modu\n• Harf Al jokerı ve stratejik seri puanı\n• Günlük zeka bulmacaları ve küresel sıralama\n• Açık & koyu minimalist tasarım\n• Çift dil: TR / EN kelime dağarcığı\n\nMind Find’ı indir ve bugünkü bulmacana başla!",
+      keywords: "oyun,tahmin,beyin,egzersiz,zekaoyunları,liderlik,ingilizce,türkçe,kelimeoyunu,iq,seri,kombo,offline",
+    },
+  },
+  "en-US": {
+    label: "English (US) – en-US",
+    name: "Mind Find",
+    google: {
+      short: "Word puzzle: Frequency, Grid & Warmth. Daily challenges and leaderboard.",
+      description: "Follow the signal. Crack the word. Climb the board.\n\nMind Find is a fresh word puzzle game that turns guessing into a visual chase—track proximity on a frequency wave, think in grids, and feel how warm each letter is. Play in English or Turkish. Train your brain with daily word games, combo streaks, and a global leaderboard.\n\nTHREE MODES. ONE MIND.\n• FREQUENCY (Main): Guess the hidden word while a frequency line shows how close you are. Use Letter hints wisely and build a high-score series.\n• GRID: A word-grid brain teaser with green/orange feedback. A daily warm-up that can boost an active Frequency series.\n• WARMTH: Letter-by-letter cold → hot proximity clues—a logic puzzle twist on the word guess formula.\n\nDAILY PUZZLES & COMPETITION\n• Fresh daily word puzzles to keep your streak alive\n• Series / combo scoring for clutch solves\n• Detailed stats and a global leaderboard\n• Light & dark minimalist design for long sessions\n\nENGLISH + TURKISH IN ONE APP\nSwitch language anytime. Practice English vocabulary or play Turkish word games in the same brain-training app—ideal as a vocabulary builder and word puzzle companion on the go.\n\nDownload Mind Find free, start today’s puzzle, and chase the top of the leaderboard—your next word streak starts now.",
+    },
+    ios: {
+      subtitle: "Word Game · Daily Puzzles",
+      description: "Follow the signal. Crack the word. Climb the board.\n\nMind Find is a word puzzle game with Frequency waves, Grid clues, and Warmth proximity. Daily challenges, combo series scores, and a global leaderboard. Play in English or Turkish.\n\nHighlights\n• Three modes: Frequency, Grid, Warmth\n• Letter hints and strategic series scoring\n• Daily brain teasers and leaderboard rivalry\n• Light & dark minimalist design\n• Dual language: EN / TR vocabulary\n\nDownload Mind Find and start today’s puzzle!",
+      keywords: "brain,teaser,guess,vocabulary,logic,streak,leaderboard,turkish,english,offline,spelling,iq,challenge",
+    },
+  },
+  "en-GB": {
+    label: "English (UK) – en-GB",
+    name: "Mind Find",
+    google: {
+      short: "Word puzzle: Frequency, Grid & Warmth. Daily challenges and leaderboard.",
+      description: "Follow the signal. Crack the word. Climb the board.\n\nMind Find is a fresh word puzzle game that turns guessing into a visual chase—track proximity on a frequency wave, think in grids, and feel how warm each letter is. Play in English or Turkish. Train your brain with daily word games, combo streaks, and a global leaderboard.\n\nTHREE MODES. ONE MIND.\n• FREQUENCY (Main): Guess the hidden word while a frequency line shows how close you are. Use Letter hints wisely and build a high-score series.\n• GRID: A word-grid brain teaser with green/orange feedback. A daily warm-up that can boost an active Frequency series.\n• WARMTH: Letter-by-letter cold → hot proximity clues—a logic puzzle twist on the word guess formula.\n\nDAILY PUZZLES & COMPETITION\n• Fresh daily word puzzles to keep your streak alive\n• Series / combo scoring for clutch solves\n• Detailed stats and a global leaderboard\n• Light & dark minimalist design for longer sessions\n\nENGLISH + TURKISH IN ONE APP\nSwitch language anytime. Practise English vocabulary or play Turkish word games in the same brain-training app—ideal as a vocabulary builder and word puzzle companion on the go.\n\nCustomise your pace, chase today’s challenge, and own the leaderboard. Download Mind Find and start your next word streak now.",
+    },
+    ios: {
+      subtitle: "Word Game · Daily Puzzles",
+      description: "Follow the signal. Crack the word. Climb the board.\n\nMind Find is a word puzzle game with Frequency waves, Grid clues, and Warmth proximity. Daily challenges, combo series scores, and a global leaderboard. Play in English or Turkish.\n\nHighlights\n• Three modes: Frequency, Grid, Warmth\n• Letter hints and strategic series scoring\n• Daily brain teasers and leaderboard rivalry\n• Light & dark minimalist design\n• Dual language: EN / TR vocabulary\n\nDownload Mind Find and start today’s puzzle!",
+      keywords: "brain,teaser,guess,vocabulary,logic,streak,leaderboard,turkish,english,offline,spelling,iq,challenge",
+    },
+  },
+  "de-DE": {
+    label: "Deutsch – de-DE",
+    name: "Mind Find",
+    google: {
+      short: "Wortpuzzle mit Frequenz-, Raster- & Wärme-Modus. Tägliche Rätsel & Bestenliste.",
+      description: "Folge dem Signal. Finde das Wort. Erklimme die Bestenliste.\n\nMind Find ist ein frisches Wortpuzzle- und Denksportspiel: Siehst du auf der Frequenzwelle, wie nah du bist, löst du im Raster und nutzt kalt–warm Nähehinweise. Spiele auf Deutsch? Die App bietet Englisch und Türkisch – trainiere dein Gehirn mit täglichen Worträtseln, Combo-Serien und einer globalen Bestenliste.\n\nDREI MODI. EIN KOPF.\n• FREQUENZ (Hauptmodus): Rate das geheime Wort anhand der Frequenzlinie. Nutze Buchstaben-Hinweise klug und baue eine Highscore-Serie.\n• RASTER: Wortgitter mit Grün/Orange-Feedback. Perfektes Daily-Warm-up – kann eine aktive Frequenz-Serie boosten.\n• WÄRME: Buchstabe für Buchstabe von kalt zu warm. Logikpuzzle trifft Wortrate.\n\nTÄGLICHE RÄTSEL & WETTBEWERB\n• Täglich neue Worträtsel für deinen Streak\n• Serien-/Combo-Punkte für starke Lösungen\n• Detaillierte Stats und globale Bestenliste\n• Minimalistisches Hell- & Dunkeldesign\n\nENGLISCH + TÜRKISCH IN EINER APP\nSprache jederzeit wechseln. Wortschatz üben oder Wortspiele genießen – ideal als Brain-Teaser und Wortpuzzle unterwegs.\n\nLade Mind Find herunter, starte das heutige Rätsel und jage die Bestenliste!",
+    },
+    ios: {
+      subtitle: "Wortspiel · Daily Rätsel",
+      description: "Folge dem Signal. Finde das Wort. Steig auf.\n\nMind Find: Frequenzwelle, Raster und Wärme-Hinweise in einem Wortpuzzle. Tägliche Challenges, Combo-Serien und Bestenliste. Englisch oder Türkisch spielen.\n\nHighlights\n• Drei Modi: Frequenz, Raster, Wärme\n• Buchstaben-Hinweise & Serienpunkte\n• Tägliche Brain-Teaser und Ranking\n• Hell- & Dunkeldesign\n• Zwei Sprachen: EN / TR\n\nMind Find laden und heutiges Rätsel starten!",
+      keywords: "wortspiel,rätsel,gehirn,denkspiel,daily,bestenliste,wortschatz,logik,offline,iq,serie,combo",
+    },
+  },
+  "ar": {
+    label: "العربية – ar",
+    name: "Mind Find",
+    google: {
+      short: "لعبة كلمات: تردد وشبكة ودفء. ألغاز يومية ولوحة صدارة.",
+      description: "اتبع الإشارة. اكتشف الكلمة. اصعد لوحة الصدارة.\n\nMind Find لعبة ألغاز كلمات مبتكرة تعرض قربك من الكلمة على موجة التردد، مع وضعي الشبكة والدفء. العب بالإنجليزية أو التركية، ودرّب عقلك بألغاز يومية وسلاسل نقاط ولوحة صدارة عالمية.\n\nثلاثة أوضاع · عقل واحد\n• التردد (الرئيسي): خمّن الكلمة المخفية بمساعدة خط التردد. استخدم تلميح الحرف بحكمة وابنِ سلسلة نقاطك.\n• الشبكة: شبكة كلمات بتغذية خضراء/برتقالية. إحماء يومي قد يعزز سلسلة التردد النشطة.\n• الدفء: تلميحات قرب الحروف من بارد إلى ساخن — ألغاز منطقية بطابع تخمين الكلمات.\n\nألغاز يومية ومنافسة\n• ألغاز كلمات يومية للحفاظ على سلسلتك\n• نقاط السلسلة/الكومبو\n• إحصاءات مفصّلة ولوحة صدارة عالمية\n• تصميم بسيط بوضع فاتح وداكن\n\nالإنجليزية + التركية في تطبيق واحد\nبدّل اللغة متى شئت. تدريب مفردات أو ألعاب كلمات — رفيق مثالي لألغاز الدماغ في أي مكان.\n\nحمّل Mind Find وابدأ لغز اليوم — لوحة الصدارة بانتظارك.",
+    },
+    ios: {
+      subtitle: "كلمات · ألغاز يومية",
+      description: "اتبع الإشارة. اكتشف الكلمة. اصعد.\n\nMind Find: موجة تردد وشبكة وتلميحات دفء في لعبة كلمات. تحديات يومية وسلاسل نقاط ولوحة صدارة. الإنجليزية أو التركية.\n\nأبرز المزايا\n• ثلاثة أوضاع: تردد، شبكة، دفء\n• تلميح الحرف ونقاط السلسلة\n• ألغاز يومية وترتيب عالمي\n• وضع فاتح وداكن\n• لغتان: EN / TR\n\nحمّل Mind Find وابدأ لغز اليوم!",
+      keywords: "كلمات,ألغاز,ذكاء,تخمين,يومي,صدارة,مفردات,منطق,أوفلاين,تحدي,سلسلة,لعبة",
+    },
+  },
+  "id": {
+    label: "Bahasa Indonesia – id",
+    name: "Mind Find",
+    google: {
+      short: "Game teka-teki kata: Frekuensi, Grid & Hangat. Puzzle harian & papan peringkat.",
+      description: "Ikuti sinyalnya. Temukan katanya. Naik papan peringkat.\n\nMind Find adalah game teka-teki kata segar: lihat kedekatanmu di gelombang frekuensi, main di grid, dan rasakan petunjuk dingin–hangat per huruf. Main dalam bahasa Inggris atau Turki. Latih otak dengan puzzle kata harian, streak combo, dan leaderboard global.\n\nTIGA MODE. SATU PIKIRAN.\n• FREKUENSI (Utama): Tebak kata tersembunyi lewat garis frekuensi. Pakai petunjuk huruf dengan bijak dan bangun skor seri.\n• GRID: Teka-teki kisi kata dengan umpan balik hijau/oranye. Pemanasan harian yang bisa menambah skor seri Frekuensi aktif.\n• HANGAT: Petunjuk kedekatan huruf dari dingin ke panas — logika bertemu tebak kata.\n\nPUZZLE HARIAN & KOMPETISI\n• Puzzle kata harian untuk menjaga streak\n• Skor seri / combo\n• Statistik detail dan leaderboard global\n• Desain minimalis mode terang & gelap\n\nINGGRIS + TURKI DALAM SATU APLIKASI\nGanti bahasa kapan saja. Latih kosakata atau main game kata — cocok sebagai brain teaser dan teman word puzzle di perjalanan.\n\nUnduh Mind Find, mulai puzzle hari ini, dan kejar puncak papan peringkat!",
+    },
+    ios: {
+      subtitle: "Kata · Puzzle Harian",
+      description: "Ikuti sinyalnya. Temukan katanya. Naik peringkat.\n\nMind Find: gelombang frekuensi, grid, dan petunjuk hangat dalam game teka-teki kata. Tantangan harian, skor seri, dan leaderboard. Main Inggris atau Turki.\n\nSorotan\n• Tiga mode: Frekuensi, Grid, Hangat\n• Petunjuk huruf & skor seri\n• Brain teaser harian dan ranking\n• Mode terang & gelap\n• Dua bahasa: EN / TR\n\nUnduh Mind Find dan mulai puzzle hari ini!",
+      keywords: "kata,puzzle,otak,tebak,harian,peringkat,kosakata,logika,offline,iq,seri,combo",
+    },
+  },
+  "fr-FR": {
+    label: "Français – fr-FR",
+    name: "Mind Find",
+    google: {
+      short: "Jeu de mots : Fréquence, Grille & Chaleur. Défis quotidiens et classement.",
+      description: "Suis le signal. Trouve le mot. Grimpe au classement.\n\nMind Find est un jeu de mots puzzle innovant : vois ta proximité sur une onde de fréquence, joue en grille et avance avec des indices froid–chaud. Joue en anglais ou en turc. Entraîne ton cerveau avec des défis quotidiens, des séries combo et un classement mondial.\n\nTROIS MODES. UN ESPRIT.\n• FRÉQUENCE (Principal) : Devine le mot secret grâce à la ligne de fréquence. Utilise l’indice Lettre avec stratégie et construis ta série de score.\n• GRILLE : Puzzle grille avec retours vert/orange. Échauffement quotidien qui peut booster une série Fréquence active.\n• CHALEUR : Indices de proximité lettre par lettre — logique et word guess réunis.\n\nDÉFIS QUOTIDIENS & COMPÉTITION\n• Nouveaux puzzles de mots chaque jour\n• Score de série / combo\n• Stats détaillées et leaderboard mondial\n• Design minimaliste clair & sombre\n\nANGLAIS + TURC DANS UNE APP\nChange de langue à tout moment. Vocabulaire ou jeux de mots — idéal comme brain teaser et compagnon word puzzle.\n\nTélécharge Mind Find, lance le puzzle du jour et vise le sommet du classement !",
+    },
+    ios: {
+      subtitle: "Mots · Défis quotidiens",
+      description: "Suis le signal. Trouve le mot. Grimpe.\n\nMind Find : onde de fréquence, grille et indices chaleur. Défis quotidiens, scores de série et classement. Joue en anglais ou en turc.\n\nPoints forts\n• Trois modes : Fréquence, Grille, Chaleur\n• Indice lettre et score de série\n• Brain teasers quotidiens et ranking\n• Mode clair & sombre\n• Deux langues : EN / TR\n\nTélécharge Mind Find et commence le puzzle du jour !",
+      keywords: "mots,puzzle,cerveau,devinette,quotidien,classement,vocabulaire,logique,horsligne,iq,serie,combo",
+    },
+  },
+  "ja-JP": {
+    label: "日本語 – ja-JP",
+    name: "Mind Find",
+    google: {
+      short: "単語パズル：周波数・グリッド・温度モード。毎日のチャレンジ＆ランキング。",
+      description: "信号を追って、単語を見つけ、ランキングへ。\n\nMind Findは新鮮な単語パズル＆脳トレゲーム。周波数ウェーブで近づき具合を見ながら当て、グリッドで解き、文字ごとの冷暖ヒントで進みます。英語またはトルコ語でプレイ。毎日のワードゲーム、コンボ連続スコア、世界ランキングで脳を鍛えましょう。\n\n3つのモード、1つのマインド\n• 周波数（メイン）：周波数ラインで隠れ単語に近づく。文字ヒントを賢く使い、ハイスコア連続を狙う。\n• グリッド：緑／オレンジのフィードバック付き単語グリッド。アクティブな周波数連続を後押しできるデイリーウォームアップ。\n• 温度：文字の近さを冷→熱で示すロジック寄りワード推測。\n\nデイリーパズル＆競争\n• 毎日更新の単語パズルで連続をキープ\n• 連続／コンボスコア\n• 詳細スタッツとグローバルリーダーボード\n• ライト＆ダークのミニマルデザイン\n\n英語＋トルコ語を1つのアプリで\nいつでも言語切替。語彙トレーニングにも単語ゲームにも。外出先のブレインテイザー＆ワードパズルに最適。\n\nMind Findをダウンロードして、今日のパズルを始め、ランキングを目指そう！",
+    },
+    ios: {
+      subtitle: "単語ゲーム・毎日パズル",
+      description: "信号を追って、単語を見つけ、ランキングへ。\n\nMind Find：周波数ウェーブ、グリッド、温度ヒントの単語パズル。デイリーチャレンジ、連続スコア、リーダーボード。英語またはトルコ語。\n\nハイライト\n• 3モード：周波数・グリッド・温度\n• 文字ヒントと戦略的連続スコア\n• 毎日の脳トレとランキング\n• ライト＆ダークデザイン\n• 二言語：EN / TR\n\nMind Findをダウンロードして今日のパズルを開始！",
+      keywords: "単語,パズル,脳トレ,推測,毎日,ランキング,語彙,論理,オフライン,iq,連続,ゲーム",
+    },
+  },
+  "pt-BR": {
+    label: "Português (Brasil) – pt-BR",
+    name: "Mind Find",
+    google: {
+      short: "Jogo de palavras: Frequência, Grade e Calor. Desafios diários e ranking.",
+      description: "Siga o sinal. Descubra a palavra. Suba no ranking.\n\nMind Find é um jogo de palavras e quebra-cabeça inovador: veja a proximidade na onda de frequência, jogue no grid e avance com dicas frio–quente. Jogue em inglês ou turco. Treine o cérebro com puzzles diários, sequências de combo e um leaderboard global.\n\nTRÊS MODOS. UMA MENTE.\n• FREQUÊNCIA (Principal): Adivinhe a palavra secreta com a linha de frequência. Use a dica de letra com estratégia e monte sua série de pontos.\n• GRADE: Grade de palavras com feedback verde/laranja. Aquecimento diário que pode impulsionar uma série Frequência ativa.\n• CALOR: Dicas de proximidade letra a letra — lógica encontra word guess.\n\nDESAFIOS DIÁRIOS E COMPETIÇÃO\n• Novos puzzles de palavras todo dia\n• Pontuação de série / combo\n• Estatísticas detalhadas e ranking global\n• Design minimalista claro e escuro\n\nINGLÊS + TURCO EM UM APP\nTroque o idioma quando quiser. Vocabulário ou jogos de palavras — ótimo como brain teaser e companheiro word puzzle.\n\nBaixe o Mind Find, comece o puzzle de hoje e dispute o topo do leaderboard!",
+    },
+    ios: {
+      subtitle: "Palavras · Desafios diários",
+      description: "Siga o sinal. Descubra a palavra. Suba.\n\nMind Find: onda de frequência, grade e dicas de calor. Desafios diários, séries de pontos e ranking. Jogue em inglês ou turco.\n\nDestaques\n• Três modos: Frequência, Grade, Calor\n• Dica de letra e pontuação de série\n• Brain teasers diários e leaderboard\n• Modo claro e escuro\n• Dois idiomas: EN / TR\n\nBaixe o Mind Find e comece o puzzle de hoje!",
+      keywords: "palavras,puzzle,cerebro,adivinhe,diario,ranking,vocabulario,logica,offline,iq,serie,combo",
+    },
+  },
+  "ru-RU": {
+    label: "Русский – ru-RU",
+    name: "Mind Find",
+    google: {
+      short: "Словесная игра: Частота, Сетка и Тепло. Ежедневные загадки и рейтинг.",
+      description: "Следуй за сигналом. Найди слово. Поднимись в рейтинге.\n\nMind Find — свежая словесная головоломка: видишь близость на частотной волне, решаешь на сетке и идёшь по подсказкам «холодно–тепло». Играй на английском или турецком. Тренируй мозг ежедневными word puzzle, сериями комбо и глобальным лидербордом.\n\nТРИ РЕЖИМА. ОДИН УМ.\n• ЧАСТОТА (основной): угадывай скрытое слово по линии частоты. Умно трать подсказку буквы и строй серию очков.\n• СЕТКА: словесная сетка с зелёно-оранжевой обратной связью. Ежедневная разминка, которая может усилить активную серию Частоты.\n• ТЕПЛО: близость букв от холодного к горячему — логика встречает word guess.\n\nЕЖЕДНЕВНЫЕ ЗАГАДКИ И СОРЕВНОВАНИЕ\n• Новые словесные пазлы каждый день\n• Очки серии / комбо\n• Подробная статистика и мировой рейтинг\n• Минималистичный светлый и тёмный дизайн\n\nАНГЛИЙСКИЙ + ТУРЕЦКИЙ В ОДНОМ ПРИЛОЖЕНИИ\nМеняй язык в любой момент. Словарный запас или словесные игры — идеальный brain teaser и компаньон word puzzle в дороге.\n\nСкачай Mind Find, начни сегодняшний пазл и стремись к вершине лидерборда!",
+    },
+    ios: {
+      subtitle: "Слова · Ежедневные загадки",
+      description: "Следуй за сигналом. Найди слово. Поднимайся.\n\nMind Find: частотная волна, сетка и тепловые подсказки. Ежедневные челленджи, серии очков и рейтинг. Английский или турецкий.\n\nОсобенности\n• Три режима: Частота, Сетка, Тепло\n• Подсказка буквы и очки серии\n• Ежедневные brain teasers и лидерборд\n• Светлая и тёмная тема\n• Два языка: EN / TR\n\nСкачай Mind Find и начни сегодняшний пазл!",
+      keywords: "слова,пазл,мозг,угадай,ежедневно,рейтинг,словарь,логика,офлайн,iq,серия,комбо",
+    },
+  },
+  "cs-CZ": {
+    label: "Čeština – cs-CZ",
+    name: "Mind Find",
+    google: {
+      short: "Slovní hra: Frekvence, Mřížka a Teplo. Denní hádanky a žebříček.",
+      description: "Sleduj signál. Najdi slovo. Stoupej v žebříčku.\n\nMind Find je svěží slovní puzzle a trénink mozku: vidíš blízkost na frekvenční vlně, řešíš mřížku a postupuješ podle tipů zima–teplo. Hraj anglicky nebo turecky. Trénuj mozek denními word games, combo sériemi a globálním leaderboardem.\n\nTŘI MÓDY. JEDNA MYSL.\n• FREKVENCE (hlavní): Hádej skryté slovo podle frekvenční čáry. Chytře používej tip na písmeno a buduj sérii skóre.\n• MŘÍŽKA: Slovní mřížka se zelenou/oranžovou zpětnou vazbou. Denní warm-up, který může posílit aktivní sérii Frekvence.\n• TEPLO: Blízkost písmen od studeného k horkému — logika potkává word guess.\n\nDENNÍ HÁDANKY A SOUTĚŽ\n• Nové slovní puzzle každý den\n• Série / combo body\n• Podrobné statistiky a globální žebříček\n• Minimalistický světlý a tmavý design\n\nANGLIČTINA + TUREČTINA V JEDNÉ APPCE\nJazyk změníš kdykoli. Slovní zásoba nebo slovní hry — ideální brain teaser a společník word puzzle na cestách.\n\nStáhni Mind Find, spusť dnešní puzzle a hon se za vrcholem žebříčku!",
+    },
+    ios: {
+      subtitle: "Slova · Denní hádanky",
+      description: "Sleduj signál. Najdi slovo. Stoupej.\n\nMind Find: frekvenční vlna, mřížka a tipy tepla. Denní výzvy, série bodů a žebříček. Anglicky nebo turecky.\n\nZvýraznění\n• Tři módy: Frekvence, Mřížka, Teplo\n• Tip na písmeno a body série\n• Denní brain teasers a ranking\n• Světlý a tmavý vzhled\n• Dva jazyky: EN / TR\n\nStáhni Mind Find a začni dnešní puzzle!",
+      keywords: "slova,puzzle,mozek,hadej,denne,zebricek,slovnik,logika,offline,iq,serie,combo",
+    },
+  },
+  "zh-CN": {
+    label: "简体中文 – zh-CN",
+    name: "Mind Find",
+    google: {
+      short: "单词益智：频率、网格与温度模式。每日挑战与排行榜。",
+      description: "跟随信号，找出单词，登上排行榜。\n\nMind Find 是一款新鲜的单词益智与脑力训练游戏：在频率波上查看接近程度，在网格中解题，并用冷–热字母提示前进。可用英语或土耳其语游玩。用每日单词游戏、连击系列分数和全球排行榜锻炼大脑。\n\n三种模式 · 一个头脑\n• 频率（主模式）：借助频率线猜出隐藏单词。善用字母提示，打造高分系列。\n• 网格：绿/橙反馈的单词网格。可作为每日热身，并为进行中的频率系列加分。\n• 温度：字母由冷到热的接近提示——逻辑与猜词结合。\n\n每日谜题与竞技\n• 每日更新的单词谜题，保持连胜\n• 系列 / 连击得分\n• 详细数据与全球排行榜\n• 简约浅色与深色主题\n\n英语 + 土耳其语同应用\n随时切换语言。练词汇或玩单词游戏——适合随时随地的脑力训练与猜词陪伴。\n\n下载 Mind Find，开始今日谜题，冲击排行榜顶端！",
+    },
+    ios: {
+      subtitle: "单词游戏·每日谜题",
+      description: "跟随信号，找出单词，冲上榜。\n\nMind Find：频率波、网格与温度提示的单词益智。每日挑战、系列分数与排行榜。英语或土耳其语。\n\n亮点\n• 三种模式：频率、网格、温度\n• 字母提示与系列得分\n• 每日脑力训练与排名\n• 浅色与深色设计\n• 双语：EN / TR\n\n下载 Mind Find，开始今日谜题！",
+      keywords: "单词,益智,脑力,猜词,每日,排行榜,词汇,逻辑,离线,挑战,连击,游戏",
+    },
+  },
+  "es-419": {
+    label: "Español (LatAm) – es-419",
+    name: "Mind Find",
+    google: {
+      short: "Juego de palabras: Frecuencia, Cuadrícula y Calor. Retos diarios y ranking.",
+      description: "Sigue la señal. Encuentra la palabra. Sube en el ranking.\n\nMind Find es un juego de palabras y rompecabezas fresco: ves qué tan cerca estás en una onda de frecuencia, juegas en cuadrícula y avanzas con pistas frío–calor. Juega en inglés o turco. Entrena tu mente con retos diarios, rachas de combo y un leaderboard global.\n\nTRES MODOS. UNA MENTE.\n• FRECUENCIA (Principal): Adivina la palabra secreta con la línea de frecuencia. Usa la pista de letra con estrategia y arma tu serie de puntos.\n• CUADRÍCULA: Rejilla de palabras con feedback verde/naranja. Calentamiento diario que puede impulsar una serie Frecuencia activa.\n• CALOR: Pistas de cercanía letra por letra — lógica y word guess juntos.\n\nRETOS DIARIOS Y COMPETENCIA\n• Nuevos puzzles de palabras cada día\n• Puntuación de serie / combo\n• Estadísticas detalladas y ranking global\n• Diseño minimalista claro y oscuro\n\nINGLÉS + TURCO EN UNA APP\nCambia el idioma cuando quieras. Vocabulario o juegos de palabras — ideal como brain teaser y compañero word puzzle.\n\nDescarga Mind Find, empieza el puzzle de hoy y apunta a lo más alto del leaderboard!",
+    },
+    ios: {
+      subtitle: "Palabras · Retos diarios",
+      description: "Sigue la señal. Encuentra la palabra. Sube.\n\nMind Find: onda de frecuencia, cuadrícula y pistas de calor. Retos diarios, series de puntos y ranking. Juega en inglés o turco.\n\nDestacados\n• Tres modos: Frecuencia, Cuadrícula, Calor\n• Pista de letra y puntos de serie\n• Brain teasers diarios y leaderboard\n• Modo claro y oscuro\n• Dos idiomas: EN / TR\n\n¡Descarga Mind Find y empieza el puzzle de hoy!",
+      keywords: "palabras,puzzle,mente,adivina,diario,ranking,vocabulario,logica,offline,iq,serie,combo",
+    },
+  },
+  "es-ES": {
+    label: "Español (España) – es-ES",
+    name: "Mind Find",
+    google: {
+      short: "Juego de palabras: Frecuencia, Cuadrícula y Calor. Retos y clasificación.",
+      description: "Sigue la señal. Encuentra la palabra. Sube en la clasificación.\n\nMind Find es un juego de palabras y puzle innovador: ves la proximidad en una onda de frecuencia, juegas en cuadrícula y avanzas con pistas frío–calor. Juega en inglés o turco. Entrena el cerebro con retos diarios, rachas combo y una clasificación mundial.\n\nTRES MODOS. UNA MENTE.\n• FRECUENCIA (Principal): Adivina la palabra secreta con la línea de frecuencia. Usa la pista de letra con estrategia y construye tu serie de puntuación.\n• CUADRÍCULA: Rejilla de palabras con feedback verde/naranja. Calentamiento diario que puede impulsar una serie Frecuencia activa.\n• CALOR: Pistas de proximidad letra a letra — lógica y word guess unidos.\n\nRETOS DIARIOS Y COMPETENCIA\n• Nuevos puzles de palabras cada día\n• Puntuación de serie / combo\n• Estadísticas detalladas y clasificación global\n• Diseño minimalista claro y oscuro\n\nINGLÉS + TURCO EN UNA APP\nCambia el idioma cuando quieras. Vocabulario o juegos de palabras — ideal como brain teaser y compañero word puzzle.\n\nDescarga Mind Find, empieza el puzle de hoy y apunta a lo más alto de la clasificación.",
+    },
+    ios: {
+      subtitle: "Palabras · Retos diarios",
+      description: "Sigue la señal. Encuentra la palabra. Sube.\n\nMind Find: onda de frecuencia, cuadrícula y pistas de calor. Retos diarios, series de puntos y clasificación. Juega en inglés o turco.\n\nDestacados\n• Tres modos: Frecuencia, Cuadrícula, Calor\n• Pista de letra y puntos de serie\n• Brain teasers diarios y ranking\n• Modo claro y oscuro\n• Dos idiomas: EN / TR\n\n¡Descarga Mind Find y empieza el puzle de hoy!",
+      keywords: "palabras,puzzle,mente,adivina,diario,ranking,vocabulario,logica,sinconexion,iq,serie,combo",
+    },
+  },
+  "it-IT": {
+    label: "Italiano – it-IT",
+    name: "Mind Find",
+    google: {
+      short: "Gioco di parole: Frequenza, Griglia e Calore. Sfide giornaliere e classifica.",
+      description: "Segui il segnale. Trova la parola. Scala la classifica.\n\nMind Find è un gioco di parole puzzle innovativo: vedi la vicinanza sull’onda di frequenza, giochi in griglia e avanzi con indizi freddo–caldo. Gioca in inglese o turco. Allena il cervello con sfide giornaliere, serie combo e una classifica globale.\n\nTRE MODALITÀ. UNA MENTE.\n• FREQUENZA (Principale): Indovina la parola nascosta con la linea di frequenza. Usa l’indizio lettera con strategia e costruisci la serie di punti.\n• GRIGLIA: Griglia di parole con feedback verde/arancione. Riscaldamento giornaliero che può potenziare una serie Frequenza attiva.\n• CALORE: Indizi di vicinanza lettera per lettera — logica e word guess insieme.\n\nSFIDE GIORNALIERE E COMPETIZIONE\n• Nuovi puzzle di parole ogni giorno\n• Punteggio di serie / combo\n• Statistiche dettagliate e leaderboard globale\n• Design minimalista chiaro e scuro\n\nINGLESE + TURCO IN UN’APP\nCambia lingua quando vuoi. Vocabolario o giochi di parole — ideale come brain teaser e compagnia word puzzle.\n\nScarica Mind Find, inizia il puzzle di oggi e punta alla vetta della classifica!",
+    },
+    ios: {
+      subtitle: "Parole · Sfide giornaliere",
+      description: "Segui il segnale. Trova la parola. Scala.\n\nMind Find: onda di frequenza, griglia e indizi calore. Sfide giornaliere, serie di punti e classifica. Gioca in inglese o turco.\n\nIn evidenza\n• Tre modalità: Frequenza, Griglia, Calore\n• Indizio lettera e punti serie\n• Brain teaser giornalieri e ranking\n• Tema chiaro e scuro\n• Due lingue: EN / TR\n\nScarica Mind Find e inizia il puzzle di oggi!",
+      keywords: "parole,puzzle,mente,indovina,giornaliero,classifica,vocabolario,logica,offline,iq,serie,combo",
+    },
+  },
+  "ko-KR": {
+    label: "한국어 – ko-KR",
+    name: "Mind Find",
+    google: {
+      short: "단어 퍼즐: 주파수·그리드·온도 모드. 매일 챌린지와 리더보드.",
+      description: "신호를 따라 단어를 찾고 리더보드에 오르세요.\n\nMind Find는 신선한 단어 퍼즐·두뇌 트레이닝 게임입니다. 주파수 파동으로 근접도를 보고, 그리드에서 풀고, 글자별 냉온 힌트로 진행하세요. 영어 또는 터키어로 플레이. 매일 워드 게임, 콤보 시리즈 점수, 글로벌 리더보드로 두뇌를 단련하세요.\n\n세 가지 모드 · 하나의 마인드\n• 주파수(메인): 주파수 선으로 숨은 단어를 맞히세요. 글자 힌트를 전략적으로 쓰고 고득점 시리즈를 쌓으세요.\n• 그리드: 초록/주황 피드백의 단어 격자. 진행 중인 주파수 시리즈를 올릴 수 있는 데일리 워밍업.\n• 온도: 글자 근접을 차가운→뜨거운 힌트로 — 논리와 워드 추측의 만남.\n\n매일 퍼즐 & 경쟁\n• 매일 갱신되는 단어 퍼즐로 연속 유지\n• 시리즈 / 콤보 점수\n• 상세 통계와 글로벌 리더보드\n• 라이트·다크 미니멀 디자인\n\n영어 + 터키어 한 앱에서\n언제든 언어 전환. 어휘 연습이나 단어 게임 — 이동 중 브레인 티저·워드 퍼즐 동반자로 제격.\n\nMind Find를 다운로드하고 오늘의 퍼즐을 시작해 리더보드 정상을 노리세요!",
+    },
+    ios: {
+      subtitle: "단어 게임·매일 퍼즐",
+      description: "신호를 따라 단어를 찾고 순위를 올리세요.\n\nMind Find: 주파수 파동, 그리드, 온도 힌트의 단어 퍼즐. 매일 챌린지, 시리즈 점수, 리더보드. 영어 또는 터키어.\n\n하이라이트\n• 세 모드: 주파수, 그리드, 온도\n• 글자 힌트와 시리즈 점수\n• 매일 브레인 티저와 랭킹\n• 라이트·다크 디자인\n• 이중 언어: EN / TR\n\nMind Find를 다운로드하고 오늘의 퍼즐을 시작하세요!",
+      keywords: "단어,퍼즐,두뇌,추측,매일,랭킹,어휘,논리,오프라인,iq,시리즈,콤보",
+    },
+  },
+  "ro": {
+    label: "Română – ro",
+    name: "Mind Find",
+    google: {
+      short: "Joc de cuvinte: Frecvență, Grilă & Căldură. Provocări zilnice și clasament.",
+      description: "Urmează semnalul. Găsește cuvântul. Urcă în clasament.\n\nMind Find este un joc de cuvinte puzzle proaspăt: vezi apropierea pe unda de frecvență, joci pe grilă și avansezi cu indicii rece–cald. Joacă în engleză sau turcă. Antrenează-ți mintea cu provocări zilnice, serii combo și un leaderboard global.\n\nTREI MODURI. O MENTE.\n• FRECVENȚĂ (Principal): Ghicește cuvântul secret cu linia de frecvență. Folosește indiciul de literă cu strategie și construiește seria de scor.\n• GRILĂ: Grilă de cuvinte cu feedback verde/portocaliu. Încălzire zilnică ce poate crește o serie Frecvență activă.\n• CĂLDURĂ: Indicii de apropiere literă cu literă — logica întâlnește word guess.\n\nPROVOCĂRI ZILNICE & COMPETIȚIE\n• Puzzle-uri de cuvinte noi în fiecare zi\n• Scor de serie / combo\n• Statistici detaliate și clasament global\n• Design minimalist deschis și întunecat\n\nENGLEZĂ + TURCĂ ÎNTR-O SINGURĂ APP\nSchimbă limba oricând. Vocabular sau jocuri de cuvinte — ideal ca brain teaser și companion word puzzle.\n\nDescarcă Mind Find, începe puzzle-ul de azi și țintește vârful clasamentului!",
+    },
+    ios: {
+      subtitle: "Cuvinte · Provocări zilnice",
+      description: "Urmează semnalul. Găsește cuvântul. Urcă.\n\nMind Find: undă de frecvență, grilă și indicii de căldură. Provocări zilnice, serii de puncte și clasament. Joacă în engleză sau turcă.\n\nRecomandate\n• Trei moduri: Frecvență, Grilă, Căldură\n• Indiciu literă și puncte de serie\n• Brain teasers zilnice și ranking\n• Mod deschis și întunecat\n• Două limbi: EN / TR\n\nDescarcă Mind Find și începe puzzle-ul de azi!",
+      keywords: "cuvinte,puzzle,minte,ghici,zilnic,clasament,vocabular,logica,offline,iq,serie,combo",
+    },
+  },
+  "pl-PL": {
+    label: "Polski – pl-PL",
+    name: "Mind Find",
+    google: {
+      short: "Gra słowna: Częstotliwość, Siatka i Ciepło. Codzienne zagadki i ranking.",
+      description: "Śledź sygnał. Znajdź słowo. Wspinaj się w rankingu.\n\nMind Find to świeża gra słowna i łamigłówka: widzisz bliskość na fali częstotliwości, grasz na siatce i idziesz za wskazówkami zimno–ciepło. Graj po angielsku lub turecku. Trenuj mózg codziennymi word games, seriami combo i globalnym leaderboardem.\n\nTRZY TRYBY. JEDEN UMYSŁ.\n• CZĘSTOTLIWOŚĆ (Główny): Odgadnij ukryte słowo dzięki linii częstotliwości. Mądrze używaj podpowiedzi litery i buduj serię punktów.\n• SIATKA: Siatka słów z zielono-pomarańczowym feedbackiem. Codzienny rozgrzewka, która może wzmocnić aktywną serię Częstotliwości.\n• CIEPŁO: Bliskość liter od zimna do gorąca — logika spotyka word guess.\n\nCODZIENNE ZAGADKI I RYWALIZACJA\n• Nowe puzzle słowne każdego dnia\n• Punkty serii / combo\n• Szczegółowe statystyki i globalny ranking\n• Minimalistyczny jasny i ciemny wygląd\n\nANGIELSKI + TURECKI W JEDNEJ APLIKACJI\nZmień język w dowolnej chwili. Słownictwo lub gry słowne — idealny brain teaser i towarzysz word puzzle w podróży.\n\nPobierz Mind Find, zacznij dzisiejszą zagadkę i celuj w szczyt rankingu!",
+    },
+    ios: {
+      subtitle: "Słowa · Codzienne zagadki",
+      description: "Śledź sygnał. Znajdź słowo. Wspinaj się.\n\nMind Find: fala częstotliwości, siatka i wskazówki ciepła. Codzienne wyzwania, serie punktów i ranking. Graj po angielsku lub turecku.\n\nWyróżniki\n• Trzy tryby: Częstotliwość, Siatka, Ciepło\n• Podpowiedź litery i punkty serii\n• Codzienne brain teasers i ranking\n• Jasny i ciemny motyw\n• Dwa języki: EN / TR\n\nPobierz Mind Find i zacznij dzisiejszą zagadkę!",
+      keywords: "slowa,puzzle,umysl,odgadnij,codziennie,ranking,slownictwo,logika,offline,iq,seria,combo",
+    },
+  },
+  "hi-IN": {
+    label: "हिन्दी – hi-IN",
+    name: "Mind Find",
+    google: {
+      short: "शब्द पहेली: फ़्रीक्वेंसी, ग्रिड और वॉर्मथ। रोज़ चुनौती और लीडरबोर्ड।",
+      description: "सिग्नल फॉलो करें। शब्द खोजें। लीडरबोर्ड चढ़ें।\n\nMind Find एक नया शब्द पहेली और ब्रेन गेम है: फ़्रीक्वेंसी वेव पर नज़दीकी देखें, ग्रिड में हल करें, और ठंडा–गर्म अक्षर संकेत से आगे बढ़ें। अंग्रेज़ी या तुर्की में खेलें। रोज़ाना वर्ड गेम, कॉम्बो सीरीज़ स्कोर और ग्लोबल लीडरबोर्ड से दिमाग ट्रेन करें।\n\nतीन मोड · एक माइंड\n• फ़्रीक्वेंसी (मुख्य): फ़्रीक्वेंसी लाइन से छुपा शब्द अनुमान लगाएँ। लेटर हिंट समझदारी से इस्तेमाल करें और हाई-स्कोर सीरीज़ बनाएँ।\n• ग्रिड: हरा/नारंगी फीडबैक वाली शब्द ग्रिड। सक्रिय फ़्रीक्वेंसी सीरीज़ बढ़ा सकने वाला डेली वार्म-अप।\n• वॉर्मथ: अक्षर की नज़दीकी ठंडे से गर्म — लॉजिक और वर्ड गेस का मेल।\n\nरोज़ पहेलियाँ और प्रतियोगिता\n• हर दिन नए शब्द पज़ल से स्ट्रीक बनाए रखें\n• सीरीज़ / कॉम्बो स्कोर\n• विस्तृत आँकड़े और ग्लोबल लीडरबोर्ड\n• लाइट और डार्क मिनिमल डिज़ाइन\n\nअंग्रेज़ी + तुर्की एक ऐप में\nकभी भी भाषा बदलें। शब्दावली अभ्यास या शब्द गेम — चलते-फिरते ब्रेन टीज़र और वर्ड पज़ल साथी।\n\nMind Find डाउनलोड करें, आज का पज़ल शुरू करें और लीडरबोर्ड टॉप का पीछा करें!",
+    },
+    ios: {
+      subtitle: "शब्द · रोज़ पहेलियाँ",
+      description: "सिग्नल फॉलो करें। शब्द खोजें। ऊपर जाएँ।\n\nMind Find: फ़्रीक्वेंसी वेव, ग्रिड और वॉर्मथ संकेत। रोज़ चुनौतियाँ, सीरीज़ स्कोर और लीडरबोर्ड। अंग्रेज़ी या तुर्की।\n\nहाइलाइट्स\n• तीन मोड: फ़्रीक्वेंसी, ग्रिड, वॉर्मथ\n• लेटर हिंट और सीरीज़ स्कोर\n• रोज़ ब्रेन टीज़र और रैंकिंग\n• लाइट और डार्क डिज़ाइन\n• दो भाषाएँ: EN / TR\n\nMind Find डाउनलोड करें और आज का पज़ल शुरू करें!",
+      keywords: "शब्द,पहेली,दिमाग,अनुमान,रोज़,रैंकिंग,शब्दावली,तर्क,ऑफ़लाइन,iq,सीरीज़,कॉम्बो",
+    },
+  },
+  "fa-IR": {
+    label: "Farsça – fa-IR",
+    name: "Mind Find",
+    google: {
+      short: "بازی کلمات: فرکانس، شبکه و گرما. چالش روزانه و جدول رتبه‌بندی.",
+      description: "سیگنال را دنبال کن. کلمه را پیدا کن. در رتبه‌بندی بالا برو.\n\nMind Find یک بازی پازل کلمه‌ای تازه است که حدس زدن را به تعقیبی دیداری تبدیل می‌کند—نزدیکی را روی موج فرکانس ببین، در شبکه فکر کن و گرمی هر حرف را حس کن. به انگلیسی یا ترکی بازی کن. با پازل‌های روزانه کلمات، سری کمبو و جدول رتبه‌بندی جهانی ذهنت را تمرین بده.\n\nسه حالت · یک ذهن\n• فرکانس (اصلی): کلمه پنهان را حدس بزن در حالی که خط فرکانس نزدیکی‌ات را نشان می‌دهد. از راهنمای حرف هوشمندانه استفاده کن و سری امتیاز بالا بساز.\n• شبکه: پازل شبکه کلمات با بازخورد سبز/نارنجی. گرم‌کردن روزانه که می‌تواند سری فعال فرکانس را تقویت کند.\n• گرما: راهنمای نزدیکی حرف‌به‌حرف از سرد به داغ — پیچشی منطقی روی فرمول حدس کلمه.\n\nپازل روزانه و رقابت\n• پازل‌های تازه روزانه برای حفظ سری\n• امتیاز سری / کمبو برای حل‌های دقیق\n• آمار جزئی و جدول رتبه‌بندی جهانی\n• طراحی مینیمال روشن و تیره برای جلسات طولانی\n\nانگلیسی + ترکی در یک اپ\nهر وقت خواستی زبان را عوض کن. واژگان انگلیسی تمرین کن یا بازی کلمات ترکی انجام بده — همراه ایده‌آل برای تقویت واژگان و پازل کلمات در حرکت.\n\nMind Find را رایگان دانلود کن، پازل امروز را شروع کن و قله رتبه‌بندی را دنبال کن — سری کلمه بعدی‌ات از همین حالا شروع می‌شود.",
+    },
+    ios: {
+      subtitle: "کلمات · پازل روزانه",
+      description: "سیگنال را دنبال کن. کلمه را پیدا کن. در رتبه‌بندی بالا برو.\n\nMind Find بازی پازل کلمه با موج فرکانس، راهنمای شبکه و نزدیکی گرماست. چالش‌های روزانه، امتیاز سری کمبو و جدول رتبه‌بندی جهانی. به انگلیسی یا ترکی بازی کن.\n\nنکات برجسته\n• سه حالت: فرکانس، شبکه، گرما\n• راهنمای حرف و امتیاز استراتژیک سری\n• پازل‌های ذهنی روزانه و رقابت رتبه‌بندی\n• طراحی مینیمال روشن و تیره\n• دو زبان: واژگان EN / TR\n\nMind Find را دانلود کن و پازل امروز را شروع کن!",
+      keywords: "کلمات,پازل,مغز,حدس,روزانه,رتبه,واژگان,منطق,آفلاین,iq,سری,کمبو,بازی",
+    },
+  }
+},
+    whatsNew: {
+  "tr-TR": "• Frekans’ta skorunu ve jokerlerini daha net takip et\n• Izgara veya Sıcaklık çözerek canlı serine puan ekle\n• Sıralamada rakiplerinin skor detayına tek dokunuşla bak\n• Açık temada alt menü daha okunaklı\n• Ayarlar’dan Mind Find’ı değerlendir veya diğer oyunlara göz at\n• Daha akıcı, daha az kesintili bir deneyim\nKeyifle oynamaya devam!",
+  "en-US": "• Track your Frequency score and helpers more clearly\n• Solve Grid or Warmth to add points to your live series\n• Tap any leaderboard row for a quick score breakdown\n• Bottom bar is easier to read in Light mode\n• Rate Mind Find or explore our other games in Settings\n• A smoother play session with fewer interruptions\nKeep playing!",
+  "en-GB": "• Track your Frequency score and helpers more clearly\n• Solve Grid or Warmth to add points to your live series\n• Tap any leaderboard row for a quick score breakdown\n• Bottom bar is easier to read in Light mode\n• Rate Mind Find or explore our other games in Settings\n• A smoother play session with fewer interruptions\nKeep playing!",
+  "de-DE": "• Frequenz-Score und Hilfen klarer im Blick\n• Raster oder Wärme lösen und Punkte zur laufenden Serie addieren\n• Tippe auf eine Bestenlisten-Zeile für die Score-Übersicht\n• Untere Leiste im hellen Modus besser lesbar\n• Mind Find bewerten oder andere Spiele in den Einstellungen entdecken\n• Flüssigeres Spiel mit weniger Unterbrechungen\nWeiter viel Spaß!",
+  "ar": "• تابع نقاط التردد والمساعدات بوضوح أكبر\n• حل الشبكة أو الدفء لإضافة نقاط إلى سلسلتك النشطة\n• اضغط أي صف في لوحة الصدارة لملخص سريع\n• الشريط السفلي أوضح في الوضع الفاتح\n• قيّم Mind Find أو استكشف ألعابنا من الإعدادات\n• جلسة لعب أكثر سلاسة وأقل مقاطعة\nاستمر في اللعب!",
+  "id": "• Lacak skor Frekuensi dan bantuan dengan lebih jelas\n• Selesaikan Grid atau Hangat untuk menambah poin ke seri aktif\n• Ketuk baris papan peringkat untuk ringkasan skor\n• Bilah bawah lebih mudah dibaca di mode Terang\n• Nilai Mind Find atau lihat game lain di Pengaturan\n• Sesi main lebih mulus dengan lebih sedikit gangguan\nTerus bermain!",
+  "fr-FR": "• Suivez plus clairement votre score Fréquence et vos aides\n• Résolvez Grille ou Chaleur pour ajouter des points à votre série\n• Touchez une ligne du classement pour un résumé du score\n• Barre du bas plus lisible en mode clair\n• Notez Mind Find ou découvrez nos autres jeux dans Réglages\n• Session plus fluide, moins d’interruptions\nContinuez à jouer !",
+  "ja-JP": "• 周波数スコアとヘルパーがより見やすく\n• グリッドや温度を解いて進行中の連続に加点\n• ランキング行をタップしてスコア内訳を確認\n• ライトモードで下部バーが読みやすく\n• 設定から Mind Find を評価、または他のゲームをチェック\n• より快適で中断の少ないプレイ\n引き続きお楽しみください！",
+  "pt-BR": "• Acompanhe melhor o score de Frequência e as ajudas\n• Resolva Grade ou Calor para somar pontos à série ativa\n• Toque numa linha do ranking para ver o resumo do score\n• Barra inferior mais legível no modo claro\n• Avalie o Mind Find ou veja nossos outros jogos em Ajustes\n• Sessão mais fluida, com menos interrupções\nContinue jogando!",
+  "ru-RU": "• Чётче следите за очками Частоты и подсказками\n• Решайте Сетку или Тепло, чтобы добавить очки к активной серии\n• Нажмите строку рейтинга для краткой сводки очков\n• Нижняя панель удобнее читается в светлой теме\n• Оцените Mind Find или посмотрите другие игры в Настройках\n• Более плавная игра с меньшим числом прерываний\nПродолжайте играть!",
+  "cs-CZ": "• Lépe sledujte skóre Frekvence a nápovědy\n• Vyřešte Mřížku nebo Teplo a přidejte body do aktivní série\n• Klepněte na řádek žebříčku pro rychlý přehled skóre\n• Spodní lišta je ve světlém režimu čitelnější\n• Ohodnoťte Mind Find nebo prozkoumejte další hry v Nastavení\n• Plynulejší hraní s méně přerušeními\nHrajte dál!",
+  "zh-CN": "• 更清楚地查看频率分数与辅助功能\n• 通关网格或温度，为进行中的系列加分\n• 点排行榜一行即可查看分数摘要\n• 浅色模式下底部栏更易读\n• 在设置中评价 Mind Find 或查看我们的其他游戏\n• 更流畅、更少打断的游玩体验\n继续畅玩！",
+  "es-419": "• Sigue con más claridad tu puntaje de Frecuencia y ayudas\n• Resuelve Cuadrícula o Calor para sumar puntos a tu serie activa\n• Toca una fila del ranking para un resumen rápido\n• La barra inferior se lee mejor en modo claro\n• Califica Mind Find o mira nuestros otros juegos en Ajustes\n• Sesión más fluida y con menos interrupciones\n¡Sigue jugando!",
+  "es-ES": "• Sigue con más claridad tu puntuación de Frecuencia y ayudas\n• Resuelve Cuadrícula o Calor para sumar puntos a tu serie activa\n• Toca una fila de la clasificación para un resumen rápido\n• La barra inferior se lee mejor en modo claro\n• Valora Mind Find o explora nuestros otros juegos en Ajustes\n• Sesión más fluida y con menos interrupciones\n¡Sigue jugando!",
+  "it-IT": "• Segui meglio il punteggio Frequenza e gli aiuti\n• Risolvi Griglia o Calore per aggiungere punti alla serie attiva\n• Tocca una riga della classifica per un riepilogo rapido\n• Barra inferiore più leggibile in modalità chiara\n• Valuta Mind Find o scopri i nostri altri giochi nelle Impostazioni\n• Sessione più fluida con meno interruzioni\nContinua a giocare!",
+  "ko-KR": "• 주파수 점수와 도움을 더 명확히 확인하세요\n• 그리드나 온도를 풀어 진행 중 시리즈에 점수를 더하세요\n• 리더보드 행을 탭해 점수 요약을 보세요\n• 라이트 모드에서 하단 바가 더 읽기 쉽습니다\n• 설정에서 Mind Find를 평가하거나 다른 게임을 살펴보세요\n• 더 매끄럽고 방해가 적은 플레이\n계속 즐겨 주세요!",
+  "ro": "• Urmărește mai clar scorul de Frecvență și ajutoarele\n• Rezolvă Grilă sau Căldură pentru a adăuga puncte la seria activă\n• Atinge un rând din clasament pentru un rezumat rapid\n• Bara de jos se citește mai ușor în modul luminos\n• Evaluează Mind Find sau vezi celelalte jocuri în Setări\n• Sesiune mai fluentă, cu mai puține întreruperi\nContinuă să joci!",
+  "pl-PL": "• Czytelniej śledź wynik Częstotliwości i podpowiedzi\n• Rozwiąż Siatkę lub Ciepło, by dodać punkty do aktywnej serii\n• Dotknij wiersza rankingu, by zobaczyć szybkie podsumowanie\n• Dolny pasek czytelniejszy w trybie jasnym\n• Oceń Mind Find lub zobacz inne gry w Ustawieniach\n• Płynniejsza sesja z mniejszą liczbą przerw\nGraj dalej!",
+  "hi-IN": "• फ़्रीक्वेंसी स्कोर और मदद को और साफ़ देखें\n• ग्रिड या वॉर्मथ हल कर सक्रिय सीरीज़ में अंक जोड़ें\n• लीडरबोर्ड पंक्ति टैप कर स्कोर सारांश देखें\n• लाइट मोड में निचली बार पढ़ने में आसान\n• सेटिंग्स में Mind Find रेट करें या अन्य गेम देखें\n• कम रुकावट के साथ smoother प्ले\nखेलते रहें!",
+  "fa-IR": "• امتیاز فرکانس و کمک‌ها را واضح‌تر ببین\n• شبکه یا گرما را حل کن و به سری فعال امتیاز اضافه کن\n• برای خلاصه امتیاز روی هر ردیف رتبه‌بندی بزن\n• نوار پایین در حالت روشن خواناتر است\n• در تنظیمات به Mind Find امتیاز بده یا بازی‌های دیگر را ببین\n• تجربه‌ای روان‌تر با وقفه کمتر\nبه بازی ادامه بده!"
+},
+  },
+};
+
+const order = [
+  "tr-TR","en-US","en-GB","de-DE","ar","id","fr-FR","ja-JP","pt-BR","ru-RU","cs-CZ",
+  "zh-CN","es-419","es-ES","it-IT","ko-KR","ro","pl-PL","hi-IN","fa-IR",
+];
+
+function countClass(len, limit) {
+  if (len > limit) return "over";
+  if (len > limit * 0.92) return "warn";
+  return "ok";
+}
+
+function fieldHtml(label, text, limit, storeKey, fieldKey) {
+  const len = [...text].length;
+  const cls = countClass(len, limit);
+  const id = `${storeKey}-${fieldKey}`;
+  return `
+    <div class="field">
+      <div class="field-head">
+        <span class="field-label">${label}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="count ${cls}">${len} / ${limit}</span>
+          <button type="button" class="copy" data-target="${id}">Kopyala</button>
+        </div>
+      </div>
+      <div class="value" id="${id}">${escapeHtml(text)}</div>
+    </div>`;
+}
+
+function escapeHtml(s) {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function renderLocale(gameId, code) {
+  const game = GAMES[gameId];
+  const L = game.listings[code];
+  if (!L) return "";
+  const notes = game.whatsNew[code] || "";
+  const prefix = gameId + "-" + code;
+  return `
+    <section class="locale-block" data-code="${code}">
+      <div class="locale-title">
+        <h2>${game.label} · ${L.label}</h2>
+        ${code === "tr-TR" ? '<span class="badge">Varsayılan</span>' : ""}
+      </div>
+      <div class="release-wrap">
+        <article class="store-card release">
+          <h3>★ Güncelleme notu (What's New)</h3>
+          ${fieldHtml("Sürüm notları — Google & App Store", notes, LIMITS.whatsNew, prefix + "-r", "notes")}
+        </article>
+      </div>
+      <div class="store-grid">
+        <article class="store-card google">
+          <h3>▶ Google Play</h3>
+          ${fieldHtml("Oyun adı", L.name, 50, prefix + "-g", "name")}
+          ${fieldHtml("Kısa açıklama (subtitle)", L.google.short, LIMITS.googleShort, prefix + "-g", "short")}
+          ${fieldHtml("Açıklama", L.google.description, LIMITS.googleLong, prefix + "-g", "desc")}
+        </article>
+        <article class="store-card ios">
+          <h3> App Store (iOS)</h3>
+          ${fieldHtml("Oyun adı", L.name, 30, prefix + "-i", "name")}
+          ${fieldHtml("Subtitle", L.ios.subtitle, LIMITS.iosSubtitle, prefix + "-i", "sub")}
+          ${fieldHtml("Açıklama", L.ios.description, LIMITS.iosDesc, prefix + "-i", "desc")}
+          ${fieldHtml("Etiketler / Keywords", L.ios.keywords, LIMITS.iosKeywords, prefix + "-i", "kw")}
+        </article>
+      </div>
+    </section>`;
+}
+
+const main = document.getElementById("main");
+const gameSelect = document.getElementById("game");
+const localeSelect = document.getElementById("locale");
+const gameHint = document.getElementById("gameHint");
+
+function rebuild() {
+  const gameId = gameSelect.value;
+  const game = GAMES[gameId];
+  gameHint.textContent = game.hint;
+  localeSelect.innerHTML = order
+    .filter((c) => game.listings[c])
+    .map((c) => `<option value="${c}">${game.listings[c].label}</option>`)
+    .join("");
+  main.innerHTML = order
+    .filter((c) => game.listings[c])
+    .map((c) => renderLocale(gameId, c))
+    .join("");
+  const code = localeSelect.value || "tr-TR";
+  show(code);
+}
+
+function show(code) {
+  document.querySelectorAll(".locale-block").forEach((el) => {
+    el.classList.toggle("active", el.dataset.code === code);
+  });
+  localeSelect.value = code;
+}
+
+gameSelect.addEventListener("change", rebuild);
+localeSelect.addEventListener("change", () => show(localeSelect.value));
+rebuild();
+
+document.body.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button.copy");
+  if (!btn) return;
+  const el = document.getElementById(btn.dataset.target);
+  if (!el) return;
+  const text = el.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  const prev = btn.textContent;
+  btn.textContent = "Kopyalandı";
+  btn.classList.add("done");
+  setTimeout(() => {
+    btn.textContent = prev;
+    btn.classList.remove("done");
+  }, 1200);
+});
+</script>
+</body>
+</html>

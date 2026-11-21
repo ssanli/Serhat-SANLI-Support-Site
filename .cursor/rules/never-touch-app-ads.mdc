@@ -1,0 +1,11 @@
+---
+description: Never modify, delete, or overwrite app-ads.txt
+alwaysApply: true
+---
+
+# app-ads.txt — Do Not Touch
+
+- **Never** edit, rewrite, delete, move, rename, or regenerate `app-ads.txt`.
+- **Never** include `app-ads.txt` in refactors, cleanups, or bulk file changes.
+- If a task seems to require changing it, stop and ask the user instead.
+- Linking to the existing hosted `app-ads.txt` URL from HTML is fine; changing the file contents is not.
